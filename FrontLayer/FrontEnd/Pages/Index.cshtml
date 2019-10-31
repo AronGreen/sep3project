@@ -1,27 +1,36 @@
 ﻿@page
 @model IndexModel
-
+@using Entities
+@using System.Net.Http
 
 
 @{
     ViewData["Title"] = "MainPage";
 
 
+  
 }
 
 
 <!--i don't understand shit what is happening in here-->
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
+    <h1 class="display-4">I want to cry</h1>
     <p>
 
-        <input />
-        
-        
 
 
-
+        <div>
+            <form asp-page-handler="ProcessRequest" method="post">
+                <label for="Id">Id:</label>
+                <input type="text" name="Id" value="" />
+                <label for="Title">Last Name:</label>
+                <input type="text" name="Title" value="" />
+                <label for="Date">Email:</label>
+                <input type="text" name="Date" value="" />
+                <button type="submit">Get trip</button>
+            </form>
+        </div>
 
 
     </p>
