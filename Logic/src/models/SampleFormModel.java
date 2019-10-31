@@ -1,4 +1,4 @@
-package webapi.models;
+package models;
 
 import java.io.Serializable;
 
@@ -8,6 +8,11 @@ public class SampleFormModel implements Serializable {
 
     public String getName() {
         return name;
+    }
+
+    public SampleFormModel(String name, String message) {
+        this.name = name;
+        this.message = message;
     }
 
     public void setName(String name) {

@@ -1,7 +1,8 @@
-package webapi.controllers;
+package controllers;
 
-import com.sun.deploy.net.BasicHttpRequest;
-import com.sun.deploy.net.HttpRequest;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import models.SampleFormModel;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
@@ -14,7 +15,6 @@ public class HelloWorldController {
     public String getMessage(){
         return "Hello World";
     }
-
 
     @GET
     @Path("get/{x}")
@@ -40,7 +40,11 @@ public class HelloWorldController {
     @Path("message")
     @Produces("text/json")
     public Response message (@FormParam("name") String name, @FormParam("message") String message){
-        String response   = name + " successfully sent message: " + message;
-        return Response.status(200).entity(response).build();
+//
+//        String response   = name + " successfully sent message: " + message;
+        SampleFormModel model = new SampleFormModel(name, message);
+        GsonBuilder builder = new GsonBuilder();
+        Gson gson = builder.create();
+        return Response.status(200).entity(gson.toJson(model)).build();
     }
 }
