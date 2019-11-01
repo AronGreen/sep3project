@@ -12,6 +12,7 @@ public class TripService {
     public Trip getById(int id){
         SocketRequest request = new SocketRequest(1, "trip", "get", "{id: " + id + "}");
         SocketResponse response = dc.sendRequest(request);
+        System.out.println(response.getBody());
         return Trip.fromJson(response.getBody());
     }
 }

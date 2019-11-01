@@ -6,6 +6,7 @@ import models.SocketRequest;
 import models.SocketResponse;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Enum singleton, pretty neat
@@ -26,7 +27,9 @@ public enum DataConnection {
         SocketResponse response = null;
         try {
             Connection conn = new Connection();
+            System.out.println("writing");
             conn.send(request.toJson().getBytes());
+            System.out.println("reading");
             byte[] responseBytes = conn.receive();
             conn.close();
             if (responseBytes == null) {
@@ -34,9 +37,10 @@ public enum DataConnection {
                 return null;
             }
 
-            response = SocketResponse.fromJson(responseBytes.toString());
-        } catch (IOException e) {
+            response = SocketResponse.fromJson(new String(responseBytes, StandardCharsets.UTF_8));
+        } catch (Exception e) {
             e.printStackTrace();
+            return new SocketResponse(0, "Bad stuff", e.toString());
         }
         return response;
     }

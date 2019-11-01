@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Data.Data.Entities;
 using Data.Network;
 
 namespace Data.Logic
@@ -26,13 +27,13 @@ namespace Data.Logic
                 {
                     Console.WriteLine("Request: " + JsonSerializer.Serialize(req));
                     
-                    return new Response()
+                    var response = new Response()
                     {
                         Status = "success",
-                        Body = "{" +
-                               "    msg: Hello World" +
-                               "}"
+                        Body = JsonSerializer.Serialize(new Trip{Id =  0, Date = "Today", Title = "Big fat title"})
                     };
+                    Console.WriteLine("Response: " + JsonSerializer.Serialize(response));
+                    return response;
                 };
             }
         }

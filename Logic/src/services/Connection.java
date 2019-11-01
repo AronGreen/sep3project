@@ -5,15 +5,16 @@ import java.net.Socket;
 
 class Connection {
     private Socket socket;
-    private ObjectOutputStream outputStream;
-    private ObjectInputStream inputStream;
+    private DataOutputStream outputStream;
+    private BufferedInputStream inputStream;
+//    BufferedReader in = new BufferedReader(new InputStreamReader(this.socket.getInputStream(), "UTF8"));
 
     Connection() {
         try {
             // TODO: move host and port to some sort of config or constant
-            socket = new Socket("localhost", 2910);
-            outputStream = new ObjectOutputStream(socket.getOutputStream());
-            inputStream = new ObjectInputStream(socket.getInputStream());
+            socket = new Socket("localhost", 3000);
+            inputStream = new BufferedInputStream(socket.getInputStream());
+            outputStream = new DataOutputStream(socket.getOutputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -24,14 +25,9 @@ class Connection {
     }
 
     byte[] receive() throws IOException {
-        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
         byte[] buffer = new byte[4096];
-        while (true) {
-            int nextBytes = inputStream.read(buffer);
-            if (nextBytes < 0) break;
-            byteStream.write(buffer, 0, nextBytes);
-        }
-        return byteStream.toByteArray();
+        inputStream.read(buffer, 0, 4096);
+        return buffer;
     }
 
     void close() {

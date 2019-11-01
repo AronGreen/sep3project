@@ -53,14 +53,14 @@ namespace Data.Network
         private void RequestStart(NetworkStream stream)
         {
             // Declare byte buffer, read input, and convert it to string
-            byte[] bytes = new byte[1024];
+            byte[] bytes = new byte[4096];
             int bytesRead = stream.Read(bytes, 0, bytes.Length);
             string json = Encoding.ASCII.GetString(bytes, 0, bytesRead);
 
             // TODO build Request from json string
             
             // Forward request to Handler, and retrieve the Response
-            var res = handler(
+            var response = handler(
                 new Request()
                 {
                     Body = "Body",
@@ -69,7 +69,7 @@ namespace Data.Network
                 });
             
             // Encode Response to a json string and write it to Network Stream
-            bytes = Encoding.ASCII.GetBytes(res.ToJson());
+            bytes = Encoding.UTF8.GetBytes(response.ToJson());
             stream.Write(bytes);
         }
     }

@@ -33,6 +33,7 @@ public class SocketResponse {
     }
 
     public static SocketResponse fromJson(String json){
+        System.out.println(json);
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
         return gson.fromJson(json, SocketResponse.class);

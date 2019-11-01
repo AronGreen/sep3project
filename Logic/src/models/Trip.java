@@ -8,9 +8,9 @@ import java.util.Date;
 public class Trip {
     private int id;
     private String title;
-    private Date date;
+    private String date;
 
-    public Trip(int id, String title, Date date) {
+    public Trip(int id, String title, String date) {
         this.id = id;
         this.title = title;
         this.date = date;
@@ -24,7 +24,7 @@ public class Trip {
         return title;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
@@ -35,6 +35,7 @@ public class Trip {
     }
 
     public static Trip fromJson(String json){
+        System.out.println(json);
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
         return gson.fromJson(json, Trip.class);
