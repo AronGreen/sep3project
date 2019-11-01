@@ -7,13 +7,23 @@ using Data.Logic;
 
 namespace Data.Network
 {
+    
+    /// <summary>
+    /// A Network Handler that can establish network connection via a json socket protocol.
+    /// </summary>
     public class SocketHandler : INetworkHandler
     {
-        private RequestHandler handlers;
+        
+        // The handler that represents the business logic
+        private RequestHandler handler;
 
+        /// <summary>
+        /// Starts accepting incoming socket connections in the background.
+        /// </summary>
+        /// <param name="handler">The Request Handler to be called when a Request arrives</param>
         public SocketHandler(RequestHandler handler)
         {
-            handlers += handler;
+            this.handler = handler;
 
             new Thread(() =>
             {
@@ -28,29 +38,30 @@ namespace Data.Network
                     var client = listener.AcceptTcpClient();
                     Console.WriteLine("New connection opened");
 
-                    new Thread(() => RequestLoop(client.GetStream())).Start();
+                    new Thread(() => RequestStart(client.GetStream())).Start();
                 }
             }).Start();
         }
 
-        private void RequestLoop(NetworkStream stream)
+        
+        // Reads the request from the socket, forwards it to the Request Handler,
+        // then writes the Response to the socket.
+        private void RequestStart(NetworkStream stream)
         {
             byte[] bytes = new byte[1024];
             int bytesRead = stream.Read(bytes, 0, bytes.Length);
             string json = Encoding.ASCII.GetString(bytes, 0, bytesRead);
 
-            handlers(
+            var res = handler(
                 new Request()
                 {
                     Body = "Body",
                     Operation = "get",
                     Type = "Type"
-                },
-                res =>
-                {
-                    bytes = Encoding.ASCII.GetBytes(res.ToJson());
-                    stream.Write(bytes);
                 });
+            
+            bytes = Encoding.ASCII.GetBytes(res.ToJson());
+            stream.Write(bytes);
         }
     }
 }

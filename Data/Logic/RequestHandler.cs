@@ -4,6 +4,7 @@ using Data.Network;
 namespace Data.Logic
 {
     
-    public delegate void RequestHandler(Request req, Action<Response> res);
+    // A method that is called by the Network Handler to ask for a Response for a Request
+    public delegate Response RequestHandler(Request req);
         
 }
