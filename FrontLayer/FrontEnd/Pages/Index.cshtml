@@ -2,6 +2,7 @@
 @model IndexModel
 @using Entities
 @using System.Net.Http
+@using Newtonsoft.Json
 
 
 @{
@@ -9,9 +10,18 @@
 
     var http = new HttpClient();
 
-    
-   
-  
+    Trip trip = new Trip(1, "Titleee", "02.12.2018");
+
+    string json = JsonConvert.SerializeObject(trip);
+
+
+    void GetTrip()
+    {
+        
+    }
+
+
+
 }
 
 
@@ -26,15 +36,16 @@
         <div>
             <form asp-page-handler="ProcessRequest" method="post">
                 <label for="Id">Id:</label>
-                <input type="text" name="Id" value="" />
+                <input type="text" name="Id" value="@trip.id" /> 
                 <label for="Title">Title:</label>
-                <input type="text" name="Title" value="" />
+                <input type="text" name="Title" value="@trip.title" />
                 <label for="Date">Email:</label>
-                <input type="text" name="Date" value="" />
-                <button type="submit">Get trip</button>
+                <input type="text" name="Date" value="@trip.date" />
+                <button type="submit" onclick="GetTrip">Get trip</button>
             </form>
         </div>
 
+        <p></p>
 
     </p>
 </div>
