@@ -15,7 +15,7 @@ namespace Data.Logic
         }
 
         // Represents the overall logic in the data server.
-        // Also this method is supposed to route the request to data queries and validation
+        // Also the method returned is supposed to route the request to data queries and validation
         // For now it's a dummy method
         public RequestHandler Handler
         {

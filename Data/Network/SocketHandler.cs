@@ -24,9 +24,11 @@ namespace Data.Network
         public SocketHandler(RequestHandler handler)
         {
             this.handler = handler;
-
+            
+            // This thread accepts connections, and forwards them to another handling thread
             new Thread(() =>
             {
+                // Start the listener thread on 127.0.0.1:3000
                 byte[] ip = new byte[] {127, 0, 0, 1};
                 var listener = new TcpListener(new IPAddress(ip), 3000);
                 listener.Start();
@@ -35,9 +37,11 @@ namespace Data.Network
 
                 while (true)
                 {
+                    // Accept clients
                     var client = listener.AcceptTcpClient();
                     Console.WriteLine("New connection opened");
-
+                    
+                    // Forward the Network Stream to a handling thread
                     new Thread(() => RequestStart(client.GetStream())).Start();
                 }
             }).Start();
@@ -48,10 +52,14 @@ namespace Data.Network
         // then writes the Response to the socket.
         private void RequestStart(NetworkStream stream)
         {
+            // Declare byte buffer, read input, and convert it to string
             byte[] bytes = new byte[1024];
             int bytesRead = stream.Read(bytes, 0, bytes.Length);
             string json = Encoding.ASCII.GetString(bytes, 0, bytesRead);
 
+            // TODO build Request from json string
+            
+            // Forward request to Handler, and retrieve the Response
             var res = handler(
                 new Request()
                 {
@@ -60,6 +68,7 @@ namespace Data.Network
                     Type = "Type"
                 });
             
+            // Encode Response to a json string and write it to Network Stream
             bytes = Encoding.ASCII.GetBytes(res.ToJson());
             stream.Write(bytes);
         }
