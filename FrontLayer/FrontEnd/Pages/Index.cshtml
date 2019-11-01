@@ -15,13 +15,42 @@
     string json = JsonConvert.SerializeObject(trip);
 
 
+
+}
+
+@functions{
+
+
     void GetTrip()
     {
-        
+        var json = GetTripAsync();
+
+        Trip temp = JsonConvert.DeserializeObject<Trip>(json);
+
     }
 
 
+    async Task<string> GetTripAsync()
+    {
 
+
+        HttpClient client = new HttpClient();
+        Console.WriteLine("Fetching data...");
+        var s = await client.GetStringAsync("http://localhost:8080/Logic_war_exploded/trips/get/{1}");
+        return s;
+    }
+
+}
+
+
+@section Scripts
+{
+    <script type="text/javascript">
+         document.addEventListener("DOMContentLoaded", function () {
+            var button = document.getElementById('getTripButton');
+            button.addEventListener('click', GetTrip());
+        });
+    </script>
 }
 
 
@@ -36,16 +65,16 @@
         <div>
             <form asp-page-handler="ProcessRequest" method="post">
                 <label for="Id">Id:</label>
-                <input type="text" name="Id" value="@trip.id" /> 
+                <input type="text" name="Id" value="@trip.id" />
                 <label for="Title">Title:</label>
                 <input type="text" name="Title" value="@trip.title" />
                 <label for="Date">Email:</label>
                 <input type="text" name="Date" value="@trip.date" />
-                <button type="submit" onclick="GetTrip">Get trip</button>
+                <button type="submit" onclick="GetTrip()" id="getTripButton">Get trip</button>
             </form>
         </div>
 
-        <p></p>
+    <p></p>
 
     </p>
 </div>
