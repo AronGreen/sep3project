@@ -7,7 +7,10 @@
 @{
     ViewData["Title"] = "MainPage";
 
+    var http = new HttpClient();
 
+    
+   
   
 }
 
@@ -24,7 +27,7 @@
             <form asp-page-handler="ProcessRequest" method="post">
                 <label for="Id">Id:</label>
                 <input type="text" name="Id" value="" />
-                <label for="Title">Last Name:</label>
+                <label for="Title">Title:</label>
                 <input type="text" name="Title" value="" />
                 <label for="Date">Email:</label>
                 <input type="text" name="Date" value="" />
