@@ -12,7 +12,7 @@ namespace Data
     {
         static void Main(string[] args)
         {
-            var requestHandler = new DummyRequestHandler().Handler;
+            IRequestHandler requestHandler = new DummyRequestHandler();
             INetworkHandler networkHandler = new SocketHandler(requestHandler);
         }
     }

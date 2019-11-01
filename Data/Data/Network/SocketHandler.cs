@@ -15,15 +15,15 @@ namespace Data.Network
     {
         
         // The handler that represents the business logic
-        private RequestHandler handler;
+        private readonly Func<Request, Response> _handle;
 
         /// <summary>
         /// Starts accepting incoming socket connections in the background.
         /// </summary>
-        /// <param name="handler">The Request Handler to be called when a Request arrives</param>
-        public SocketHandler(RequestHandler handler)
+        /// <param name="requestHandler">The Request Handler object that represents the Business Logic</param>
+        public SocketHandler(IRequestHandler requestHandler)
         {
-            this.handler = handler;
+            _handle = requestHandler.Handle;
             
             // This thread accepts connections, and forwards them to another handling thread
             new Thread(() =>
@@ -55,12 +55,12 @@ namespace Data.Network
             // Declare byte buffer, read input, and convert it to string
             byte[] bytes = new byte[1024];
             int bytesRead = stream.Read(bytes, 0, bytes.Length);
-            string json = Encoding.ASCII.GetString(bytes, 0, bytesRead);
+            string json = Encoding.UTF8.GetString(bytes, 0, bytesRead);
 
             // TODO build Request from json string
             
-            // Forward request to Handler, and retrieve the Response
-            var res = handler(
+            // Forward request to the Logic, and retrieve the Response
+            var res = _handle(
                 new Request()
                 {
                     Body = "Body",
@@ -69,7 +69,7 @@ namespace Data.Network
                 });
             
             // Encode Response to a json string and write it to Network Stream
-            bytes = Encoding.ASCII.GetBytes(res.ToJson());
+            bytes = Encoding.UTF8.GetBytes(res.ToJson());
             stream.Write(bytes);
         }
     }
