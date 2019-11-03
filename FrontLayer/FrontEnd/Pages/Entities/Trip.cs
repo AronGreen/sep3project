@@ -20,5 +20,7 @@ namespace FrontEnd.Pages.Entities
             this.date = date;
 
         }
+
+        
     }
 }
