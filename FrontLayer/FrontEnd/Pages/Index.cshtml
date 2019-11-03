@@ -8,27 +8,15 @@
 @{
     ViewData["Title"] = "MainPage";
 
-    var http = new HttpClient();
-
-    Trip trip = new Trip(1, "Titleee", "02.12.2018");
-
-    string json = JsonConvert.SerializeObject(trip);
-
     
-
-
+    
 
 }
 
 @functions{
 
 
-     void GetTrip()
-    {
-        var json = GetTripAsync();
-
-
-    }
+     
 
 
     async Task<string> GetTripAsync()
@@ -44,18 +32,7 @@
 }
 
 
-@section Scripts
-{
-    <script type="text/javascript">
-         document.addEventListener("DOMContentLoaded", function () {
-            var button = document.getElementById('getTripButton');
-             button.addEventListener('click', function () {
-                 document.getElementById('id').setAttribute('Cokolwiek','drugiecokolwiek');
-                 GetTrip();
-             });
-        });
-    </script>
-}
+
 
 
 <!--i don't understand shit what is happening in here-->
@@ -66,19 +43,37 @@
 
 
 
-        <div>
-            <form asp-page-handler="ProcessRequest" method="post">
-                <label for="Id" id="id">Id:</label>
-                <input type="text" name="Id" value="@trip.id" />
-                <label for="Title">Title:</label>
-                <input type="text" name="Title" value="@trip.title" />
-                <label for="Date">Email:</label>
-                <input type="text" name="Date" value="@trip.date" />
-                <button type="submit" onclick="GetTrip()" id="getTripButton">Get trip</button>
-            </form>
-        </div>
+    <div>
+        <label for="Id" id="id">Id</label>
+        <input type="text" name="Id" value="@Model.trip.id" />
+        <label for="Title">Title:</label>
+        <input type="text" name="Title" value="@Model.trip.title" />
+        <label for="Date">Email:</label>
+        <input type="text" name="Date" value="@Model.trip.date" />
+        <form method="post">
+            <button asp-page-handler="get">Get trip</button>
+        </form>
+        <form method="post">
+        <button asp-page-handler="send">Send Trip</button>
+        </form>
+        
+    </div>
 
     <p></p>
 
     
 </div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        let label = document.getElementById('id');
+         document.addEventListener("DOMContentLoaded", function () {
+            var button = document.getElementById('getTripButton');
+             button.addEventListener('click', function () {
+
+                 label.innerText = "UDALO SIE ";
+             });
+        });
+    </script>
+}
