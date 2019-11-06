@@ -30,7 +30,7 @@ namespace Data.Logic
                     var response = new Response()
                     {
                         Status = "success",
-                        Body = JsonSerializer.Serialize(new Trip{Id =  0, Date = "Today", Title = "Big fat title"})
+                        Body = new Trip{Id =  0, Date = "Today", Title = "Big fat title"}
                     };
                     Console.WriteLine("Response: " + JsonSerializer.Serialize(response));
                     return response;

@@ -14,7 +14,7 @@ namespace Data.Network
         /// Contains data about the Request.
         /// Could be the queried object, or the error message thrown.
         /// </summary>
-        public string Body { get; set; }
+        public object Body { get; set; }
 
         /// <summary>
         /// Converts a Response object to a json format string.
