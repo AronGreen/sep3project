@@ -1,0 +1,36 @@
+﻿@page
+@model FrontEnd.Pages.ManageTripsModel
+@{
+    ViewData["Title"] = "ManageTrips";
+}
+
+<h1>ManageTrips</h1>
+
+
+<div>
+    <label for="Id" id="id">Id</label>
+    <input type="text" name="Id" value="@Model.trip.id" />
+    <label for="Title">Title:</label>
+    <input type="text" name="Title" value="@Model.trip.title" />
+    <label for="Date">Email:</label>
+    <input type="text" name="Date" value="@Model.trip.date" />
+    <form method="post">
+        <button asp-page-handler="trip">Get trip</button>
+    </form>
+    <form method="post">
+        <button asp-page-handler="send">Send Trip</button>
+    </form>
+
+</div>
+
+<p></p>
+
+
+</div>
+
+
+
+<form method="get">
+    <button type="submit" asp-page="./Index">Go to main</button>
+</form>
+

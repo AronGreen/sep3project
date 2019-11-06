@@ -8,72 +8,17 @@
 @{
     ViewData["Title"] = "MainPage";
 
-    
-    
 
 }
-
-@functions{
-
-
-     
-
-
-    async Task<string> GetTripAsync()
-    {
-
-
-        HttpClient client = new HttpClient();
-        Console.WriteLine("Fetching data...");
-        var s = await client.GetStringAsync("http://localhost:8080/Logic_war_exploded/trips/get/{id:1}");
-        return s;
-    }
-
-}
-
-
-
 
 
 <!--i don't understand shit what is happening in here-->
 
 <div class="text-center">
-    <h1 class="display-4">I want to cry</h1>
-    
-
-
-
-    <div>
-        <label for="Id" id="id">Id</label>
-        <input type="text" name="Id" value="@Model.trip.id" />
-        <label for="Title">Title:</label>
-        <input type="text" name="Title" value="@Model.trip.title" />
-        <label for="Date">Email:</label>
-        <input type="text" name="Date" value="@Model.trip.date" />
-        <form method="post">
-            <button asp-page-handler="get">Get trip</button>
-        </form>
-        <form method="post">
-        <button asp-page-handler="send">Send Trip</button>
-        </form>
-        
-    </div>
-
-    <p></p>
-
+    <h1 class="display-4">Logged in</h1>
     
 </div>
 
-@section Scripts
-{
-    <script type="text/javascript">
-        let label = document.getElementById('id');
-         document.addEventListener("DOMContentLoaded", function () {
-            var button = document.getElementById('getTripButton');
-             button.addEventListener('click', function () {
-
-                 label.innerText = "UDALO SIE ";
-             });
-        });
-    </script>
-}
+<form method="get">
+    <button type="submit" asp-page="./ManageTrips">Manage trips</button>
+</form>
