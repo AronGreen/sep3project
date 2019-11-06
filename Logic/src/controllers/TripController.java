@@ -22,6 +22,9 @@ public class TripController {
     @Produces(MediaType.APPLICATION_JSON )
     public Response get(@PathParam("id") int id){
         Trip trip = tripService.getById(id);
+//        if (trip == null){
+//            return Response.status(500).build();
+//        }
         return Response
                 .status(200)
                 .entity(trip.toJson())

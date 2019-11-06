@@ -20,12 +20,20 @@ namespace Data.Logic
             // Return a dummy Response
             return new Response()
             {
-
-                Status = "success",
-                Body = "{" +
-                       "    msg: Hello World" +
-                       "}"
-            };
+                // The actual method for returning the Response
+                return req =>
+                {
+                    Console.WriteLine("Request: " + JsonSerializer.Serialize(req));
+                    
+                    var response = new Response()
+                    {
+                        Status = "success",
+                        Body = new Trip{Id =  0, Date = "Today", Title = "Big fat title"}
+                    };
+                    Console.WriteLine("Response: " + JsonSerializer.Serialize(response));
+                    return response;
+                };
+            }
         }
     }
 }

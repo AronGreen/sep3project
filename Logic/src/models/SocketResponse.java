@@ -3,26 +3,23 @@ package models;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-public class SocketResponse {
-    private int id;
+public class SocketResponse<T> {
     private String status;
-    private String body;
+    private T body;
 
-    public SocketResponse(int id, String status, String body) {
-        this.id = id;
-        this.status = status;
-        this.body = body;
+    public SocketResponse() {
     }
 
-    public int getId() {
-        return id;
+    public SocketResponse(String status, T body) {
+        this.status = status;
+        this.body = body;
     }
 
     public String getStatus() {
         return status;
     }
 
-    public String getBody() {
+    public T getBody() {
         return body;
     }
 
@@ -32,10 +29,11 @@ public class SocketResponse {
         return gson.toJson(this);
     }
 
-    public static SocketResponse fromJson(String json){
+    public SocketResponse<T> fromJson(String json){
         System.out.println(json);
-        GsonBuilder builder = new GsonBuilder();
-        Gson gson = builder.create();
-        return gson.fromJson(json, SocketResponse.class);
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+        return gson.fromJson(json, this.getClass());
     }
 }
