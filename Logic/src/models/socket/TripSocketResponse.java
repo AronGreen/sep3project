@@ -1,15 +1,16 @@
-package models;
+package models.socket;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
+import models.Trip;
 
 public class TripSocketResponse {
-
     @SerializedName("Status")
-    public String status;
+    private String status;
+
     @SerializedName("Body")
-    public Trip body;
+    private Trip body;
 
     public TripSocketResponse() {
     }
@@ -18,23 +19,23 @@ public class TripSocketResponse {
         this.status = status;
         this.body = body;
     }
+
     public String getStatus() {
         return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public Trip getBody() {
         return body;
     }
 
-    public void setBody(Trip body) {
-        this.body = body;
+    public String toJson() {
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+        return gson.toJson(this);
     }
 
-    public static TripSocketResponse fromJson(String json){
+    public static TripSocketResponse fromJson(String json) {
         Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();

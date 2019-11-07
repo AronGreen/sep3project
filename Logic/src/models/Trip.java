@@ -7,12 +7,11 @@ import com.google.gson.annotations.SerializedName;
 import java.util.Date;
 
 public class Trip {
-    @SerializedName("Id")
-    public int id;
-    @SerializedName("Title")
-    public String title;
-    @SerializedName("Date")
-    public String date;
+    private int id;
+
+    private String title;
+
+    private String date;
 
     public Trip() {
     }
