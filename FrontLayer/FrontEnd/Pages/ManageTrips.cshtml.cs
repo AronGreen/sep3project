@@ -16,19 +16,15 @@ namespace FrontEnd.Pages
         public Trip trip = new Trip(1, "Titleee", "02.12.2018");
         public async void OnPostTrip()
         {
-            /*HttpClient client = new HttpClient();
+            HttpClient client = new HttpClient();
             Console.WriteLine("Fetching data...");
-            var s = await client.GetStringAsync("http://localhost:8080/Logic_war_exploded/trips/get/{id:1}");
-            Trip temp = JsonConvert.DeserializeObject<Trip>(s);*/
+            var s = await client.GetStringAsync("http://localhost:8080/Logic_war_exploded/trips/get/1");
+            Trip temp = JsonConvert.DeserializeObject<Trip>(s);
 
 
-
-          
-            /*Temporary placeholder to simulate getting trip object*/
-
-
-            Trip temp = new Trip(3, "FromHorsensToVejle", "tomorrow");
+         
             trip = temp;
+            trip = new Trip(2, "Hej", "Spader");
         }
 
         public async void OnPostSend()
@@ -47,13 +43,13 @@ namespace FrontEnd.Pages
 
 
         }
-        static async Task<string> GetTripAsync(string address)
-        {
-            HttpClient client = new HttpClient();
-            Console.WriteLine("Fetching data...");
-            string s = await client.GetStringAsync(address);
-            return s;
-        }
+        //static async Task<string> GetTripAsync(string address)
+        //{
+        //    HttpClient client = new HttpClient();
+        //    Console.WriteLine("Fetching data...");
+        //    string s = await client.GetStringAsync(address);
+        //    return s;
+        //}
 
     }
 }
