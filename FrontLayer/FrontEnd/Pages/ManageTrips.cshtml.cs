@@ -14,17 +14,16 @@ namespace FrontEnd.Pages
 
         public string Message { get; set; } = "Initial message";
         public Trip trip = new Trip(1, "Titleee", "02.12.2018");
-        public async void OnPostTrip()
+        public async Task OnPostTripAsync()
         {
             HttpClient client = new HttpClient();
             Console.WriteLine("Fetching data...");
-            var s = await client.GetStringAsync("http://localhost:8080/Logic_war_exploded/trips/get/1");
+            var s = await client.GetStringAsync("http://localhost:8080/api/trips/get/1");
             Trip temp = JsonConvert.DeserializeObject<Trip>(s);
 
 
          
             trip = temp;
-            trip = new Trip(2, "Hej", "Spader");
         }
 
         public async void OnPostSend()
