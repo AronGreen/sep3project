@@ -5,20 +5,57 @@
 @using Newtonsoft.Json
 
 
+
 @{
     ViewData["Title"] = "MainPage";
 
 
 }
 
+<link rel="stylesheet" href="~/css/title.css" />
 
-<div align="center">
-    <h1>Log in</h1>
+<script>
+    let spans = document.querySelectorAll('.word span');
+spans.forEach((span, idx) => {
+	span.addEventListener('click', (e) => {
+		e.target.classList.add('active');
+	});
+	span.addEventListener('animationend', (e) => {
+		e.target.classList.remove('active');
+	});
+	
+	// Initial animation
+	setTimeout(() => {
+		span.classList.add('active');
+	}, 750 * (idx+1))
+});
 
-    <font>Username: </font> <input /> <br />
-    <font>Password: </font> <input /> <br />
+
+
+</script>
+
+    <svg viewBox="0 1060 300">
+        <symbol id="s-text">
+            <text text-anchor="middle" x="50%" y="80%">ShareRide</text>
+        </symbol>
+
+        <g class="g-ants">
+            <use xlink:href="#s-text" class="text-copy"></use>
+            <use xlink:href="#s-text" class="text-copy"></use>
+            <use xlink:href="#s-text" class="text-copy"></use>
+            <use xlink:href="#s-text" class="text-copy"></use>
+            <use xlink:href="#s-text" class="text-copy"></use>
+        </g>
+    </svg>
+
+
+
+<div align="center" class="login-container">
+   
+    <label class="login-label">Username: </label> <input class="login-input"/> <br />
+    <label class="login-label">Password: </label> <input class="login-input" type="password" required/> <br />
 
     <form method="get">
-    <button type="submit" asp-page="./MainLoggedIn">Log in</button>
+    <button type="submit" asp-page="./MainLoggedIn" class="login-button">Log in</button>
     </form>
 </div>

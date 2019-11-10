@@ -1,0 +1,54 @@
+/*
+                      Colours chart - 
+
+darkblue                                        #1b06a5
+blue                                            #3a4ae0
+lightviolet                                     #736ced
+turquise                                        #78c0e0
+light(almost white)                             #f2f2fc
+
+
+*/
+
+
+
+
+
+
+
+
+.login-container {
+    
+}
+
+.login-label {
+    font-size: 13;
+    font-weight: 400;
+    text-decoration-color: #f2f2fc;
+    display: block;
+}
+
+
+.login-input {
+    text-align: center;
+    background-color: #f2f2fc;
+    margin-bottom: 20px;
+}
+
+.login-button {
+    padding: 12px 28px;
+    border-radius: 8px;
+    background-color: #78c0e0;
+    font-size: 16px;
+    font-weight: 600; 
+}
+
+
+
+
+
+
+
+
+
+
