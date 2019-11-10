@@ -4,20 +4,22 @@
     ViewData["Title"] = "ManageTrips";
 }
 
-<h1>ManageTrips</h1>
+<h1 align="center">ManageTrips</h1>
 
 
 <div>
-    <label for="Id" id="id">Id</label>
-    <input type="text" name="Id" value="@Model.trip.id" />
-    <label for="Title">Title:</label>
-    <input type="text" name="Title" value="@Model.trip.title" />
-    <label for="Date">Email:</label>
+    <div align="center">
+    <label for="Id" id="id" >Id</label>
+    <input type="text" name="Id"  value="@Model.trip.id" />
+    <label for="Title" >Title:</label>
+    <input type="text" name="Title"  value="@Model.trip.title" />
+    <label for="Date" >Email:</label>
     <input type="text" name="Date" value="@Model.trip.date" />
-    <form method="post">
-        <button asp-page-handler="trip">Get trip</button>
+        </div>
+    <form method="post" class="text-center" >
+        <button asp-page-handler="trip" class="mb-3">Get trip</button>
     </form>
-    <form method="post">
+    <form method="post" class="text-center">
         <button asp-page-handler="send">Send Trip</button>
     </form>
 
@@ -26,7 +28,7 @@
 <p></p>
 
 
-</div>
+
 
 
 
