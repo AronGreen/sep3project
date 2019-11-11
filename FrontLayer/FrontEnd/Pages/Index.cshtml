@@ -50,12 +50,29 @@ spans.forEach((span, idx) => {
 
 
 
-<div align="center" class="login-container">
-   
-    <label class="login-label">Username: </label> <input class="login-input"/> <br />
-    <label class="login-label">Password: </label> <input class="login-input" type="password" required/> <br />
+    <div align="center" class="login-container">
 
-    <form method="get">
-    <button type="submit" asp-page="./MainLoggedIn" class="login-button">Log in</button>
-    </form>
-</div>
+
+        <p>
+            <span class="input">
+                <input type="text" placeholder="Username">
+                <span></span>
+            </span>
+        </p>
+        <br />
+            <span class="input">
+                <input type="password" placeholder="Password" required>
+                <span></span>
+            </span>
+        </p>
+        <br />
+
+        <form method="get">
+            <button type="submit" asp-page="./MainLoggedIn" class="login-button">Log in</button>
+        </form>
+
+        <label>Don't have an account?</label>
+        <form>
+            <button type="submit" asp-page="./Register" class="login-button">Register</button>
+        </form>
+    </div>
