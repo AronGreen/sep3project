@@ -17,73 +17,56 @@ namespace Data.Data.Repositories
         {
             _context = new TripContext();
         }
-        
-        public bool CreateTrip(Trip trip)
+
+        public Trip GetDummy()
         {
-            try
+            return new Trip()
             {
-                _context.Trips.Add(trip);
-                _context.SaveChanges();
-                return true;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return false;
-            }
-        }
-
-        public bool DeleteTrip(int tripId, bool hardDelete = false)
-        {
-            try
-            {
-                // get trip from the db
-                var trip = _context.Trips.Select(x => x).Single(x => x.Id == tripId);
-
-                // return false if trip doesn't exist
-                if (trip == null)
-                    return false;
-
-                if (hardDelete)
+                Arrival = DateTime.Now,
+                BasePrice = 1,
+                CancellationFee = 2,
+                Description = "Dummy Trip",
+                DestinationAddress = "Some address",
+                Driver = new User()
                 {
-                     //hard delete the trip
-                    _context.Trips.Remove(trip);
+                    Name = "Some Driver"
                 }
-                else
-                {
-                    // flag the trip as deleted (soft delete)
-                    trip.Deleted = DateTime.Now;
-                    _context.Trips.Update(trip);
-                }
-
-                _context.SaveChanges();
-                return true;
-            }
-            catch (Exception e)
-            {
-                // shit's gone wrong
-                Console.WriteLine(e);
-                return false;
-            }
+            };
         }
 
-        public bool ResolveReservation(int tripId, int reservationId, bool accept = true)
+        public Trip Create(Trip trip)
         {
-            throw new System.NotImplementedException();
+            // Add the Trip to the database
+            var t = _context.Trips.Add(trip).Entity;
+            _context.SaveChanges();
+
+            return t;
         }
 
-        public IEnumerable<Trip> GetTrips(TripFilter filter = null)
+        public Trip Delete(int id)
+        {
+            // Get the Trip from the database
+            var t = _context.Trips.Single(x => x.Id == id);
+
+            // Delete the Trip
+            _context.Trips.Remove(t);
+            _context.SaveChanges();
+
+            return t;
+        }
+
+        public IEnumerable<Trip> GetFiltered(TripFilter filter = null)
         {
             // TODO for now returns all the trips
             
-            var trips = _context.Trips.Select(trip => trip);
-            return trips;
+            var t = _context.Trips.Select(x => x);
+            return t;
         }
 
-        public Trip GetTrip(int tripId)
+        public Trip GetById(int id)
         {
-            var trip = _context.Trips.Single(x => x.Id == tripId);
-            return trip;
+            var t = _context.Trips.Single(x => x.Id == id);
+            return t;
         }
     }
 }

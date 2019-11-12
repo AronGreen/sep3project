@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Text.Json;
 using System.Threading;
 using Data.Logic;
 
@@ -56,15 +57,10 @@ namespace Data.Network
             string json = Encoding.UTF8.GetString(bytes, 0, bytesRead);
 
             // TODO build Request from json string
+            var req = JsonSerializer.Deserialize<Request>(json);
 
             // Forward request to the Logic, and retrieve the Response
-            var res = _handle(
-                new Request()
-                {
-                    Body = "Body",
-                    Operation = "get",
-                    Type = "Type"
-                });
+            var res = _handle(req);
 
             // Encode Response to a json string and write it to Network Stream
             bytes = Encoding.UTF8.GetBytes(res.ToJson());
