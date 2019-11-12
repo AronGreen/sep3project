@@ -1,14 +1,12 @@
 package models;
 
-import java.util.Calendar;
-
 public abstract class Entity {
     private int id;
-    private Calendar createDate;
-    private Calendar updateDate;
-    private Calendar deleted;
+    private String createDate;
+    private String updateDate;
+    private String deleted;
 
-    public Entity(int id, Calendar createDate, Calendar updateDate, Calendar deleted) {
+    public Entity(int id, String createDate, String updateDate, String deleted) {
         this.id = id;
         this.createDate = createDate;
         this.updateDate = updateDate;
@@ -19,15 +17,31 @@ public abstract class Entity {
         return id;
     }
 
-    public Calendar getCreateDate() {
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getCreateDate() {
         return createDate;
     }
 
-    public Calendar getUpdateDate() {
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
+    }
+
+    public String getUpdateDate() {
         return updateDate;
     }
 
-    public Calendar getDeleted() {
+    public void setUpdateDate(String updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    public String getDeleted() {
         return deleted;
+    }
+
+    public void setDeleted(String deleted) {
+        this.deleted = deleted;
     }
 }

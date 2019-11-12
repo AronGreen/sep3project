@@ -16,7 +16,7 @@ public class TripService {
 //        String  json = dc.sendRequest(request);
 //        TripSocketResponse response = TripSocketResponse.fromJson(json);
 
-        SocketRequest request = new SocketRequest(1, "trip", "get", "{id: " + id + "}");
+        SocketRequest request = new SocketRequest("trip", "get", "{\"id\": " + id + "}");
         String  json = dc.sendRequest(request);
         SocketResponse<Trip> response = SocketResponse.fromJson(json, Trip.class);
 
@@ -49,7 +49,7 @@ public class TripService {
     public boolean create(CreateTripModel model) {
         // TODO: Business Logic here
 
-        SocketRequest request = new SocketRequest(1, "trip", "create", model.toJson());
+        SocketRequest request = new SocketRequest("trip", "create", model.toJson());
         if (dataLayerIsNotReady_Flag){
             String json = dc.sendRequest(request);
             SocketResponse<Trip> response = SocketResponse.fromJson(json, Trip.class);
