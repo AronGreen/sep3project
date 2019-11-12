@@ -1,16 +1,14 @@
-package models;
+package models.socket;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 public class SocketRequest {
-    private int id;
     private String type;
     private String operation;
     private String body;
 
-    public SocketRequest(int id, String type, String operation, String body) {
-        this.id = id;
+    public SocketRequest( String type, String operation, String body) {
         this.type = type;
         this.operation = operation;
         this.body = body;

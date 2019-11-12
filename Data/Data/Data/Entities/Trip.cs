@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
+using System.Text.Json.Serialization;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
@@ -70,7 +72,7 @@ namespace Data.Data.Entities
         /// <summary>
         /// The set of rules the driver expects the passengers to adhere to while they are travelling together.
         /// </summary>
-        public IEnumerable<string> Rules { get; }
+        public IEnumerable<string> Rules { get; set; }
         
         /// <summary>
         /// The total amount of seats for rent.

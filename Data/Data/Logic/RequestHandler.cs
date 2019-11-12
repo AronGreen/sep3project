@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text.Json;
+using Data.Data.Entities;
 using Data.Data.Repositories;
 using Data.Network;
 
@@ -18,24 +20,35 @@ namespace Data.Logic
         public Response Handle(Request req)
         {
             Console.WriteLine("Request: " + JsonSerializer.Serialize(req));
-            
+
             // Return a dummy Response
-            return new Response()
+            var resp = new Response()
             {
-                // The actual method for returning the Response
-                return req =>
+                Status = "success",
+                Body = new Trip
                 {
-                    Console.WriteLine("Request: " + JsonSerializer.Serialize(req));
-                    
-                    var response = new Response()
+                    Id = 1,
+                    Arrival = DateTime.Now,
+                    BasePrice = 123,
+                    CancellationFee = 12,
+                    Deleted = null,
+                    Description = "Big fat trip",
+                    DestinationX = 213,
+                    DestinationY = 543,
+                    Driver = new User
                     {
-                        Status = "success",
-                        Body = new Trip{Id =  0, Date = "Today", Title = "Big fat title"}
-                    };
-                    Console.WriteLine("Response: " + JsonSerializer.Serialize(response));
-                    return response;
-                };
-            }
+                        Id = 2
+                    },
+                    PerKmPrice = 3,
+                    Rules = new List<string>() { "NoSmoking" },
+                    StartX = 43,
+                    StartY = 12,
+                    TotalSeats = 4
+                }
+            };
+            Console.WriteLine("Response: " + JsonSerializer.Serialize(resp));
+
+            return resp;
         }
     }
 }
