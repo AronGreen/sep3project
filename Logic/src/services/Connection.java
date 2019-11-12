@@ -7,7 +7,6 @@ class Connection {
     private Socket socket;
     private DataOutputStream outputStream;
     private BufferedInputStream inputStream;
-//    BufferedReader in = new BufferedReader(new InputStreamReader(this.socket.getInputStream(), "UTF8"));
 
     Connection() {
         try {

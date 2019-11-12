@@ -18,11 +18,14 @@ namespace Data.Logic
             Console.WriteLine("Request: " + JsonSerializer.Serialize(req));
 
             // Return a dummy Response
-            return new Response()
+            var resp = new Response()
             {
                 Status = "success",
-                Body = new Trip { Id = 1, Date = "Today", Title = "Big fat title" }
+                Body = new Trip {Id = 1, Date = "Today", Title = "Big fat title"}
             };
+            Console.WriteLine("Response: " + JsonSerializer.Serialize(resp));
+
+            return resp;
         }
     }
 }

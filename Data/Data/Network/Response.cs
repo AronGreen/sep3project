@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Data.Network
 {
@@ -8,12 +9,14 @@ namespace Data.Network
         /// <summary>
         /// The result of the Request. Success, Failure, etc.
         /// </summary>
+        [JsonPropertyName("status")]
         public string Status { get; set; }
         
         /// <summary>
         /// Contains data about the Request.
         /// Could be the queried object, or the error message thrown.
         /// </summary>
+        [JsonPropertyName("body")]
         public object Body { get; set; }
 
         /// <summary>
