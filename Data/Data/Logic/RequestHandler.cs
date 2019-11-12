@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Text.Json;
-using System.Threading.Tasks;
-using Data.Data.Entities;
+using Data.Data.Repositories;
 using Data.Network;
 
 namespace Data.Logic
 {
-    public class DummyRequestHandler : IRequestHandler
+    public class RequestHandler : IRequestHandler
     {
-        public DummyRequestHandler()
+
+        private readonly RepositoryProvider _repositoryProvider;
+
+        public RequestHandler(RepositoryProvider repositoryProvider)
         {
-            // The real handler will have a IRepository interface injected into it
+            _repositoryProvider = repositoryProvider;
         }
 
         public Response Handle(Request req)
