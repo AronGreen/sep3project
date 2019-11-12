@@ -11,48 +11,32 @@ namespace Data.Data.Entities
     public class Trip
     {
 
-        public Trip()
-        {
-            Rules = new List<string>();
-        }
-
         /// <summary>
         /// The primary key value for the trip
         /// </summary>
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         /// <summary>
         /// The user account of the driver that will drive during the trip.
         /// </summary>
-        [NotNull]
         public User Driver { get; set; }
 
         /// <summary>
         /// The date and arrival time for the trip (Pickup times are calculated based on this).
         /// </summary>
-        [NotNull]
         public DateTime Arrival { get; set; }
 
         /// <summary>
-        /// The x coordinate of the starting point of the trip.
+        /// The starting address of the Trip
         /// </summary>
-        public double StartX { get; set; }
+        public string StartAddress { get; set; }
 
         /// <summary>
-        /// The y coordinate of the starting point of the trip.
+        /// The destination address of the Trip
         /// </summary>
-        public double StartY { get; set; }
-
-        /// <summary>
-        /// The x coordinate of the destination of the trip
-        /// </summary>
-        public double DestinationX { get; set; }
-
-        /// <summary>
-        /// The y coordinate of the destination of the trip
-        /// </summary>
-        public double DestinationY { get; set; }
+        public string DestinationAddress { get; set; }
 
         /// <summary>
         /// The price that every passenger has to pay regardless of how long they are travelling.
@@ -72,7 +56,7 @@ namespace Data.Data.Entities
         /// <summary>
         /// The set of rules the driver expects the passengers to adhere to while they are travelling together.
         /// </summary>
-        public IEnumerable<string> Rules { get; set; }
+        public string[] Rules { get; set; }
         
         /// <summary>
         /// The total amount of seats for rent.
@@ -84,10 +68,5 @@ namespace Data.Data.Entities
         /// </summary>
         public string Description { get; set; }
 
-        /// <summary>
-        /// Specifies whether the trip should be queried when searching.
-        /// Makes it possible to soft delete.
-        /// </summary>
-        public DateTime? Deleted { get; set; }
     }
 }

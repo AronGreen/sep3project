@@ -1,54 +1,81 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text.Json;
 using Data.Data.Entities;
 using Data.Data.Repositories;
 using Data.Network;
+using Microsoft.VisualBasic.CompilerServices;
 
 namespace Data.Logic
 {
     public class RequestHandler : IRequestHandler
     {
 
-        private readonly RepositoryProvider _repositoryProvider;
+        private readonly ITripRepository _tripRepository;
+        private readonly IReservationRepository _reservationRepository;
 
         public RequestHandler(RepositoryProvider repositoryProvider)
         {
-            _repositoryProvider = repositoryProvider;
+            _tripRepository = repositoryProvider.TripRepository;
+            _reservationRepository = repositoryProvider.ReservationRepository;
         }
 
         public Response Handle(Request req)
         {
-            Console.WriteLine("Request: " + JsonSerializer.Serialize(req));
+            Console.WriteLine("Request:\n" + JsonSerializer.Serialize(req));
 
-            // Return a dummy Response
-            var resp = new Response()
+            // TODO I WILL DESIGN A FUCKING STATE MACHINE HERE!!!!!
+            switch (req.Type)
             {
-                Status = "success",
-                Body = new Trip
-                {
-                    Id = 1,
-                    Arrival = DateTime.Now,
-                    BasePrice = 123,
-                    CancellationFee = 12,
-                    Deleted = null,
-                    Description = "Big fat trip",
-                    DestinationX = 213,
-                    DestinationY = 543,
-                    Driver = new User
+                case "trip":
+                    switch (req.Operation)
                     {
-                        Id = 2
-                    },
-                    PerKmPrice = 3,
-                    Rules = new List<string>() { "NoSmoking" },
-                    StartX = 43,
-                    StartY = 12,
-                    TotalSeats = 4
-                }
-            };
-            Console.WriteLine("Response: " + JsonSerializer.Serialize(resp));
+                        case "getFiltered":
+                            // TODO deserialize a filter from the request body
+                            return new Response()
+                            {
+                                Status = "success",
+                                Body = _tripRepository.GetFiltered().ToArray()
+                            };
+                        case "create":
+                            return new Response()
+                            {
+                                Status = "success",
+                                Body = _tripRepository.Create(JsonSerializer.Deserialize<Trip>(req.Body))
+                            };
+                    }
+                    break;
+                case "reservation":
+                    switch (req.Operation)
+                    {
+                        case "getById":
+                            return new Response()
+                            {
+                                Status = "success",
+                                Body = _reservationRepository.GetById(int.Parse(req.Body))
+                            };
+                        case "getByTripId":
+                            return new Response()
+                            {
+                                Status = "success",
+                                Body = _reservationRepository.GetByTripId(int.Parse(req.Body))
+                            };
+                        case "create":
+                            return new Response()
+                            {
+                                Status = "success",
+                                Body = _reservationRepository.Create(JsonSerializer.Deserialize<Reservation>(req.Body))
+                            };
+                    }
+                    break;
+            }
 
-            return resp;
+            return new Response()
+            {
+                Status = "bad_request",
+                Body = null
+            };
         }
     }
 }
