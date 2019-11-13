@@ -14,25 +14,25 @@ public class TripHandler implements ITripHandler {
     }
 
     @Override
-    public DataResponse<Trip> create(Trip trip) {
+    public DataResponse<String> create(Trip trip) {
         // No business logic needed for now
-        DataResponse<Trip> res = service.create(trip);
+        DataResponse<String> res = service.create(trip);
 
         return res;
     }
 
     @Override
-    public DataResponse<Trip> getById(int id) {
+    public DataResponse<String> getById(int id) {
         // No business logic needed for now
-        DataResponse<Trip> res = service.getById(id);
+        DataResponse<String> res = service.getById(id);
 
         return res;
     }
 
     @Override
-    public DataResponse<Trip[]> getFiltered(TripFilter filter) {
+    public DataResponse<String> getFiltered(TripFilter filter) {
         // No business logic needed for now
-        DataResponse<Trip[]> res = service.getFiltered(filter);
+        DataResponse<String> res = service.getFiltered(filter);
 
         return res;
     }

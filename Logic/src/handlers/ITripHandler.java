@@ -10,8 +10,8 @@ import services.DataResponse;
  */
 public interface ITripHandler {
 
-    DataResponse<Trip> create(Trip trip);
-    DataResponse<Trip> getById(int id);
-    DataResponse<Trip[]> getFiltered(TripFilter filter);
+    DataResponse<String> create(Trip trip);
+    DataResponse<String> getById(int id);
+    DataResponse<String> getFiltered(TripFilter filter);
 
 }

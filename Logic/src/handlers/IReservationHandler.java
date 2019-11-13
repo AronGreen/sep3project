@@ -5,8 +5,8 @@ import services.DataResponse;
 
 public interface IReservationHandler {
 
-    DataResponse<Reservation> create(Reservation reservation);
-    DataResponse<Reservation> update(Reservation reservation);
-    DataResponse<Reservation[]> getByTripId(int tripId);
+    DataResponse<String> create(Reservation reservation);
+    DataResponse<String> update(Reservation reservation);
+    DataResponse<String> getByTripId(int tripId);
 
 }
