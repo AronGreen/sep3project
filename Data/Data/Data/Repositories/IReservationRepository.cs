@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Data.Data.Entities;
+using Data.Models.Entities;
 
 namespace Data.Data.Repositories
 {

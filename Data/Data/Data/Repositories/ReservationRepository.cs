@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Data.Data.Contexts;
-using Data.Data.Entities;
+using Data.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data.Data.Repositories

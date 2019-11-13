@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using Data.Data.Contexts;
-using Data.Data.Entities;
+using Data.Models.Entities;
 
 namespace Data.Data.Repositories
 {

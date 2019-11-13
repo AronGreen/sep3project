@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
  using Data.Data.Contexts;
- using Data.Data.Entities;
+ using Data.Models.Entities;
 
-namespace Data.Data.Repositories
+ namespace Data.Data.Repositories
 {
     public class TripRepository : ITripRepository
     {

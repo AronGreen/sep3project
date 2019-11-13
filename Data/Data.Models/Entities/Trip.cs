@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.Json.Serialization;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
 
-namespace Data.Data.Entities
+namespace Data.Models.Entities
 {
     public class Trip
     {
