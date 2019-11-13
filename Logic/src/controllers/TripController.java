@@ -1,5 +1,7 @@
 package controllers;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import handlers.ITripHandler;
 import handlers.TripHandler;
 import models.Trip;
@@ -58,12 +60,12 @@ public class TripController {
 
         // Extract http response data
         int status = StatusMapper.map(res.getStatus());
-        // String entity = res.getBody().toJson();
-        String entity = res.getBody() + "";// + " " + res.getBody().getDestinationAddress();
+
+        Gson gson = new GsonBuilder().setLenient().create();
 
         return Response
                 .status(status)
-                .entity(entity)
+                .entity(gson.toJson(res.getBody()))
                 .build();
     }
 
