@@ -16,11 +16,6 @@ html, body {
     height: 100%;
    
 }
-
-.container {
-     background-image: url('../graphics/background.png');
-}
-
 .register-container {
     align-self: center;
     flex-wrap: wrap;
@@ -97,29 +92,12 @@ html, body {
   box-shadow: inset 0 0 0 3px #fff, 0 0 0 4px #fff, 3px -3px 30px #1beabd, -3px 3px 30px #10abff;
 }
 
-html {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-  line-height: 1.5;
-  font-size: 1em;
-}
-
-body {
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-html,
-body {
-  height: 100%;
-}
 
 input {
-  font-family: inherit;
-  line-height: inherit;
-  color: #2e3750;
-  min-width: 12em;
+    font-family: inherit;
+    line-height: inherit;
+    color: #3a4ae0;
+    min-width: 12em;
 }
 
 ::-webkit-input-placeholder {
@@ -138,6 +116,8 @@ input {
   color: #cbd0d5;
 }
 
+
+
 html::after {
   content: "";
   background: linear-gradient(21deg, #10abff, #1beabd);
@@ -148,7 +128,7 @@ html::after {
   top: 0;
 }
 
-
+    
 
 
 
