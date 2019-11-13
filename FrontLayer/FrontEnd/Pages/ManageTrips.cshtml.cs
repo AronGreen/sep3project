@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,16 +15,19 @@ namespace FrontEnd.Pages
 
         public string Message { get; set; } = "Initial message";
         public Trip trip = new Trip(1, "Titleee", "02.12.2018");
+        public List<Trip> trips = new List<Trip>() {new Trip(312,"dsadsad","dsadsa") };
         public async Task OnPostTripAsync()
         {
             HttpClient client = new HttpClient();
             Console.WriteLine("Fetching data...");
-            var s = await client.GetStringAsync("http://localhost:8080/api/trips/get/1");
-            Trip temp = JsonConvert.DeserializeObject<Trip>(s);
+            var s = await client.GetStringAsync("http://localhost:8080/api/trips/get/");
+            List<Trip> temp = JsonConvert.DeserializeObject<List<Trip>>(s);
 
 
-         
-            trip = temp;
+
+            trips = temp;
+
+     
         }
 
         public async void OnPostSend()

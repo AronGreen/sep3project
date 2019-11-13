@@ -9,17 +9,21 @@ namespace FrontEnd.Pages.Entities
     {
         
 
-        public int id { get; set; }
-        public string title { get; set; }
-        public string date { get; set; }
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string Date { get; set; }
 
         public Trip(int id, string title, string date)
         {
-            this.id = id;
-            this.title = title;
-            this.date = date;
+            this.Id = id;
+            this.Title = title;
+            this.Date = date;
+
+          
 
         }
+
+
 
         
     }
