@@ -1,0 +1,9 @@
+Pages:
+
+- register
+- login
+- main
+- your trips
+- search trip
+- settings
+
