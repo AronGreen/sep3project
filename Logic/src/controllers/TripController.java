@@ -59,9 +59,8 @@ public class TripController {
         // Send request and receive Response
         DataResponse<String> res = handler.getById(id);
 
-        // Extract http response data
+        // Extract http response code
         int status = StatusMapper.map(res.getStatus());
-        // String entity = JsonConverter.toJson(res.getBody());
 
         return Response
                 .status(status)
@@ -80,9 +79,8 @@ public class TripController {
         // Send request and receive Response
         DataResponse<String> res = handler.create(t);
 
-        // Extract http response data
+        // Extract http response code
         int status = StatusMapper.map(res.getStatus());
-        // String entity = JsonConverter.toJson(res.getBody());
 
         return Response
                 .status(status)

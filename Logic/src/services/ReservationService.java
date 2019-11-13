@@ -5,7 +5,7 @@ import models.Reservation;
 
 public class ReservationService implements IReservationService {
 
-    DataConnection connection = DataConnection.INSTANCE;
+    private DataConnection connection = DataConnection.INSTANCE;
 
     @Override
     public DataResponse<String> create(Reservation reservation) {
