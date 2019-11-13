@@ -42,7 +42,7 @@ public class ReservationController {
 //    @Produces(MediaType.APPLICATION_JSON )
 //    public Response get(){
 //        // Send request and receive Response
-//        DataResponse<Reservation[]> res = handler.getFiltered(null);
+//        DataResponse<String> res = handler.getFiltered(null);
 //
 //        // Extract http response data
 //        int status = StatusMapper.map(res.getStatus());
@@ -61,15 +61,15 @@ public class ReservationController {
     @Produces(MediaType.APPLICATION_JSON )
     public Response get(@PathParam("id") int id){
         // Send request and receive Response
-        DataResponse<Reservation[]> res = handler.getByTripId(id);
+        DataResponse<String> res = handler.getByTripId(id);
 
         // Extract http response data
         int status = StatusMapper.map(res.getStatus());
-        String entity = JsonConverter.toJson(res.getBody());
+        // String entity = JsonConverter.toJson(res.getBody());
 
         return Response
                 .status(status)
-                .entity(entity)
+                .entity(res.getBody())
                 .build();
     }
 
@@ -82,16 +82,16 @@ public class ReservationController {
         Reservation t = Reservation.fromJson(json);
 
         // Send request and receive Response
-        DataResponse<Reservation> res = handler.create(t);
+        DataResponse<String> res = handler.create(t);
 
         // Extract http response data
         int status = StatusMapper.map(res.getStatus());
-        String entity = JsonConverter.toJson(res.getBody());
+        // String entity = JsonConverter.toJson(res.getBody());
 
 
         return Response
                 .status(status)
-                .entity(entity)
+                .entity(res.getBody())
                 .build();
     }
 }

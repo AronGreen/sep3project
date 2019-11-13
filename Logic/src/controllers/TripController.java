@@ -40,7 +40,7 @@ public class TripController {
     @Produces(MediaType.APPLICATION_JSON )
     public Response get(){
         // Send request and receive Response
-        DataResponse<Trip[]> res = handler.getFiltered(null);
+        DataResponse<String> res = handler.getFiltered(null);
 
         // Extract http response data
         int status = StatusMapper.map(res.getStatus());
@@ -57,15 +57,15 @@ public class TripController {
     @Produces(MediaType.APPLICATION_JSON )
     public Response get(@PathParam("id") int id){
         // Send request and receive Response
-        DataResponse<Trip> res = handler.getById(id);
+        DataResponse<String> res = handler.getById(id);
 
         // Extract http response data
         int status = StatusMapper.map(res.getStatus());
-        String entity = JsonConverter.toJson(res.getBody());
+        // String entity = JsonConverter.toJson(res.getBody());
 
         return Response
                 .status(status)
-                .entity(entity)
+                .entity(res.getBody())
                 .build();
     }
 
@@ -78,15 +78,15 @@ public class TripController {
         Trip t = Trip.fromJson(json);
 
         // Send request and receive Response
-        DataResponse<Trip> res = handler.create(t);
+        DataResponse<String> res = handler.create(t);
 
         // Extract http response data
         int status = StatusMapper.map(res.getStatus());
-        String entity = JsonConverter.toJson(res.getBody());
+        // String entity = JsonConverter.toJson(res.getBody());
 
         return Response
                 .status(status)
-                .entity(entity)
+                .entity(res.getBody())
                 .build();
     }
 }
