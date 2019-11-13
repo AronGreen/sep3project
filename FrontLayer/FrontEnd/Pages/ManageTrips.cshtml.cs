@@ -20,7 +20,7 @@ namespace FrontEnd.Pages
         {
             HttpClient client = new HttpClient();
             Console.WriteLine("Fetching data...");
-            var s = await client.GetStringAsync("http://localhost:8080/api/trips/get/");
+            var s = await client.GetStringAsync("http://localhost:8080/api/trips/get/id");
             List<Trip> temp = JsonConvert.DeserializeObject<List<Trip>>(s);
 
 
@@ -42,7 +42,7 @@ namespace FrontEnd.Pages
             var json = JsonConvert.SerializeObject(sendTrip);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            HttpResponseMessage response = await client.PostAsync("http://localhost:8080/Logic_war_exploded/trips/put", content);
+            HttpResponseMessage response = await client.PostAsync("http://localhost:8080/api/trips/post", content);
 
 
         }
