@@ -1,0 +1,51 @@
+﻿@page
+@model FrontEnd.Pages.ManageTripsModel
+@using FrontEnd.Pages.Entities;
+@{
+    ViewData["Title"] = "ManageTrips";
+}
+
+<h1 align="center">ManageTrips</h1>
+
+
+<div>
+    <form method="post" class="text-center">
+        <button asp-page-handler="trip" class="mb-3">Get trip</button>
+    </form>
+    <form method="post" class="text-center">
+        <button asp-page-handler="send" class="mb-3">Send Trip</button>
+    </form>
+    <form method="get">
+        <button type="submit" asp-page="./MainLoggedIn" class="mb-3">Go to main</button>
+    </form>
+    <div align="center">
+        <label for="Id" id="id">Id</label>
+        <input type="text" name="Id" value="@Model.trip.Id" />
+        <label for="Title">Title:</label>
+        <input type="text" name="Title" value="@Model.trip.Title" />
+        <label for="Date">Email:</label>
+        <input type="text" name="Date" value="@Model.trip.Date" />
+    </div>
+
+    <div>
+        <ul style="list-style: none;">
+            @foreach (Trip t in Model.trips)
+            {
+               
+                <li>@t.Title</li>
+            }
+    </ul>
+</div>
+
+
+</div>
+
+<p></p>
+
+
+
+
+
+
+
+

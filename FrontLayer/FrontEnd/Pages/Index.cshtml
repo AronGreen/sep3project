@@ -1,0 +1,78 @@
+﻿@page
+@model IndexModel
+@using Entities
+@using System.Net.Http
+@using Newtonsoft.Json
+
+
+
+@{
+    ViewData["Title"] = "MainPage";
+
+
+}
+
+<link rel="stylesheet" href="~/css/title.css" />
+
+<script>
+    let spans = document.querySelectorAll('.word span');
+spans.forEach((span, idx) => {
+	span.addEventListener('click', (e) => {
+		e.target.classList.add('active');
+	});
+	span.addEventListener('animationend', (e) => {
+		e.target.classList.remove('active');
+	});
+	
+	// Initial animation
+	setTimeout(() => {
+		span.classList.add('active');
+	}, 750 * (idx+1))
+});
+
+
+
+</script>
+
+    <svg viewBox="0 1060 300">
+        <symbol id="s-text">
+            <text text-anchor="middle" x="50%" y="80%">ShareRide</text>
+        </symbol>
+
+        <g class="g-ants">
+            <use xlink:href="#s-text" class="text-copy"></use>
+            <use xlink:href="#s-text" class="text-copy"></use>
+            <use xlink:href="#s-text" class="text-copy"></use>
+            <use xlink:href="#s-text" class="text-copy"></use>
+            <use xlink:href="#s-text" class="text-copy"></use>
+        </g>
+    </svg>
+
+
+
+    <div align="center" class="login-container">
+
+
+        <p>
+            <span class="input">
+                <input type="text" placeholder="Username">
+                <span></span>
+            </span>
+        </p>
+        <br />
+            <span class="input">
+                <input type="password" placeholder="Password" required>
+                <span></span>
+            </span>
+        </p>
+        <br />
+
+        <form method="get">
+            <button type="submit" asp-page="./MainLoggedIn" class="login-button">Log in</button>
+        </form>
+
+        <label>Don't have an account?</label>
+        <form>
+            <button type="submit" asp-page="./Register" class="login-button">Register</button>
+        </form>
+    </div>
