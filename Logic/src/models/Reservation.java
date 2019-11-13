@@ -93,10 +93,10 @@ public class Reservation {
         return gson.toJson(this);
     }
 
-    public static Trip fromJson(String json) {
+    public static Reservation fromJson(String json) {
         Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();
-        return gson.fromJson(json, Trip.class);
+        return gson.fromJson(json, Reservation.class);
     }
 }
