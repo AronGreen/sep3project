@@ -614,3 +614,4 @@ healthchecksdb
 MigrationBackup/
 
 # End of https://www.gitignore.io/api/java,intellij,dotnetcore,aspnetcore,visualstudio,visualstudiocode
+Data/Data.sln.DotSettings
