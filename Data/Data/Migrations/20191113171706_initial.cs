@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Data.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,7 +13,7 @@ namespace Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -26,14 +26,14 @@ namespace Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    DriverId = table.Column<int>(nullable: true),
+                    DriverId = table.Column<int>(nullable: false),
                     Arrival = table.Column<DateTime>(nullable: false),
-                    StartAddress = table.Column<string>(nullable: true),
-                    DestinationAddress = table.Column<string>(nullable: true),
+                    StartAddress = table.Column<string>(nullable: false),
+                    DestinationAddress = table.Column<string>(nullable: false),
                     BasePrice = table.Column<double>(nullable: false),
                     PerKmPrice = table.Column<double>(nullable: false),
                     CancellationFee = table.Column<double>(nullable: false),
-                    Rules = table.Column<string>(nullable: true),
+                    Rules = table.Column<string>(nullable: false),
                     TotalSeats = table.Column<int>(nullable: false),
                     Description = table.Column<string>(nullable: true)
                 },
@@ -45,7 +45,7 @@ namespace Data.Migrations
                         column: x => x.DriverId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -56,8 +56,8 @@ namespace Data.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     TripId = table.Column<int>(nullable: false),
                     PassengerId = table.Column<int>(nullable: false),
-                    PickupAddress = table.Column<string>(nullable: true),
-                    DropoffAddress = table.Column<string>(nullable: true),
+                    PickupAddress = table.Column<string>(nullable: false),
+                    DropoffAddress = table.Column<string>(nullable: false),
                     Approved = table.Column<DateTime>(nullable: true),
                     PickupTime = table.Column<DateTime>(nullable: true)
                 },

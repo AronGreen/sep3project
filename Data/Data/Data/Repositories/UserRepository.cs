@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Linq;
 using Data.Data.Contexts;
 using Data.Data.Entities;
 
@@ -18,6 +16,28 @@ namespace Data.Data.Repositories
         {
             var u = _context.Users.Add(user).Entity;
             _context.SaveChanges();
+
+            return u;
+        }
+
+        public User Update(User user)
+        {
+            var u = _context.Users.Update(user).Entity;
+            _context.SaveChanges();
+
+            return u;
+        }
+
+        public User GetById(int id)
+        {
+            var u = _context.Users.Single(x => x.Id == id);
+
+            return u;
+        }
+
+        public User[] GetAll()
+        {
+            var u = _context.Users.Select(x => x).ToArray();
 
             return u;
         }

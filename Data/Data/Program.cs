@@ -14,7 +14,7 @@ namespace Data
     {
         static void Main(string[] args)
         {
-            new ApplicationContext().Database.EnsureCreated();
+//            new ApplicationContext().Database.EnsureCreated();
             IRequestHandler requestHandler = new RequestHandler();
             INetworkHandler networkHandler = new SocketHandler(requestHandler);
 

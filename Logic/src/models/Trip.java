@@ -7,6 +7,7 @@ public class Trip {
 
     private int id;
     private User driver;
+    private int driverId;
     private String arrival;
     private String startAddress;
     private String destinationAddress;
@@ -17,35 +18,12 @@ public class Trip {
     private int totalSeats;
     private String description;
 
-    public Trip(int id, User driver, String arrival, String startAddress,
-                String destinationAddress, double basePrice, double perKmPrice,
-                double cancellationFee, String rules, int totalSeats, String description) {
-        this.id = id;
-        this.driver = driver;
-        this.arrival = arrival;
-        this.startAddress = startAddress;
-        this.destinationAddress = destinationAddress;
-        this.basePrice = basePrice;
-        this.perKmPrice = perKmPrice;
-        this.cancellationFee = cancellationFee;
-        this.rules = rules;
-        this.totalSeats = totalSeats;
-        this.description = description;
+    public int getDriverId() {
+        return driverId;
     }
 
-    public Trip(User driver, String arrival, String startAddress,
-                String destinationAddress, double basePrice, double perKmPrice,
-                double cancellationFee, String rules, int totalSeats, String description) {
-        this.driver = driver;
-        this.arrival = arrival;
-        this.startAddress = startAddress;
-        this.destinationAddress = destinationAddress;
-        this.basePrice = basePrice;
-        this.perKmPrice = perKmPrice;
-        this.cancellationFee = cancellationFee;
-        this.rules = rules;
-        this.totalSeats = totalSeats;
-        this.description = description;
+    public void setDriverId(int driverId) {
+        this.driverId = driverId;
     }
 
     public int getId() {

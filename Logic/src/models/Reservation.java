@@ -15,13 +15,6 @@ public class Reservation {
     private String approved;
     private String pickupTime;
 
-    public Reservation(int tripId, int passengerId, String pickupAddress, String dropoffAddress) {
-        this.tripId = tripId;
-        this.passengerId = passengerId;
-        this.pickupAddress = pickupAddress;
-        this.dropoffAddress = dropoffAddress;
-    }
-
     public int getTripId() {
         return tripId;
     }

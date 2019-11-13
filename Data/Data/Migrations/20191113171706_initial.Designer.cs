@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20191113153707_Initial")]
-    partial class Initial
+    [Migration("20191113171706_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,12 +28,14 @@ namespace Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("DropoffAddress")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("PassengerId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("PickupAddress")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("PickupTime")
@@ -70,18 +72,21 @@ namespace Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("DestinationAddress")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("DriverId")
+                    b.Property<int>("DriverId")
                         .HasColumnType("INTEGER");
 
                     b.Property<double>("PerKmPrice")
                         .HasColumnType("REAL");
 
                     b.Property<string>("Rules")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("StartAddress")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("TotalSeats")
@@ -101,6 +106,7 @@ namespace Data.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -127,7 +133,9 @@ namespace Data.Migrations
                 {
                     b.HasOne("Data.Data.Entities.User", "Driver")
                         .WithMany()
-                        .HasForeignKey("DriverId");
+                        .HasForeignKey("DriverId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

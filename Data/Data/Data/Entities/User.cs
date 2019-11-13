@@ -15,6 +15,7 @@ namespace Data.Data.Entities
 
         // Just a dummy data to have something
         [JsonPropertyName("name")]
+        [Required]
         public string Name { get; set; }
     }
 }

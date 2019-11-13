@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Data.Data.Entities;
+﻿using Data.Data.Entities;
 
 namespace Data.Data.Repositories
 {
@@ -9,6 +6,12 @@ namespace Data.Data.Repositories
     {
 
         User Create(User user);
+
+        User Update(User user);
+
+        User GetById(int id);
+
+        User[] GetAll();
 
     }
 }
