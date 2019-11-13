@@ -19,10 +19,22 @@ namespace Data.Data.Entities
         public int Id { get; set; }
 
         /// <summary>
+        /// The Id of the Trip the Reservation belongs to
+        /// </summary>
+        [JsonPropertyName("tripId")]
+        public int TripId { get; set; }
+
+        /// <summary>
         /// The Trip the Reservation belongs to
         /// </summary>
         [JsonPropertyName("trip")]
         public Trip Trip { get; set; }
+
+        /// <summary>
+        /// The Id of the Passenger
+        /// </summary>
+        [JsonPropertyName("passengerId")]
+        public int PassengerId { get; set; }
 
         /// <summary>
         /// The Passenger
@@ -34,12 +46,14 @@ namespace Data.Data.Entities
         /// The address the passenger is picked up from
         /// </summary>
         [JsonPropertyName("pickupAddress")]
+        [Required]
         public string PickupAddress { get; set; }
 
         /// <summary>
         /// The address the passenger is going to
         /// </summary>
         [JsonPropertyName("dropoffAddress")]
+        [Required]
         public string DropoffAddress { get; set; }
 
         /// <summary>

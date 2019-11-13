@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using Data.Data.Contexts;
 using Data.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,10 +13,10 @@ namespace Data.Data.Repositories
 
         public ReservationRepository()
         {
-            _context = new ReservationContext();
+            _context = new ApplicationContext();
         }
 
-        private readonly ReservationContext _context;
+        private readonly ApplicationContext _context;
 
         public Reservation GetDummy()
         {
