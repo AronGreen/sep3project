@@ -2,7 +2,7 @@ package controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import models.SampleFormModel;
+import models.Arons.SampleFormModel;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;

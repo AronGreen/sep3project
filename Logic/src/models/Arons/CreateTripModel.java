@@ -1,4 +1,4 @@
-package models.trip;
+package models.Arons;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

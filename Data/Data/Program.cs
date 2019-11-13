@@ -17,7 +17,14 @@ namespace Data
             IRequestHandler requestHandler = new RequestHandler(repositoryProvider);
             INetworkHandler networkHandler = new SocketHandler(requestHandler);
 
-            
+            var repo = new TripRepository();
+            repo.Create(new Trip()
+            {
+                Id = 1,
+                DestinationAddress = "Somewhere over the rainbow"
+            });
+
+            Console.WriteLine(repo.GetById(1).DestinationAddress);
         }
 
     }

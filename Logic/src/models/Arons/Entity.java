@@ -1,4 +1,4 @@
-package models;
+package models.Arons;
 
 public abstract class Entity {
     private int id;

@@ -1,52 +1,30 @@
-package models.trip;
+package models;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import models.Entity;
-import models.User;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Optional;
-
-public class Trip extends Entity {
+public class Trip {
 
     private int id;
-
-    private User user;
-
-    private Date arrival;
-
-    private double startX;
-
-    private double startY;
-
-    private double destinationX;
-
-    private double destinationY;
-
+    private User driver;
+    private String arrival;
+    private String startAddress;
+    private String destinationAddress;
     private double basePrice;
-
     private double perKmPrice;
-
     private double cancellationFee;
-
-    private ArrayList<String> rules;
-
+    private String rules;
     private int totalSeats;
-
     private String description;
 
-    public Trip(int id, String createDate, String updateDate, String deleted, int id1, User user, Date arrival, double startX, double startY, double destinationX, double destinationY, double basePrice, double perKmPrice, double cancellationFee, ArrayList<String> rules, int totalSeats, String description) {
-        super(id, createDate, updateDate, deleted);
-        this.id = id1;
-        this.user = user;
+    public Trip(int id, User driver, String arrival, String startAddress,
+                String destinationAddress, double basePrice, double perKmPrice,
+                double cancellationFee, String rules, int totalSeats, String description) {
+        this.id = id;
+        this.driver = driver;
         this.arrival = arrival;
-        this.startX = startX;
-        this.startY = startY;
-        this.destinationX = destinationX;
-        this.destinationY = destinationY;
+        this.startAddress = startAddress;
+        this.destinationAddress = destinationAddress;
         this.basePrice = basePrice;
         this.perKmPrice = perKmPrice;
         this.cancellationFee = cancellationFee;
@@ -55,7 +33,21 @@ public class Trip extends Entity {
         this.description = description;
     }
 
-    @Override
+    public Trip(User driver, String arrival, String startAddress,
+                String destinationAddress, double basePrice, double perKmPrice,
+                double cancellationFee, String rules, int totalSeats, String description) {
+        this.driver = driver;
+        this.arrival = arrival;
+        this.startAddress = startAddress;
+        this.destinationAddress = destinationAddress;
+        this.basePrice = basePrice;
+        this.perKmPrice = perKmPrice;
+        this.cancellationFee = cancellationFee;
+        this.rules = rules;
+        this.totalSeats = totalSeats;
+        this.description = description;
+    }
+
     public int getId() {
         return id;
     }
@@ -64,52 +56,36 @@ public class Trip extends Entity {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public User getDriver() {
+        return driver;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setDriver(User driver) {
+        this.driver = driver;
     }
 
-    public Date getArrival() {
+    public String getArrival() {
         return arrival;
     }
 
-    public void setArrival(Date arrival) {
+    public void setArrival(String arrival) {
         this.arrival = arrival;
     }
 
-    public double getStartX() {
-        return startX;
+    public String getStartAddress() {
+        return startAddress;
     }
 
-    public void setStartX(double startX) {
-        this.startX = startX;
+    public void setStartAddress(String startAddress) {
+        this.startAddress = startAddress;
     }
 
-    public double getStartY() {
-        return startY;
+    public String getDestinationAddress() {
+        return destinationAddress;
     }
 
-    public void setStartY(double startY) {
-        this.startY = startY;
-    }
-
-    public double getDestinationX() {
-        return destinationX;
-    }
-
-    public void setDestinationX(double destinationX) {
-        this.destinationX = destinationX;
-    }
-
-    public double getDestinationY() {
-        return destinationY;
-    }
-
-    public void setDestinationY(double destinationY) {
-        this.destinationY = destinationY;
+    public void setDestinationAddress(String destinationAddress) {
+        this.destinationAddress = destinationAddress;
     }
 
     public double getBasePrice() {
@@ -136,11 +112,11 @@ public class Trip extends Entity {
         this.cancellationFee = cancellationFee;
     }
 
-    public ArrayList<String> getRules() {
+    public String getRules() {
         return rules;
     }
 
-    public void setRules(ArrayList<String> rules) {
+    public void setRules(String rules) {
         this.rules = rules;
     }
 
@@ -173,4 +149,5 @@ public class Trip extends Entity {
                 .create();
         return gson.fromJson(json, Trip.class);
     }
+
 }

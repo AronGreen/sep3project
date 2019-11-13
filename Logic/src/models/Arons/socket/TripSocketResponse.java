@@ -1,16 +1,18 @@
-package models.socket;
+package models.Arons.socket;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
+import models.Arons.Trip;
 
-import java.lang.reflect.Type;
-
-public class SocketResponse<T> {
+public class TripSocketResponse {
     private String status;
-    private T body;
 
-    public SocketResponse(String status, T body) {
+    private Trip body;
+
+    public TripSocketResponse() {
+    }
+
+    public TripSocketResponse(String status, Trip body) {
         this.status = status;
         this.body = body;
     }
@@ -19,7 +21,7 @@ public class SocketResponse<T> {
         return status;
     }
 
-    public T getBody() {
+    public Trip getBody() {
         return body;
     }
 
@@ -30,12 +32,10 @@ public class SocketResponse<T> {
         return gson.toJson(this);
     }
 
-    public static <T> SocketResponse<T> fromJson(String json, Class<T> type) {
+    public static TripSocketResponse fromJson(String json) {
         Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();
-        Type thisType = new TypeToken<SocketResponse<T>>() {
-        }.getType();
-        return gson.fromJson(json, thisType);
+        return gson.fromJson(json, TripSocketResponse.class);
     }
 }
