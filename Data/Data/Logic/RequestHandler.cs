@@ -73,6 +73,12 @@ namespace Data.Logic
                                 Status = "success",
                                 Body = _reservationRepository.Create(JsonSerializer.Deserialize<Reservation>(req.Body))
                             };
+                        case "update":
+                            return new Response()
+                            {
+                                Status = "success",
+                                Body = _reservationRepository.Update(JsonSerializer.Deserialize<Reservation>(req.Body))
+                            };
                     }
                     break;
             }
