@@ -86,11 +86,13 @@ public class ReservationController {
 
         // Extract http response data
         int status = StatusMapper.map(res.getStatus());
-        String entity = res.getBody().toJson();
+        String entity = res.getBody() + "";
+
+        Gson gson = new GsonBuilder().setLenient().create();
 
         return Response
                 .status(status)
-                .entity(entity)
+                .entity(gson.toJson(res.getBody()))
                 .build();
     }
 }
