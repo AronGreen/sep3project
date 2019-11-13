@@ -6,6 +6,7 @@ import handlers.IReservationHandler;
 import handlers.ITripHandler;
 import handlers.ReservationHandler;
 import handlers.TripHandler;
+import helpers.JsonConverter;
 import models.Reservation;
 import models.Trip;
 import services.DataResponse;
@@ -64,12 +65,11 @@ public class ReservationController {
 
         // Extract http response data
         int status = StatusMapper.map(res.getStatus());
-
-        Gson gson = new GsonBuilder().setLenient().create();
+        String entity = JsonConverter.toJson(res.getBody());
 
         return Response
                 .status(status)
-                .entity(gson.toJson(res.getBody()))
+                .entity(entity)
                 .build();
     }
 
@@ -86,13 +86,12 @@ public class ReservationController {
 
         // Extract http response data
         int status = StatusMapper.map(res.getStatus());
-        String entity = res.getBody() + "";
+        String entity = JsonConverter.toJson(res.getBody());
 
-        Gson gson = new GsonBuilder().setLenient().create();
 
         return Response
                 .status(status)
-                .entity(gson.toJson(res.getBody()))
+                .entity(entity)
                 .build();
     }
 }

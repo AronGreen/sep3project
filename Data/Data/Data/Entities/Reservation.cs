@@ -25,10 +25,22 @@ namespace Data.Data.Entities
         public Trip Trip { get; set; }
 
         /// <summary>
+        /// The Id of the Trip the Reservation belongs to
+        /// </summary>
+        [JsonPropertyName("tripId")]
+        public int TripId { get; set; }
+
+        /// <summary>
         /// The Passenger
         /// </summary>
         [JsonPropertyName("passenger")]
         public User Passenger { get; set; }
+
+        /// <summary>
+        /// The Id of the Passenger
+        /// </summary>
+        [JsonPropertyName("passengerId")]
+        public int PassengerId { get; set; }
 
         /// <summary>
         /// The address the passenger is picked up from

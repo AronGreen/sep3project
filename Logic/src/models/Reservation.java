@@ -7,27 +7,35 @@ public class Reservation {
 
     private int id;
     private Trip trip;
+    private int tripId;
     private User passenger;
+    private int passengerId;
     private String pickupAddress;
     private String dropoffAddress;
     private String approved;
     private String pickupTime;
 
-    public Reservation(int id, Trip trip, User passenger, String pickupAddress, String dropoffAddress, String approved, String pickupTime) {
-        this.id = id;
-        this.trip = trip;
-        this.passenger = passenger;
+    public Reservation(int tripId, int passengerId, String pickupAddress, String dropoffAddress) {
+        this.tripId = tripId;
+        this.passengerId = passengerId;
         this.pickupAddress = pickupAddress;
         this.dropoffAddress = dropoffAddress;
-        this.approved = approved;
-        this.pickupTime = pickupTime;
     }
 
-    public Reservation(Trip trip, User passenger, String pickupAddress, String dropoffAddress) {
-        this.trip = trip;
-        this.passenger = passenger;
-        this.pickupAddress = pickupAddress;
-        this.dropoffAddress = dropoffAddress;
+    public int getTripId() {
+        return tripId;
+    }
+
+    public void setTripId(int tripId) {
+        this.tripId = tripId;
+    }
+
+    public int getPassengerId() {
+        return passengerId;
+    }
+
+    public void setPassengerId(int passengerId) {
+        this.passengerId = passengerId;
     }
 
     public int getId() {

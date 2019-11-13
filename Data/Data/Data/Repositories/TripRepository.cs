@@ -1,21 +1,22 @@
 ﻿ using System;
 using System.Collections.Generic;
 using System.Linq;
-using Data.Data.Entities;
+ using Data.Data.Contexts;
+ using Data.Data.Entities;
 
 namespace Data.Data.Repositories
 {
     public class TripRepository : ITripRepository
     {
 
-        private readonly TripContext _context;
+        private readonly ApplicationContext _context;
         
         /// <summary>
         /// Creates a repository for accessing an Entity Framework database
         /// </summary>
         public TripRepository()
         {
-            _context = new TripContext();
+            _context = new ApplicationContext();
         }
 
         public Trip GetDummy()
