@@ -10,7 +10,7 @@ namespace Data.Data.Repositories
 
         Trip Delete(int id);
 
-        IEnumerable<Trip> GetFiltered(TripFilter filter = null);
+        Trip[] GetFiltered(TripFilter filter = null);
 
         Trip GetById(int id);
 

@@ -1,28 +1,30 @@
 ﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Data.Network
 {
-    
     /// <summary>
     /// Represents a data change or data query Request formulated by the Business Logic
     /// </summary>
     public class Request
     {
-
         /// <summary>
         /// The data type that is the subject to the request
         /// </summary>
+        [JsonPropertyName("type")]
         public string Type { get; set; }
-        
+
         /// <summary>
         /// The operation to be used on the data collection
         /// </summary>
+        [JsonPropertyName("operation")]
         public string Operation { get; set; }
-        
+
         /// <summary>
         /// The information needed to perform the operation.
         /// Could be the object to be created, or the id of the object to be queried.
         /// </summary>
+        [JsonPropertyName("body")]
         public string Body { get; set; }
 
 //        /// <summary>
@@ -35,6 +37,5 @@ namespace Data.Network
 //        {
 //            return JsonSerializer.Deserialize<Request>(json);
 //        }
-
     }
 }

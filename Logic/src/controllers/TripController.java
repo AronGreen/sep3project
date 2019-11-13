@@ -1,10 +1,9 @@
 package controllers;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import models.trip.CreateTripModel;
-import models.trip.Trip;
-import services.TripService;
+import handlers.ITripHandler;
+import handlers.TripHandler;
+import models.Trip;
+import services.DataResponse;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +12,8 @@ import javax.ws.rs.core.*;
 
 @Path("/trips")
 public class TripController {
-    private TripService tripService = new TripService();
+
+    private ITripHandler handler = new TripHandler();
 
     // https://download.oracle.com/otn-pub/jcp/jaxrs-2_0-fr-eval-spec/jsr339-jaxrs-2.0-final-spec.pdf
     @Context
@@ -35,11 +35,17 @@ public class TripController {
     @Path("get/{id}")
     @Produces(MediaType.APPLICATION_JSON )
     public Response get(@PathParam("id") int id){
-        Trip trip = tripService.getById(id);
-        // TODO: Handle errors
+        // Send request and receive Response
+        DataResponse<Trip> res = handler.getById(id);
+
+        // Extract http response data
+        int status = StatusMapper.map(res.getStatus());
+        // String entity = res.getBody().toJson();
+        String entity = res.getBody() + "";// + " " + res.getBody().getDestinationAddress();
+
         return Response
-                .status(200)
-                .entity(trip.toJson())
+                .status(status)
+                .entity(entity)
                 .build();
     }
 
@@ -48,15 +54,19 @@ public class TripController {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response create(String json){
-        CreateTripModel model = CreateTripModel.fromJson(json);
+        // Extract Trip from request
+        Trip t = Trip.fromJson(json);
 
-        boolean success = tripService.create(model);
+        // Send request and receive Response
+        DataResponse<Trip> res = handler.create(t);
 
-        if (success){
-            return Response.status(200).build();
-        }
-        else {
-            return Response.status(400).build();
-        }
+        // Extract http response data
+        int status = StatusMapper.map(res.getStatus());
+        String entity = res.getBody().toJson();
+
+        return Response
+                .status(status)
+                .entity(entity)
+                .build();
     }
 }

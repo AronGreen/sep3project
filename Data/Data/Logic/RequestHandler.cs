@@ -44,6 +44,12 @@ namespace Data.Logic
                                 Status = "success",
                                 Body = _tripRepository.Create(JsonSerializer.Deserialize<Trip>(req.Body))
                             };
+                        case "getById":
+                            return new Response()
+                            {
+                                Status = "success",
+                                Body = _tripRepository.GetById(int.Parse(req.Body))
+                            };
                     }
                     break;
                 case "reservation":

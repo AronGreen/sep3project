@@ -21,14 +21,14 @@ namespace Data.Data.Repositories
         /// </summary>
         /// <param name="tripId"></param>
         /// <returns></returns>
-        IEnumerable<Reservation> GetByTripId(int tripId);
+        Reservation[] GetByTripId(int tripId);
 
         /// <summary>
         /// Get all the Reservations placed by a given user
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        IEnumerable<Reservation> GetByUserId(int userId);
+        Reservation[] GetByUserId(int userId);
 
 
     }

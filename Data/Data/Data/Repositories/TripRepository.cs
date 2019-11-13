@@ -55,12 +55,12 @@ namespace Data.Data.Repositories
             return t;
         }
 
-        public IEnumerable<Trip> GetFiltered(TripFilter filter = null)
+        public Trip[] GetFiltered(TripFilter filter = null)
         {
             // TODO for now returns all the trips
             
             var t = _context.Trips.Select(x => x);
-            return t;
+            return t.ToArray();
         }
 
         public Trip GetById(int id)

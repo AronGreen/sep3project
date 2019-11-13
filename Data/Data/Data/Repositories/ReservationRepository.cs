@@ -71,22 +71,22 @@ namespace Data.Data.Repositories
             return r;
         }
 
-        public IEnumerable<Reservation> GetByTripId(int tripId)
+        public Reservation[] GetByTripId(int tripId)
         {
             // Select the Reservations that have the Trip with the specified Id
             var r = _context.Reservations.Select(x => x)
                 .Where(x => x.Trip.Id == tripId);
 
-            return r;
+            return r.ToArray();
         }
 
-        public IEnumerable<Reservation> GetByUserId(int userId)
+        public Reservation[] GetByUserId(int userId)
         {
             // Select the Reservations the passenger of which has the specified Id
             var r = _context.Reservations.Select(x => x)
                 .Where(x => x.Passenger.Id == userId);
 
-            return r;
+            return r.ToArray();
         }
     }
 }

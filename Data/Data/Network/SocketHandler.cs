@@ -62,6 +62,8 @@ namespace Data.Network
             // Forward request to the Logic, and retrieve the Response
             var res = _handle(req);
 
+            Console.WriteLine("Response:\n" + res.ToJson());
+
             // Encode Response to a json string and write it to Network Stream
             bytes = Encoding.UTF8.GetBytes(res.ToJson());
             stream.Write(bytes);
