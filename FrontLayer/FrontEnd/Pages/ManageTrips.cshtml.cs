@@ -30,7 +30,7 @@ namespace FrontEnd.Pages
      
         }
 
-        public async void OnPostSend()
+        public async Task OnPostSend()
         {
             HttpClient client = new HttpClient();
             var id = Int32.Parse(Request.Form["Id"]);

@@ -5,37 +5,72 @@
     ViewData["Title"] = "ManageTrips";
 }
 
+<link rel="stylesheet" href="~/css/popup.css" />
+
 <h1 align="center">ManageTrips</h1>
 
 
 <div>
+
+    <div class="box">
+        <a class="button" href="#popup1">Create a trip</a>
+    </div>
+
+    <div id="popup1" class="overlay">
+        <div class="popup">
+            <h2>Create a trip</h2>
+            <a class="close" href="#">&times;</a>
+            <div class="content">
+
+                <div align="center">
+                   
+                    <input type="text" name="Id" value="@Model.trip.Id" placeholder="Trip ID"/> <br />
+                    
+                    <input type="text" name="Title" value="@Model.trip.Title" placeholder="Title"/><br />
+                    
+                    <input type="text" name="Date" value="@Model.trip.Date" placeholder="Date"/><br />
+                    
+                    <input type="text" name="Date" value="@Model.trip.Date" placeholder="Starting Point"/><br />
+                    
+                    <input type="text" name="Date" value="@Model.trip.Date" placeholder="Ending Point"/><br />
+                    <label for="Date">Available seats:</label>
+                    <select name="AvSeats">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                    </select>
+
+                    <form method="post" class="text-center">
+                        <button asp-page-handler="send" class="mb-3">Create Trip</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
     <form method="post" class="text-center">
         <button asp-page-handler="trip" class="mb-3">Get trip</button>
     </form>
-    <form method="post" class="text-center">
-        <button asp-page-handler="send" class="mb-3">Send Trip</button>
-    </form>
+
     <form method="get">
         <button type="submit" asp-page="./MainLoggedIn" class="mb-3">Go to main</button>
     </form>
-    <div align="center">
-        <label for="Id" id="id">Id</label>
-        <input type="text" name="Id" value="@Model.trip.Id" />
-        <label for="Title">Title:</label>
-        <input type="text" name="Title" value="@Model.trip.Title" />
-        <label for="Date">Email:</label>
-        <input type="text" name="Date" value="@Model.trip.Date" />
-    </div>
+
 
     <div>
         <ul style="list-style: none;">
             @foreach (Trip t in Model.trips)
             {
-               
-                <li>@t.Title</li>
+
+                <li>@t.Title <button></button></li>
+
             }
-    </ul>
-</div>
+        </ul>
+    </div>
 
 
 </div>
