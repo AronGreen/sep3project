@@ -15,10 +15,12 @@ namespace Data.Logic
         private readonly ITripRepository _tripRepository;
         private readonly IReservationRepository _reservationRepository;
 
-        public RequestHandler()
+        public RequestHandler(
+            ITripRepository tripRepository,
+            IReservationRepository reservationRepository)
         {
-            _tripRepository = new TripRepository();
-            _reservationRepository = new ReservationRepository();
+            _tripRepository = tripRepository;
+            _reservationRepository = reservationRepository;
         }
 
         public Response Handle(Request req)
