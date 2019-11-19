@@ -9,7 +9,7 @@ public class Reservation {
     private Trip trip;
     private int tripId;
     private User passenger;
-    private int passengerId;
+    private String passengerEmail;
     private String pickupAddress;
     private String dropoffAddress;
     private String approved;
@@ -23,12 +23,12 @@ public class Reservation {
         this.tripId = tripId;
     }
 
-    public int getPassengerId() {
-        return passengerId;
+    public String getPassengerEmail() {
+        return passengerEmail;
     }
 
-    public void setPassengerId(int passengerId) {
-        this.passengerId = passengerId;
+    public void setPassengerEmail(String passengerEmail) {
+        this.passengerEmail = passengerEmail;
     }
 
     public int getId() {

@@ -9,14 +9,39 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20191113173212_Data_Models_Project")]
-    partial class Data_Models_Project
+    [Migration("20191119175425_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.0.0");
+
+            modelBuilder.Entity("Data.Models.Entities.Account", b =>
+                {
+                    b.Property<string>("Email")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Email");
+
+                    b.ToTable("Accounts");
+                });
 
             modelBuilder.Entity("Data.Models.Entities.Reservation", b =>
                 {
@@ -31,8 +56,9 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("PassengerId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("PassengerEmail")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("PickupAddress")
                         .IsRequired()
@@ -46,7 +72,7 @@ namespace Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PassengerId");
+                    b.HasIndex("PassengerEmail");
 
                     b.HasIndex("TripId");
 
@@ -75,8 +101,9 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("DriverId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("DriverEmail")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<double>("PerKmPrice")
                         .HasColumnType("REAL");
@@ -94,31 +121,16 @@ namespace Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DriverId");
+                    b.HasIndex("DriverEmail");
 
                     b.ToTable("Trips");
-                });
-
-            modelBuilder.Entity("Data.Models.Entities.Account", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Accounts");
                 });
 
             modelBuilder.Entity("Data.Models.Entities.Reservation", b =>
                 {
                     b.HasOne("Data.Models.Entities.Account", "Passenger")
                         .WithMany()
-                        .HasForeignKey("PassengerId")
+                        .HasForeignKey("PassengerEmail")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -133,7 +145,7 @@ namespace Data.Migrations
                 {
                     b.HasOne("Data.Models.Entities.Account", "Driver")
                         .WithMany()
-                        .HasForeignKey("DriverId")
+                        .HasForeignKey("DriverEmail")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

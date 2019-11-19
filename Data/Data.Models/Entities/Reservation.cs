@@ -19,6 +19,7 @@ namespace Data.Models.Entities
         /// The Id of the Trip the Reservation belongs to
         /// </summary>
         [JsonPropertyName("tripId")]
+        [Required]
         public int TripId { get; set; }
 
         /// <summary>
@@ -30,8 +31,9 @@ namespace Data.Models.Entities
         /// <summary>
         /// The Id of the Passenger
         /// </summary>
-        [JsonPropertyName("passengerId")]
-        public int PassengerId { get; set; }
+        [JsonPropertyName("passengerEmail")]
+        [Required]
+        public string PassengerEmail { get; set; }
 
         /// <summary>
         /// The Passenger

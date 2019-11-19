@@ -19,8 +19,9 @@ namespace Data.Models.Entities
         /// <summary>
         /// The id of the driver user
         /// </summary>
-        [JsonPropertyName("driverId")]
-        public int DriverId { get; set; }
+        [JsonPropertyName("driverEmail")]
+        [Required]
+        public string DriverEmail { get; set; }
 
         /// <summary>
         /// The user account of the driver that will drive during the trip.
