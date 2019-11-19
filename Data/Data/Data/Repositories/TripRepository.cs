@@ -28,7 +28,7 @@ using System.Linq;
                 CancellationFee = 2,
                 Description = "Dummy Trip",
                 DestinationAddress = "Some address",
-                Driver = new User()
+                Driver = new Account()
                 {
                     Name = "Some Driver"
                 }

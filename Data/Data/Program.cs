@@ -26,7 +26,7 @@ namespace Data
 //                PerKmPrice = 2.0,
 //                CancellationFee = 20.0,
 //                Description = "This is my special trip for ya",
-//                Driver = new User()
+//                Driver = new Account()
 //                {
 //                    Name = "Miss Driver"
 //                },

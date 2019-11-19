@@ -37,7 +37,7 @@ namespace Data.Models.Entities
         /// The Passenger
         /// </summary>
         [JsonPropertyName("passenger")]
-        public User Passenger { get; set; }
+        public Account Passenger { get; set; }
 
         /// <summary>
         /// The address the passenger is picked up from

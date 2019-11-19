@@ -8,7 +8,7 @@ namespace Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "Accounts",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -43,7 +43,7 @@ namespace Data.Migrations
                     table.ForeignKey(
                         name: "FK_Trips_Users_DriverId",
                         column: x => x.DriverId,
-                        principalTable: "Users",
+                        principalTable: "Accounts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -67,7 +67,7 @@ namespace Data.Migrations
                     table.ForeignKey(
                         name: "FK_Reservations_Users_PassengerId",
                         column: x => x.PassengerId,
-                        principalTable: "Users",
+                        principalTable: "Accounts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -103,7 +103,7 @@ namespace Data.Migrations
                 name: "Trips");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "Accounts");
         }
     }
 }

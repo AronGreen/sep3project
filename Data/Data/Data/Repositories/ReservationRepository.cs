@@ -24,7 +24,7 @@ namespace Data.Data.Repositories
             {
                 Approved = null,
                 DropoffAddress = "Some address",
-                Passenger = new User()
+                Passenger = new Account()
                 {
                     Name = "Passenger name"
                 },

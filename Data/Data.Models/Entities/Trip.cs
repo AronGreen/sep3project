@@ -26,7 +26,7 @@ namespace Data.Models.Entities
         /// The user account of the driver that will drive during the trip.
         /// </summary>
         [JsonPropertyName("driver")]
-        public User Driver { get; set; }
+        public Account Driver { get; set; }
 
         /// <summary>
         /// The date and arrival time for the trip (Pickup times are calculated based on this).
@@ -93,7 +93,7 @@ namespace Data.Models.Entities
 //        /// <summary>
 //        /// The list of passengers for the trip
 //        /// </summary>
-//        public ICollection<User> Passengers { get; set; }
+//        public ICollection<Account> Passengers { get; set; }
 
     }
 }

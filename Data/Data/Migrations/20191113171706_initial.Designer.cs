@@ -99,7 +99,7 @@ namespace Data.Migrations
                     b.ToTable("Trips");
                 });
 
-            modelBuilder.Entity("Data.Data.Entities.User", b =>
+            modelBuilder.Entity("Data.Data.Entities.Account", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -111,12 +111,12 @@ namespace Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Accounts");
                 });
 
             modelBuilder.Entity("Data.Data.Entities.Reservation", b =>
                 {
-                    b.HasOne("Data.Data.Entities.User", "Passenger")
+                    b.HasOne("Data.Data.Entities.Account", "Passenger")
                         .WithMany()
                         .HasForeignKey("PassengerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -131,7 +131,7 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Data.Entities.Trip", b =>
                 {
-                    b.HasOne("Data.Data.Entities.User", "Driver")
+                    b.HasOne("Data.Data.Entities.Account", "Driver")
                         .WithMany()
                         .HasForeignKey("DriverId")
                         .OnDelete(DeleteBehavior.Cascade)

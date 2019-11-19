@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace Data.Models.Entities
 {
-    public class User
+    public class Account
     {
 
         [JsonPropertyName("id")]
