@@ -14,60 +14,45 @@ using System.Linq;
         /// <summary>
         /// Creates a repository for accessing an Entity Framework database
         /// </summary>
-        public TripRepository()
+        public TripRepository(ApplicationContext context)
         {
-            _context = new ApplicationContext();
-        }
-
-        public Trip GetDummy()
-        {
-            return new Trip()
-            {
-                Arrival = DateTime.Now,
-                BasePrice = 1,
-                CancellationFee = 2,
-                Description = "Dummy Trip",
-                DestinationAddress = "Some address",
-                Driver = new Account()
-                {
-                    Name = "Some Driver"
-                }
-            };
+            _context = context;
         }
 
         public Trip Create(Trip trip)
         {
             // Add the Trip to the database
-            var t = _context.Trips.Add(trip).Entity;
+            var result = _context.Trips.Add(trip).Entity;
             _context.SaveChanges();
 
-            return t;
+            return result;
         }
 
         public Trip Delete(int id)
         {
             // Get the Trip from the database
-            var t = _context.Trips.Single(x => x.Id == id);
+            var result = _context.Trips.Single(x => x.Id == id);
 
             // Delete the Trip
-            _context.Trips.Remove(t);
+            _context.Trips.Remove(result);
             _context.SaveChanges();
 
-            return t;
+            return result;
         }
 
         public Trip[] GetFiltered(TripFilter filter = null)
         {
-            // TODO for now returns all the trips
-            
-            var t = _context.Trips.Select(x => x);
-            return t.ToArray();
+            // TODO add filtering
+
+            return _context.Trips
+                .Select(x => x)
+                .ToArray();
         }
 
         public Trip GetById(int id)
         {
-            var t = _context.Trips.Single(x => x.Id == id);
-            return t;
+            var result = _context.Trips.Single(x => x.Id == id);
+            return result;
         }
     }
 }

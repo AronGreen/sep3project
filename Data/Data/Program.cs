@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Linq;
+using Data.Composer;
 using Data.Data;
 using Data.Data.Contexts;
 using Data.Data.Repositories;
 using Data.Logic;
 using Data.Network;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Data
 {
@@ -13,26 +15,11 @@ namespace Data
     {
         static void Main(string[] args)
         {
-//            new ApplicationContext().Database.EnsureCreated();
-            IRequestHandler requestHandler = new RequestHandler();
-            INetworkHandler networkHandler = new SocketHandler(requestHandler);
+            var composition = new Composition();
 
-//            var repo = new TripRepository();
-//            repo.Create(new Trip()
-//            {
-//                DestinationAddress = "Somewhere over the rainbow",
-//                Arrival = DateTime.Now,
-//                BasePrice = 15.0,
-//                PerKmPrice = 2.0,
-//                CancellationFee = 20.0,
-//                Description = "This is my special trip for ya",
-//                Driver = new Account()
-//                {
-//                    Name = "Miss Driver"
-//                },
-//                Rules = "No smoking no gangrape",
-//                StartAddress = "Somewhere under the rainbow"
-//            });
+            var networkHandler = composition.Get<INetworkHandler>();
+
+            networkHandler.Start();
         }
 
     }

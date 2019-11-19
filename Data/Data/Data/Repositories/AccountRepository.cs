@@ -8,38 +8,49 @@ namespace Data.Data.Repositories
     {
 
         private readonly ApplicationContext _context;
-        public AccountRepository()
+
+        public AccountRepository(
+            ApplicationContext context)
         {
-            _context = new ApplicationContext();
+            _context = context;
         }
         public Account Create(Account account)
         {
-            var u = _context.Accounts.Add(account).Entity;
+            var result = _context.Accounts.Add(account).Entity;
             _context.SaveChanges();
 
-            return u;
+            return result;
         }
 
         public Account Update(Account account)
         {
-            var u = _context.Accounts.Update(account).Entity;
+            var result = _context.Accounts.Update(account).Entity;
             _context.SaveChanges();
 
-            return u;
+            return result;
         }
 
-        public Account GetById(int id)
+        public Account Delete(string email)
         {
-            var u = _context.Accounts.Single(x => x.Id == id);
+            var result = _context.Accounts.Single(x => x.Email == email);
 
-            return u;
+            _context.Accounts.Remove(result);
+            _context.SaveChanges();
+
+            return result;
+        }
+
+        public Account GetByEmail(string email)
+        {
+            return _context.Accounts
+                .Single(x => x.Email == email);
         }
 
         public Account[] GetAll()
         {
-            var u = _context.Accounts.Select(x => x).ToArray();
-
-            return u;
+            return _context.Accounts
+                .Select(x => x)
+                .ToArray();
         }
     }
 }

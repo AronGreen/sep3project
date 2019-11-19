@@ -2,16 +2,13 @@
 
 namespace Data.Data.Repositories
 {
-    interface IUserRepository
+    interface IAccountRepository
     {
-
-        User Create(User user);
-
-        User Update(User user);
-
-        User GetById(int id);
-
-        User[] GetAll();
+        Account Create(Account account);
+        Account Update(Account account);
+        Account Delete(string email);
+        Account GetByEmail(string email);
+        Account[] GetAll();
 
     }
 }

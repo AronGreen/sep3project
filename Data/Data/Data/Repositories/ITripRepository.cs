@@ -5,7 +5,7 @@ namespace Data.Data.Repositories
 {
     public interface ITripRepository
     {
-        Trip GetDummy();
+
         Trip Create(Trip trip);
 
         Trip Delete(int id);
