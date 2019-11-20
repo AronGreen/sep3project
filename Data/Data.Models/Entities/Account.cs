@@ -26,7 +26,7 @@ namespace Data.Models.Entities
         public string LastName { get; set; }
 
         [JsonPropertyName("dateOfBirth")]
-        public DateTime DateOfBirth { get; set; }
+        public string DateOfBirth { get; set; }
 
         [JsonPropertyName("phone")]
         public string Phone { get; set; }

@@ -27,15 +27,9 @@ namespace Data.Logic
             composer.Compose(_map);
         }
 
-        private void AddEntry(string type, string operation, Handler handler)
-        {
-            _map.Add((type, operation), handler);
-        }
-
         public Handler GetEntry(string type, string operation)
         {
-            throw new System.NotImplementedException();
+            return _map[(type, operation)];
         }
     }
-}
 }

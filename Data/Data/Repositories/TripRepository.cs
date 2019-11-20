@@ -11,23 +11,14 @@ using System.Linq;
     public class TripRepository : ITripRepository
     {
 
-        private readonly ApplicationContext _context;
-        
-        /// <summary>
-        /// Creates a repository for accessing an Entity Framework database
-        /// </summary>
-        public TripRepository(ApplicationContext context)
-        {
-            _context = context;
-        }
-
         public Trip Create(Trip trip)
         {
+            using var context = new ApplicationContext();
             try
             {
                 // Add the Trip to the database
-                var result = _context.Trips.Add(trip).Entity;
-                _context.SaveChanges();
+                var result = context.Trips.Add(trip).Entity;
+                context.SaveChanges();
 
                 return result;
             }
@@ -40,14 +31,15 @@ using System.Linq;
 
         public Trip Delete(int id)
         {
+            using var context = new ApplicationContext();
             try
             {
                 // Get the Trip from the database
-                var result = _context.Trips.Single(x => x.Id == id);
+                var result = context.Trips.Single(x => x.Id == id);
 
                 // Delete the Trip
-                _context.Trips.Remove(result);
-                _context.SaveChanges();
+                context.Trips.Remove(result);
+                context.SaveChanges();
 
                 return result;
             }
@@ -60,18 +52,20 @@ using System.Linq;
 
         public Trip[] GetFiltered(TripFilter filter = null)
         {
+            using var context = new ApplicationContext();
             // TODO add filtering
 
-            return _context.Trips
+            return context.Trips
                 .Select(x => x)
                 .ToArray();
         }
 
         public Trip GetById(int id)
         {
+            using var context = new ApplicationContext();
             try
             {
-                var result = _context.Trips.Single(x => x.Id == id);
+                var result = context.Trips.Single(x => x.Id == id);
                 return result;
             }
             catch (Exception e)

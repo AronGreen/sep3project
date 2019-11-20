@@ -64,9 +64,6 @@ public class TripService implements ITripService {
         // Send the Request and receive the response json
         String json = connection.sendRequest(req);
 
-        // Construct the Response
-        DataResponse<String> res = DataResponse.fromJson(json, String.class);
-
-        return res;
+        return DataResponse.fromJson(json, String.class);
     }
 }

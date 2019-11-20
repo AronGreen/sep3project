@@ -22,11 +22,11 @@ namespace Data.Logic
 
         public Response Handle(Request req)
         {
-            Console.WriteLine("Request:\n" + JsonSerializer.Serialize(req) + "---------------------------------------------");
+            Console.WriteLine("Request:\n" + JsonSerializer.Serialize(req) + "\n---------------------------------------------\n");
 
             var response = requestTable.GetEntry(req.Type, req.Operation)(req.Body);
 
-            Console.WriteLine("Response:\n" + JsonSerializer.Serialize(response) + "---------------------------------------------");
+            Console.WriteLine("Response:\n" + JsonSerializer.Serialize(response) + "\n---------------------------------------------\n");
 
             return response;
         }
