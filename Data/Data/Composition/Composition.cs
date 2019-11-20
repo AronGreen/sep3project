@@ -1,8 +1,7 @@
 ﻿using System;
-using Data.Data.Contexts;
-using Data.Data.Repositories;
 using Data.Logic;
 using Data.Network;
+using Data.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 

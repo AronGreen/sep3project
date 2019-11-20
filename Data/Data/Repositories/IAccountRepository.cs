@@ -1,6 +1,6 @@
 ﻿using Data.Models.Entities;
 
-namespace Data.Data.Repositories
+namespace Data.Repositories
 {
     public interface IAccountRepository
     {

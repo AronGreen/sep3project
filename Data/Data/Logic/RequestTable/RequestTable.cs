@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Data.Data.Repositories;
 using Microsoft.EntityFrameworkCore.Query;
 
 namespace Data.Logic

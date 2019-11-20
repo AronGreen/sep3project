@@ -16,24 +16,36 @@ public class ReservationHandler implements IReservationHandler {
     @Override
     public DataResponse<String> create(Reservation reservation) {
         // No logic is implemented for now
-        DataResponse<String> res = service.create(reservation);
 
-        return res;
+        return service.create(reservation);
     }
 
     @Override
     public DataResponse<String> update(Reservation reservation) {
         // No logic is implemented for now
-        DataResponse<String> res = service.update(reservation);
 
-        return res;
+        return service.update(reservation);
+    }
+
+    @Override
+    public DataResponse<String> delete(int id) {
+        return service.delete(id);
+    }
+
+    @Override
+    public DataResponse<String> getById(int id) {
+        return service.getById(id);
     }
 
     @Override
     public DataResponse<String> getByTripId(int tripId) {
         // No logic is implemented for now
-        DataResponse<String> res = service.getByTripId(tripId);
 
-        return res;
+        return service.getByTripId(tripId);
+    }
+
+    @Override
+    public DataResponse<String> getByEmail(String email) {
+        return service.getByEmail(email);
     }
 }

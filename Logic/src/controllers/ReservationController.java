@@ -55,23 +55,6 @@ public class ReservationController {
 //                .build();
 //    }
 
-
-    @GET
-    @Path("getForTrip/{id}")
-    @Produces(MediaType.APPLICATION_JSON )
-    public Response get(@PathParam("id") int id){
-        // Send request and receive Response
-        DataResponse<String> res = handler.getByTripId(id);
-
-        // Extract http response code
-        int status = StatusMapper.map(res.getStatus());
-
-        return Response
-                .status(status)
-                .entity(res.getBody())
-                .build();
-    }
-
     @POST
     @Path("create")
     @Produces(MediaType.APPLICATION_JSON)
@@ -91,4 +74,80 @@ public class ReservationController {
                 .entity(res.getBody())
                 .build();
     }
+
+    @PUT
+    @Path("update")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response update(String json) {
+        Reservation reservation = JsonConverter.fromJson(json, Reservation.class);
+
+        DataResponse<String> response = handler.update(reservation);
+
+        int status = StatusMapper.map(response.getStatus());
+
+        return Response
+                .status(status)
+                .entity(response.getBody())
+                .build();
+    }
+
+    @DELETE
+    @Path("delete/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response delete(@PathParam("id") int id) {
+        DataResponse<String> response = handler.delete(id);
+
+        int status = StatusMapper.map(response.getStatus());
+
+        return Response
+                .status(status)
+                .entity(response.getBody())
+                .build();
+    }
+
+    @GET
+    @Path("get/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getById(@PathParam("id") int id) {
+        DataResponse<String> response = handler.getById(id);
+
+        int status = StatusMapper.map(response.getStatus());
+
+        return Response
+                .status(status)
+                .entity(response.getBody())
+                .build();
+    }
+
+    @GET
+    @Path("getForTrip/{id}")
+    @Produces(MediaType.APPLICATION_JSON )
+    public Response get(@PathParam("id") int id){
+        // Send request and receive Response
+        DataResponse<String> res = handler.getByTripId(id);
+
+        // Extract http response code
+        int status = StatusMapper.map(res.getStatus());
+
+        return Response
+                .status(status)
+                .entity(res.getBody())
+                .build();
+    }
+
+    @GET
+    @Path("getByEmail/{email}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getByEmail(@PathParam("email") String email) {
+        DataResponse<String> response = handler.getByEmail(email);
+
+        int status = StatusMapper.map(response.getStatus());
+
+        return Response
+                .status(status)
+                .entity(response.getBody())
+                .build();
+    }
+
 }

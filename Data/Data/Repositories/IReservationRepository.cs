@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Data.Models.Entities;
+﻿using Data.Models.Entities;
 
-namespace Data.Data.Repositories
+namespace Data.Repositories
 {
     public interface IReservationRepository
     {

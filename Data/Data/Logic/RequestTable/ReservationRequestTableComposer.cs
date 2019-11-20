@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json;
-using Data.Data.Repositories;
 using Data.Models.Entities;
 using Data.Network;
+using Data.Repositories;
 
 namespace Data.Logic
 {

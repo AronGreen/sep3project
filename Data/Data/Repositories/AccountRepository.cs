@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using Data.Data.Contexts;
 using Data.Models.Entities;
 
-namespace Data.Data.Repositories
+namespace Data.Repositories
 {
     class AccountRepository  : IAccountRepository
     {

@@ -9,6 +9,6 @@ public interface IReservationService {
     DataResponse<String> delete(int id);
     DataResponse<String> getById(int id);
     DataResponse<String> getByTripId(int tripId);
-    DataResponse<String> getByUserId(int userId);
+    DataResponse<String> getByEmail(String email);
 
 }

@@ -1,7 +1,7 @@
 ﻿using Data.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Data.Data.Contexts
+namespace Data.Repositories
 {
     public class ApplicationContext : DbContext
     {

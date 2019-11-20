@@ -1,5 +1,6 @@
 package services;
 
+import helpers.JsonConverter;
 import models.Trip;
 import models.TripFilter;
 
@@ -59,7 +60,7 @@ public class TripService implements ITripService {
     public DataResponse<String> getFiltered(TripFilter filter) {
         // Construct the Request based on the filter and the method
         // TODO add filter json
-        DataRequest req = new DataRequest("trip", "getFiltered", null);
+        DataRequest req = new DataRequest("trip", "getFiltered", JsonConverter.toJson(filter));
 
         // Send the Request and receive the response json
         String json = connection.sendRequest(req);
