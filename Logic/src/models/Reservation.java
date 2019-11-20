@@ -8,7 +8,7 @@ public class Reservation {
     private int id;
     private Trip trip;
     private int tripId;
-    private User passenger;
+    private Account passenger;
     private int passengerId;
     private String pickupAddress;
     private String dropoffAddress;
@@ -47,11 +47,11 @@ public class Reservation {
         this.trip = trip;
     }
 
-    public User getPassenger() {
+    public Account getPassenger() {
         return passenger;
     }
 
-    public void setPassenger(User passenger) {
+    public void setPassenger(Account passenger) {
         this.passenger = passenger;
     }
 
