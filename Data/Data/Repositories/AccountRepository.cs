@@ -1,10 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using Data.Data.Contexts;
 using Data.Models.Entities;
 
 namespace Data.Data.Repositories
 {
-    class AccountRepository : IAccountRepository
+    class AccountRepository  : IAccountRepository
     {
 
         private readonly ApplicationContext _context;
@@ -16,34 +18,66 @@ namespace Data.Data.Repositories
         }
         public Account Create(Account account)
         {
-            var result = _context.Accounts.Add(account).Entity;
-            _context.SaveChanges();
+            try
+            {
+                var result = _context.Accounts.Add(account).Entity;
+                _context.SaveChanges();
 
-            return result;
+                return result;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return null;
+            }
         }
 
         public Account Update(Account account)
         {
-            var result = _context.Accounts.Update(account).Entity;
-            _context.SaveChanges();
+            try
+            {
+                var result = _context.Accounts.Update(account).Entity;
+                _context.SaveChanges();
 
-            return result;
+                return result;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return null;
+            }
         }
 
         public Account Delete(string email)
         {
-            var result = _context.Accounts.Single(x => x.Email == email);
+            try
+            {
+                var result = _context.Accounts.Single(x => x.Email == email);
 
-            _context.Accounts.Remove(result);
-            _context.SaveChanges();
+                _context.Accounts.Remove(result);
+                _context.SaveChanges();
 
-            return result;
+                return result;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return null;
+            }
         }
 
         public Account GetByEmail(string email)
         {
-            return _context.Accounts
-                .Single(x => x.Email == email);
+            try
+            {
+                return _context.Accounts
+                    .Single(x => x.Email == email);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return null;
+            }
         }
 
         public Account[] GetAll()
@@ -51,6 +85,24 @@ namespace Data.Data.Repositories
             return _context.Accounts
                 .Select(x => x)
                 .ToArray();
+        }
+
+        public string GetPasswordByEmail(string email)
+        {
+            try
+            {
+                return _context.Accounts
+                    .Select(x => new {x.Email, x.Password})
+                    .Where(x => x.Email == email)
+                    .Select(x => x.Password)
+                    .ToArray()[0];
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return null;
+            }
+            
         }
     }
 }

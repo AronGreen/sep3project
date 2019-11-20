@@ -16,6 +16,7 @@ namespace Data
         static void Main(string[] args)
         {
             new ApplicationContext().Database.EnsureCreated();
+
             var composition = new Composition();
 
             var networkHandler = composition.Get<INetworkHandler>();

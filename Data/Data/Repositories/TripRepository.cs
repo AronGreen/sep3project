@@ -23,23 +23,39 @@ using System.Linq;
 
         public Trip Create(Trip trip)
         {
-            // Add the Trip to the database
-            var result = _context.Trips.Add(trip).Entity;
-            _context.SaveChanges();
+            try
+            {
+                // Add the Trip to the database
+                var result = _context.Trips.Add(trip).Entity;
+                _context.SaveChanges();
 
-            return result;
+                return result;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return null;
+            }
         }
 
         public Trip Delete(int id)
         {
-            // Get the Trip from the database
-            var result = _context.Trips.Single(x => x.Id == id);
+            try
+            {
+                // Get the Trip from the database
+                var result = _context.Trips.Single(x => x.Id == id);
 
-            // Delete the Trip
-            _context.Trips.Remove(result);
-            _context.SaveChanges();
+                // Delete the Trip
+                _context.Trips.Remove(result);
+                _context.SaveChanges();
 
-            return result;
+                return result;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return null;
+            }
         }
 
         public Trip[] GetFiltered(TripFilter filter = null)
@@ -53,8 +69,16 @@ using System.Linq;
 
         public Trip GetById(int id)
         {
-            var result = _context.Trips.Single(x => x.Id == id);
-            return result;
+            try
+            {
+                var result = _context.Trips.Single(x => x.Id == id);
+                return result;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return null;
+            }
         }
     }
 }

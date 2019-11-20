@@ -16,6 +16,9 @@ namespace Data.Models.Entities
         [JsonPropertyName("password")]
         public string Password { get; set; }
 
+        [JsonPropertyName("passwordSalt")]
+        public string PasswordSalt { get; set; }
+
         [JsonPropertyName("firstName")]
         public string FirstName { get; set; }
 

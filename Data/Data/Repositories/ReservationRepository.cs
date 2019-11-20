@@ -20,38 +20,71 @@ namespace Data.Data.Repositories
 
         public Reservation Create(Reservation reservation)
         {
-            // Add the Reservation to the database (result should be the same the entity passed in)
-            var result = _context.Reservations.Add(reservation).Entity;
-            _context.SaveChanges();
+            try
+            {
+                // Add the Reservation to the database (result should be the same the entity passed in)
+                var result = _context.Reservations.Add(reservation).Entity;
+                _context.SaveChanges();
 
-            return result;
+                return result;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return null;
+            }
+            
         }
 
         public Reservation Update(Reservation reservation)
         {
-            // Update the Reservation (result should be the same as the one passed in)
-            var result = _context.Reservations.Update(reservation).Entity;
-            _context.SaveChanges();
+            try
+            {
+                // Update the Reservation (result should be the same as the one passed in)
+                var result = _context.Reservations.Update(reservation).Entity;
+                _context.SaveChanges();
 
-            return result;
+                return result;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return null;
+            }
         }
 
         public Reservation Delete(int id)
         {
-            // Get the Reservation from the database
-            var result = _context.Reservations.Single(x => x.Id == id);
+            try
+            {
+                // Get the Reservation from the database
+                var result = _context.Reservations.Single(x => x.Id == id);
             
-            // Delete the Reservation
-            _context.Reservations.Remove(result);
-            _context.SaveChanges();
+                // Delete the Reservation
+                _context.Reservations.Remove(result);
+                _context.SaveChanges();
 
-            return result;
+                return result;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return null;
+            }
         }
 
         public Reservation GetById(int id)
         {
-            return _context.Reservations
-                .Single(x => x.Id == id);
+            try
+            {
+                return _context.Reservations
+                    .Single(x => x.Id == id);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return null;
+            }
         }
 
         public Reservation[] GetByTripId(int tripId)
