@@ -17,20 +17,21 @@ public class AuthHandler implements IAuthHandler {
 
     @Override
     public DataResponse<String> authenticate(String email, String password) {
-        DataResponse<Account> userResponse = service.getByEmail(email);
+        DataResponse<String> userResponse = service.getByEmail(email);
 
-        Account storedAccount = userResponse.getBody();
+        //Account storedAccount = userResponse.getBody();
 
-        try {
-            if (Password.check(password, storedAccount.getPassword())){
-                AuthToken token = AuthToken.getInstance();
-//                return token.add(storedAccount);
-                return null;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+//         try {
+//             if (Password.check(password, storedAccount.getPassword())){
+//                 AuthToken token = AuthToken.getInstance();
+//                 return token.add(storedAccount);
+//                 return null;
+//             }
+//         } catch (Exception e) {
+//             e.printStackTrace();
+//         }
+//         return null;
         // return 401
+        return null;
     }
 }

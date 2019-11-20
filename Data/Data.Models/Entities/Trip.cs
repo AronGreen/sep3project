@@ -34,7 +34,7 @@ namespace Data.Models.Entities
         /// </summary>
         [JsonPropertyName("arrival")]
         [Required]
-        public DateTime Arrival { get; set; }
+        public string Arrival { get; set; }
 
         /// <summary>
         /// The starting address of the Trip

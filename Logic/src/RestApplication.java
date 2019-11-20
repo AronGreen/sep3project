@@ -1,7 +1,5 @@
-import controllers.AuthController;
-import controllers.HelloWorldController;
-import controllers.ReservationController;
-import controllers.TripController;
+import controllers.*;
+
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 import java.util.HashSet;
@@ -14,6 +12,7 @@ public class RestApplication extends Application {
         h.add(HelloWorldController.class);
         h.add(TripController.class);
         h.add(AuthController.class);
+        h.add(AccountController.class);
         h.add(ReservationController.class);
         return h;
     }

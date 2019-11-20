@@ -22,9 +22,6 @@ namespace Data.Composer
         {
             return new ServiceCollection()
 
-                // Add db context
-                .AddTransient<ApplicationContext>()
-
                 // Add repositories
                 .AddTransient<IAccountRepository, AccountRepository>()
                 .AddTransient<ITripRepository, TripRepository>()

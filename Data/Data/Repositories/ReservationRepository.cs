@@ -11,20 +11,14 @@ namespace Data.Data.Repositories
     public class ReservationRepository : IReservationRepository
     {
 
-        private readonly ApplicationContext _context;
-
-        public ReservationRepository(ApplicationContext context)
-        {
-            _context = context;
-        }
-
         public Reservation Create(Reservation reservation)
         {
+            using var context = new ApplicationContext();
             try
             {
                 // Add the Reservation to the database (result should be the same the entity passed in)
-                var result = _context.Reservations.Add(reservation).Entity;
-                _context.SaveChanges();
+                var result = context.Reservations.Add(reservation).Entity;
+                context.SaveChanges();
 
                 return result;
             }
@@ -38,11 +32,12 @@ namespace Data.Data.Repositories
 
         public Reservation Update(Reservation reservation)
         {
+            using var context = new ApplicationContext();
             try
             {
                 // Update the Reservation (result should be the same as the one passed in)
-                var result = _context.Reservations.Update(reservation).Entity;
-                _context.SaveChanges();
+                var result = context.Reservations.Update(reservation).Entity;
+                context.SaveChanges();
 
                 return result;
             }
@@ -55,14 +50,15 @@ namespace Data.Data.Repositories
 
         public Reservation Delete(int id)
         {
+            using var context = new ApplicationContext();
             try
             {
                 // Get the Reservation from the database
-                var result = _context.Reservations.Single(x => x.Id == id);
+                var result = context.Reservations.Single(x => x.Id == id);
             
                 // Delete the Reservation
-                _context.Reservations.Remove(result);
-                _context.SaveChanges();
+                context.Reservations.Remove(result);
+                context.SaveChanges();
 
                 return result;
             }
@@ -75,9 +71,10 @@ namespace Data.Data.Repositories
 
         public Reservation GetById(int id)
         {
+            using var context = new ApplicationContext();
             try
             {
-                return _context.Reservations
+                return context.Reservations
                     .Single(x => x.Id == id);
             }
             catch (Exception e)
@@ -89,7 +86,8 @@ namespace Data.Data.Repositories
 
         public Reservation[] GetByTripId(int tripId)
         {
-            return _context.Reservations
+            using var context = new ApplicationContext();
+            return context.Reservations
                 .Select(x => x)
                 .Where(x => x.TripId == tripId)
                 .ToArray();
@@ -97,7 +95,8 @@ namespace Data.Data.Repositories
 
         public Reservation[] GetByEmail(string email)
         {
-            return _context.Reservations
+            using var context = new ApplicationContext();
+            return context.Reservations
                 .Select(x => x)
                 .Where(x => x.Passenger.Email == email)
                 .ToArray();
