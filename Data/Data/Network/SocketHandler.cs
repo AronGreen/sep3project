@@ -37,7 +37,6 @@ namespace Data.Network
             int bytesRead = stream.Read(bytes, 0, bytes.Length);
             string json = Encoding.UTF8.GetString(bytes, 0, bytesRead);
 
-            // TODO build Request from json string
             var req = JsonSerializer.Deserialize<Request>(json);
 
             // Forward request to the Logic, and retrieve the Response
@@ -64,7 +63,6 @@ namespace Data.Network
                 {
                     // Accept clients
                     var client = listener.AcceptTcpClient();
-                    Console.WriteLine("New connection opened");
 
                     // Forward the Network Stream to a handling thread
                     new Thread(() => RequestStart(client.GetStream())).Start();

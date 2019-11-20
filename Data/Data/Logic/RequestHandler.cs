@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text.Json;
 using Data.Data.Repositories;
+using Data.Extensions;
 using Data.Models.Entities;
 using Data.Network;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
@@ -22,11 +23,11 @@ namespace Data.Logic
 
         public Response Handle(Request req)
         {
-            Console.WriteLine("Request:\n" + JsonSerializer.Serialize(req) + "\n---------------------------------------------\n");
+            Console.WriteLine("Request:\n" + JsonSerializer.Serialize(req).BeautifyJson() + "\n---------------------------------------------\n");
 
             var response = requestTable.GetEntry(req.Type, req.Operation)(req.Body);
 
-            Console.WriteLine("Response:\n" + JsonSerializer.Serialize(response) + "\n---------------------------------------------\n");
+            Console.WriteLine("Response:\n" + JsonSerializer.Serialize(response).BeautifyJson() + "\n---------------------------------------------\n");
 
             return response;
         }
