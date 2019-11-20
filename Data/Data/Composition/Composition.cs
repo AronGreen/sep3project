@@ -30,6 +30,14 @@ namespace Data.Composer
                 .AddTransient<ITripRepository, TripRepository>()
                 .AddTransient<IReservationRepository, ReservationRepository>()
 
+                // Add request table composers
+                .AddTransient<AccountRequestTableComposer>()
+                .AddTransient<TripRequestTableComposer>()
+                .AddTransient<ReservationRequestTableComposer>()
+
+                // Add request handler table
+                .AddTransient<IRequestTable, RequestTable>()
+
                 // Add request handler
                 .AddTransient<IRequestHandler, RequestHandler>()
 
