@@ -20,7 +20,7 @@ namespace FrontEnd.Pages
         {
             HttpClient client = new HttpClient();
             Console.WriteLine("Fetching data...");
-            var s = await client.GetStringAsync("http://localhost:8080/api/trips/get/id");
+            var s = await client.GetStringAsync("http://localhost:8080/Logic_war_exploded/trips/get");
             List<Trip> temp = JsonConvert.DeserializeObject<List<Trip>>(s);
 
 

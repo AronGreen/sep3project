@@ -22,4 +22,11 @@
     <Folder Include="graphics\" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <Reference Include="Data.Models">
+      <HintPath>..\..\Data\Data.Models\bin\Debug\netcoreapp3.0\Data.Models.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
