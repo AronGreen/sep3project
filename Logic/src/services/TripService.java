@@ -1,64 +1,70 @@
 package services;
 
-import models.socket.SocketRequest;
-import models.socket.SocketResponse;
-import models.trip.CreateTripModel;
-import models.trip.Trip;
+import helpers.JsonConverter;
+import models.Trip;
+import models.TripFilter;
 
-public class TripService {
-    private DataConnection dc = DataConnection.INSTANCE;
-    private boolean dataLayerIsNotReady_Flag = false;
+import javax.xml.crypto.Data;
 
-    public Trip getById(int id){
-        // TODO: Business Logic here
+public class TripService implements ITripService {
 
-//        SocketRequest request = new SocketRequest(1, "trip", "get", "{id: " + id + "}");
-//        String  json = dc.sendRequest(request);
-//        TripSocketResponse response = TripSocketResponse.fromJson(json);
+    private DataConnection connection;
 
-        SocketRequest request = new SocketRequest("trip", "get", "{\"id\": " + id + "}");
-        String  json = dc.sendRequest(request);
-        SocketResponse<Trip> response = SocketResponse.fromJson(json, Trip.class);
-
-        // TODO: Figure out the response types
-//        if (response.getStatus().equals("Something bad")){
-//            return null;
-//        }
-
-        return response.getBody();
+    public TripService() {
+        connection = DataConnection.INSTANCE;
     }
 
-    public Trip getAll(){
-        // TODO: Business Logic here
+    @Override
+    public DataResponse<String> create(Trip trip) {
+        // Construct the Request based on the Trip and the method
+        DataRequest req = new DataRequest("trip", "create", trip.toJson());
 
-        // TODO: Figure out how to generify the responses
-//        SocketRequest request = new SocketRequest(1, "trip", "getAll", "");
-//        String  json = dc.sendRequest(request);
-//        TripSocketResponse response = TripSocketResponse.fromJson(json);
-//
-//        // TODO: Figure out the response types
-//        if (response.getStatus().equals("Something bad")){
-//            return null;
-//        }
-//
-//        return response.getBody();
+        // Send the Request and receive the response json
+        String json = connection.sendRequest(req);
 
-        return null;
+        // Construct the Response
+        DataResponse<String> res = DataResponse.fromJson(json, String.class);
+
+        return res;
     }
 
-    public boolean create(CreateTripModel model) {
-        // TODO: Business Logic here
+    @Override
+    public DataResponse<String> delete(int id) {
+        // Construct the Request based on the id and the method
+        DataRequest req = new DataRequest("trip", "delete", "" + id);
 
-        SocketRequest request = new SocketRequest("trip", "create", model.toJson());
-        if (dataLayerIsNotReady_Flag){
-            String json = dc.sendRequest(request);
-            SocketResponse<Trip> response = SocketResponse.fromJson(json, Trip.class);
-            return response.getStatus().equals("200");
-        }
-        else {
-            // TODO: Delete this when data is ready
-            SocketResponse<Trip> response = new SocketResponse("200", Trip.class);
-            return response.getStatus().equals("200");
-        }
+        // Send the Request and receive the response json
+        String json = connection.sendRequest(req);
+
+        // Construct the Response
+        DataResponse<String> res = DataResponse.fromJson(json, String.class);
+
+        return res;
+    }
+
+    @Override
+    public DataResponse<String> getById(int id) {
+        // Construct the Request based on the id and the method
+        DataRequest req = new DataRequest("trip", "getById", id + "");
+
+        // Send the Request and receive the response json
+        String json = connection.sendRequest(req);
+
+        // Construct the Response
+        DataResponse<String> res = DataResponse.fromJson(json, String.class);
+
+        return res;
+    }
+
+    @Override
+    public DataResponse<String> getFiltered(TripFilter filter) {
+        // Construct the Request based on the filter and the method
+        // TODO add filter json
+        DataRequest req = new DataRequest("trip", "getFiltered", JsonConverter.toJson(filter));
+
+        // Send the Request and receive the response json
+        String json = connection.sendRequest(req);
+
+        return DataResponse.fromJson(json, String.class);
     }
 }

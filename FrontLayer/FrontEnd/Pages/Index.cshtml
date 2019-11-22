@@ -6,6 +6,7 @@
 
 
 
+
 @{
     ViewData["Title"] = "MainPage";
 
@@ -52,6 +53,7 @@ spans.forEach((span, idx) => {
 
     <div align="center" class="login-container">
 
+<<<<<<< HEAD
 
         <p>
             <span class="input">
@@ -61,15 +63,33 @@ spans.forEach((span, idx) => {
         </p>
         <br />
         <p>
+=======
+        <form method="post" asp-page-handler="Login">
+            <p>
+                <span class="input">
+                    <input type="text" placeholder="Username"  class="form-control" name="username">
+                    <span></span>
+                </span>
+            </p>
+            <br />
+>>>>>>> develop
             <span class="input">
-                <input type="password" placeholder="Password" required>
+                <input type="password" placeholder="Password"  class="form-control" name="password">
                 <span></span>
             </span>
-        </p>
-        <br />
+            </p>
+            <div class="form-group">
+                    <div class="checkbox">
+                        <label asp-for="RememberMe">
+                            <input asp-for="RememberMe" />
+                            Remember me
+                        </label>
+                    </div>
+            </div>
+            <br />
 
-        <form method="get">
-            <button type="submit" asp-page="./MainLoggedIn" class="login-button">Log in</button>
+
+            <button type="submit"  class="login-button">Log in</button>
         </form>
 
         <label>Don't have an account?</label>

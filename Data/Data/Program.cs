@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Linq;
+using Data.Composer;
 using Data.Data;
-using Data.Data.Entities;
-using Data.Data.Repositories;
 using Data.Logic;
 using Data.Network;
+using Data.Repositories;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Data
 {
@@ -13,11 +14,13 @@ namespace Data
     {
         static void Main(string[] args)
         {
-            var repositoryProvider = new RepositoryProvider();
-            IRequestHandler requestHandler = new RequestHandler(repositoryProvider);
-            INetworkHandler networkHandler = new SocketHandler(requestHandler);
+            new ApplicationContext().Database.EnsureCreated();
 
-            
+            var composition = new Composition();
+
+            var networkHandler = composition.Get<INetworkHandler>();
+
+            networkHandler.Start();
         }
 
     }

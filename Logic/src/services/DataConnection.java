@@ -1,7 +1,5 @@
 package services;
 
-import models.socket.SocketRequest;
-
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
@@ -12,10 +10,11 @@ public enum DataConnection {
 
     INSTANCE;
 
-    public String sendRequest (SocketRequest request) {
+    public String sendRequest (DataRequest request) {
         try {
             Connection conn = new Connection();
             conn.send(request.toJson().getBytes());
+            // conn.send(json.getBytes());
             byte[] responseBytes = conn.receive();
             conn.close();
             if (responseBytes == null) {
