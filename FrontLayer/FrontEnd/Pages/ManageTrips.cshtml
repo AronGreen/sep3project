@@ -62,14 +62,22 @@
 
 
     <div>
-        <ul style="list-style: none;">
+        <table>
             @foreach (Trip t in Model.trips)
             {
 
-                <li>@t.Title <button></button></li>
+            <tr>
+                <td>@t.Title</td>
+                
+                
+
+
+
+
+            </tr>
 
             }
-        </ul>
+        </table>
     </div>
 
 

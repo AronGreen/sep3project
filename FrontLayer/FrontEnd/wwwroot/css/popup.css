@@ -15,14 +15,14 @@
   font-size: 1em;
   padding: 10px;
   color: #1b06a5;
-  border: 2px solid #06D85F;
+  border: 2px solid #1b06a5;
   border-radius: 20px/50px;
   text-decoration: none;
   cursor: pointer;
   transition: all 0.3s ease-out;
 }
 .button:hover {
-  background: #06D85F;
+  background: #1b06a5;
 }
 
 .overlay {
@@ -67,7 +67,7 @@
   color: #333;
 }
 .popup .close:hover {
-  color: #06D85F;
+  color: #1b06a5;
 }
 .popup .content {
   max-height: 30%;
