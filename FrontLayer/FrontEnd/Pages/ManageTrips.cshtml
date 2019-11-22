@@ -62,19 +62,29 @@
 
 
     <div>
-        <table>
+
+
+        <table width="60%" align="center" id="table-trips">
+            <tr>
+                <td>Title</td>
+                <td>Date</td>
+                <td>Start</td>
+                <td>End</td>
+                <td>Available Seats</td>
+                <td>Reserve</td>
+            </tr>
+
             @foreach (Trip t in Model.trips)
             {
 
-            <tr>
-                <td>@t.Title</td>
-                
-                
-
-
-
-
-            </tr>
+                <tr>
+                    <td>@t.Title</td>
+                    <td>@t.Date</td>
+                    <td>@t.StartingPoint</td>
+                    <td>@t.EndingPoint</td>
+                    <td>@t.AvailableSeats</td>
+                    <td><button id="reserve"></button></td>
+                </tr>
 
             }
         </table>
