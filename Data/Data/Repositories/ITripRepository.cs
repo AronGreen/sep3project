@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using Data.Data;
 using Data.Models.Entities;
 
-namespace Data.Data.Repositories
+namespace Data.Repositories
 {
     public interface ITripRepository
     {
-        Trip GetDummy();
+
         Trip Create(Trip trip);
 
         Trip Delete(int id);

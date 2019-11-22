@@ -2,6 +2,8 @@ package services;
 
 import models.Reservation;
 
+import javax.xml.crypto.Data;
+
 
 public class ReservationService implements IReservationService {
 
@@ -15,10 +17,7 @@ public class ReservationService implements IReservationService {
         // Send Request and receive response json
         String json = connection.sendRequest(req);
 
-        // Construct Response
-        DataResponse<String> res = DataResponse.fromJson(json, String.class);
-
-        return res;
+        return DataResponse.fromJson(json, String.class);
     }
 
     @Override
@@ -29,20 +28,25 @@ public class ReservationService implements IReservationService {
         // Send Request and receive response json
         String json = connection.sendRequest(req);
 
-        // Construct Response
-        DataResponse<String> res = DataResponse.fromJson(json, String.class);
-
-        return res;
+        return DataResponse.fromJson(json, String.class);
     }
 
     @Override
     public DataResponse<String> delete(int id) {
-        return null;
+        DataRequest request = new DataRequest("reservation", "delete", id + "");
+
+        String json = connection.sendRequest(request);
+
+        return DataResponse.fromJson(json, String.class);
     }
 
     @Override
     public DataResponse<String> getById(int id) {
-        return null;
+        DataRequest request = new DataRequest("reservation", "getById", id + "");
+
+        String json = connection.sendRequest(request);
+
+        return DataResponse.fromJson(json, String.class);
     }
 
     @Override
@@ -54,13 +58,17 @@ public class ReservationService implements IReservationService {
         String json = connection.sendRequest(req);
 
         // Construct Response
-        DataResponse<String> res = DataResponse.fromJson(json, String.class);
 
-        return res;
+        return DataResponse.fromJson(json, String.class);
     }
 
     @Override
-    public DataResponse<String> getByUserId(int userId) {
-        return null;
+    public DataResponse<String> getByEmail(String email) {
+        DataRequest request = new DataRequest("reservation", "getByEmail", email);
+
+        String json = connection.sendRequest(request);
+
+        return DataResponse.fromJson(json, String.class);
     }
+
 }

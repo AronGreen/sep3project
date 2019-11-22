@@ -5,7 +5,9 @@ import com.google.gson.GsonBuilder;
 import handlers.ITripHandler;
 import handlers.TripHandler;
 import helpers.JsonConverter;
+import jdk.net.SocketFlow;
 import models.Trip;
+import models.TripFilter;
 import services.DataResponse;
 
 import javax.servlet.ServletContext;
@@ -34,13 +36,46 @@ public class TripController {
 //
 //    @Context
 //    private Request request;
+    @POST
+    @Path("create")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response create(String json){
+        // Extract Trip from request
+        Trip t = Trip.fromJson(json);
+
+        // Send request and receive Response
+        DataResponse<String> res = handler.create(t);
+
+        // Extract http response code
+        int status = StatusMapper.map(res.getStatus());
+
+        return Response
+                .status(status)
+                .entity(res.getBody())
+                .build();
+    }
+
+    @DELETE
+    @Path("delete/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response delete(@PathParam("id") int id) {
+        DataResponse<String> response = handler.delete(id);
+
+        int status = StatusMapper.map(response.getStatus());
+
+        return Response
+                .status(status)
+                .entity(response.getBody())
+                .build();
+    }
 
     @GET
     @Path("get")
     @Produces(MediaType.APPLICATION_JSON )
-    public Response get(){
+    public Response getFiltered(){
         // Send request and receive Response
-        DataResponse<String> res = handler.getFiltered(null);
+        DataResponse<String> res = handler.getFiltered(new TripFilter());
 
         // Extract http response data
         int status = StatusMapper.map(res.getStatus());
@@ -68,23 +103,5 @@ public class TripController {
                 .build();
     }
 
-    @POST
-    @Path("create")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response create(String json){
-        // Extract Trip from request
-        Trip t = Trip.fromJson(json);
 
-        // Send request and receive Response
-        DataResponse<String> res = handler.create(t);
-
-        // Extract http response code
-        int status = StatusMapper.map(res.getStatus());
-
-        return Response
-                .status(status)
-                .entity(res.getBody())
-                .build();
-    }
 }

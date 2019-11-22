@@ -1,19 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Data.Models.Entities;
+﻿using Data.Models.Entities;
 
-namespace Data.Data.Repositories
+namespace Data.Repositories
 {
     public interface IReservationRepository
     {
-        Reservation GetDummy();
 
         Reservation Create(Reservation reservation);
-
         Reservation Update(Reservation reservation);
-
         Reservation Delete(int id);
-
         Reservation GetById(int id);
 
         /// <summary>
@@ -26,10 +20,9 @@ namespace Data.Data.Repositories
         /// <summary>
         /// Get all the Reservations placed by a given user
         /// </summary>
-        /// <param name="userId"></param>
+        /// <param name="email"></param>
         /// <returns></returns>
-        Reservation[] GetByUserId(int userId);
-
+        Reservation[] GetByEmail(string email);
 
     }
 }

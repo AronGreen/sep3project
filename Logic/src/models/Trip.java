@@ -6,8 +6,8 @@ import com.google.gson.GsonBuilder;
 public class Trip {
 
     private int id;
-    private User driver;
-    private int driverId;
+    private String driverEmail;
+    private Account driver;
     private String arrival;
     private String startAddress;
     private String destinationAddress;
@@ -18,14 +18,6 @@ public class Trip {
     private int totalSeats;
     private String description;
 
-    public int getDriverId() {
-        return driverId;
-    }
-
-    public void setDriverId(int driverId) {
-        this.driverId = driverId;
-    }
-
     public int getId() {
         return id;
     }
@@ -34,11 +26,18 @@ public class Trip {
         this.id = id;
     }
 
-    public User getDriver() {
+    public String getDriverEmail() {
+        return driverEmail;
+    }
+
+    public void setDriverEmail(String driverEmail) {
+        this.driverEmail = driverEmail;
+    }
+    public Account getDriver() {
         return driver;
     }
 
-    public void setDriver(User driver) {
+    public void setDriver(Account driver) {
         this.driver = driver;
     }
 

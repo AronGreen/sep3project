@@ -7,5 +7,7 @@
     public interface INetworkHandler
     {
 
+        void Start();
+
     }
 }

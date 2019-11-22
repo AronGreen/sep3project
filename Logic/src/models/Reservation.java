@@ -8,8 +8,8 @@ public class Reservation {
     private int id;
     private Trip trip;
     private int tripId;
-    private User passenger;
-    private int passengerId;
+    private String passengerEmail;
+    private Account passenger;
     private String pickupAddress;
     private String dropoffAddress;
     private String approved;
@@ -23,12 +23,12 @@ public class Reservation {
         this.tripId = tripId;
     }
 
-    public int getPassengerId() {
-        return passengerId;
+    public String getPassengerEmail() {
+        return passengerEmail;
     }
 
-    public void setPassengerId(int passengerId) {
-        this.passengerId = passengerId;
+    public void setPassengerEmail(String passengerEmail) {
+        this.passengerEmail = passengerEmail;
     }
 
     public int getId() {
@@ -47,11 +47,11 @@ public class Reservation {
         this.trip = trip;
     }
 
-    public User getPassenger() {
+    public Account getPassenger() {
         return passenger;
     }
 
-    public void setPassenger(User passenger) {
+    public void setPassenger(Account passenger) {
         this.passenger = passenger;
     }
 

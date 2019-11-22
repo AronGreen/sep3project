@@ -11,7 +11,8 @@ import services.DataResponse;
 public interface ITripHandler {
 
     DataResponse<String> create(Trip trip);
-    DataResponse<String> getById(int id);
+    DataResponse<String> delete(int id);
     DataResponse<String> getFiltered(TripFilter filter);
+    DataResponse<String> getById(int id);
 
 }

@@ -8,16 +8,19 @@ namespace Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "Accounts",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(nullable: false)
+                    Email = table.Column<string>(nullable: false),
+                    Password = table.Column<string>(nullable: true),
+                    FirstName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true),
+                    DateOfBirth = table.Column<DateTime>(nullable: false),
+                    Phone = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_Accounts", x => x.Email);
                 });
 
             migrationBuilder.CreateTable(
@@ -26,7 +29,7 @@ namespace Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    DriverId = table.Column<int>(nullable: false),
+                    DriverEmail = table.Column<string>(nullable: false),
                     Arrival = table.Column<DateTime>(nullable: false),
                     StartAddress = table.Column<string>(nullable: false),
                     DestinationAddress = table.Column<string>(nullable: false),
@@ -41,10 +44,10 @@ namespace Data.Migrations
                 {
                     table.PrimaryKey("PK_Trips", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Trips_Users_DriverId",
-                        column: x => x.DriverId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
+                        name: "FK_Trips_Accounts_DriverEmail",
+                        column: x => x.DriverEmail,
+                        principalTable: "Accounts",
+                        principalColumn: "Email",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -55,7 +58,7 @@ namespace Data.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     TripId = table.Column<int>(nullable: false),
-                    PassengerId = table.Column<int>(nullable: false),
+                    PassengerEmail = table.Column<string>(nullable: false),
                     PickupAddress = table.Column<string>(nullable: false),
                     DropoffAddress = table.Column<string>(nullable: false),
                     Approved = table.Column<DateTime>(nullable: true),
@@ -65,10 +68,10 @@ namespace Data.Migrations
                 {
                     table.PrimaryKey("PK_Reservations", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Reservations_Users_PassengerId",
-                        column: x => x.PassengerId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
+                        name: "FK_Reservations_Accounts_PassengerEmail",
+                        column: x => x.PassengerEmail,
+                        principalTable: "Accounts",
+                        principalColumn: "Email",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Reservations_Trips_TripId",
@@ -79,9 +82,9 @@ namespace Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reservations_PassengerId",
+                name: "IX_Reservations_PassengerEmail",
                 table: "Reservations",
-                column: "PassengerId");
+                column: "PassengerEmail");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reservations_TripId",
@@ -89,9 +92,9 @@ namespace Data.Migrations
                 column: "TripId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Trips_DriverId",
+                name: "IX_Trips_DriverEmail",
                 table: "Trips",
-                column: "DriverId");
+                column: "DriverEmail");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -103,7 +106,7 @@ namespace Data.Migrations
                 name: "Trips");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "Accounts");
         }
     }
 }

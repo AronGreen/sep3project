@@ -14,36 +14,17 @@ namespace Data.Network
     public class SocketHandler : INetworkHandler
     {
         // The handler that represents the business logic
-        private readonly Func<Request, Response> _handle;
+        private readonly IRequestHandler _requestHandler;
 
         /// <summary>
         /// Starts accepting incoming socket connections in the background.
         /// </summary>
         /// <param name="requestHandler">The Request Handler object that represents the Business Logic</param>
-        public SocketHandler(IRequestHandler requestHandler)
+        public SocketHandler(
+            IRequestHandler requestHandler)
         {
-            _handle = requestHandler.Handle;
+            _requestHandler = requestHandler;
 
-            // This thread accepts connections, and forwards them to another handling thread
-            new Thread(() =>
-            {
-                // Start the listener thread on 127.0.0.1:3000
-                byte[] ip = new byte[] {127, 0, 0, 1};
-                var listener = new TcpListener(new IPAddress(ip), 3000);
-                listener.Start();
-
-                Console.WriteLine("SocketHandler is listening...");
-
-                while (true)
-                {
-                    // Accept clients
-                    var client = listener.AcceptTcpClient();
-                    Console.WriteLine("New connection opened");
-
-                    // Forward the Network Stream to a handling thread
-                    new Thread(() => RequestStart(client.GetStream())).Start();
-                }
-            }).Start();
         }
 
 
@@ -56,17 +37,37 @@ namespace Data.Network
             int bytesRead = stream.Read(bytes, 0, bytes.Length);
             string json = Encoding.UTF8.GetString(bytes, 0, bytesRead);
 
-            // TODO build Request from json string
             var req = JsonSerializer.Deserialize<Request>(json);
 
             // Forward request to the Logic, and retrieve the Response
-            var res = _handle(req);
-
-            Console.WriteLine("Response:\n" + res.ToJson());
+            var res = _requestHandler.Handle(req);
 
             // Encode Response to a json string and write it to Network Stream
             bytes = Encoding.UTF8.GetBytes(res.ToJson());
             stream.Write(bytes);
+        }
+
+        public void Start()
+        {
+            // This thread accepts connections, and forwards them to another handling thread
+            new Thread(() =>
+            {
+                // Start the listener thread on 127.0.0.1:3000
+                byte[] ip = new byte[] { 127, 0, 0, 1 };
+                var listener = new TcpListener(new IPAddress(ip), 3000);
+                listener.Start();
+
+                Console.WriteLine("SocketHandler is listening...");
+
+                while (true)
+                {
+                    // Accept clients
+                    var client = listener.AcceptTcpClient();
+
+                    // Forward the Network Stream to a handling thread
+                    new Thread(() => RequestStart(client.GetStream())).Start();
+                }
+            }).Start();
         }
     }
 }
