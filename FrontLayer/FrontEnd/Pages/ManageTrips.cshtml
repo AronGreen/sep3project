@@ -23,16 +23,24 @@
             <div class="content">
 
                 <div align="center">
-                   
-                    <input type="text" name="Id" value="@Model.trip.Id" placeholder="Trip ID"/> <br />
-                    
-                    <input type="text" name="Title" value="@Model.trip.Title" placeholder="Title"/><br />
-                    
+
+                    <span class="input">
+                        <input type="text" name="Title" value="@Model.trip.Title" placeholder="Title" /><br />
+                    </span>
+
+                    <span class="input">
                     <input type="text" name="Date" value="@Model.trip.Date" placeholder="Date"/><br />
-                    
-                    <input type="text" name="Date" value="@Model.trip.Date" placeholder="Starting Point"/><br />
-                    
-                    <input type="text" name="Date" value="@Model.trip.Date" placeholder="Ending Point"/><br />
+                    </span>
+
+                    <span class="input">
+                    <input type="text" name="Date" value="@Model.trip.StartingPoint" placeholder="Starting Point"/><br />
+                    </span>
+
+                    <span class="input">
+                    <input type="text" name="Date" value="@Model.trip.EndingPoint" placeholder="Ending Point"/><br />
+                    </span>
+
+                    <br />
                     <label for="Date">Available seats:</label>
                     <select name="AvSeats">
                         <option>1</option>

@@ -26,6 +26,10 @@ namespace FrontEnd.Pages.Entities
 
         }
 
+        public Trip()
+        {
+
+        }
 
 
         

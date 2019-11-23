@@ -48,6 +48,13 @@ html, body {
     font-weight: 600; 
 }
 
+#table-trips {
+    align-items: center;
+    border:inset;
+    border-width: 3px;
+}
+
+
 
 
 .input {

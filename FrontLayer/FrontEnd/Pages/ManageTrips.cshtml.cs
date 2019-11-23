@@ -14,7 +14,7 @@ namespace FrontEnd.Pages
     {
 
         public string Message { get; set; } = "Initial message";
-        public Trip trip = new Trip(1, "Titleee", "02.12.2018");
+        public Trip trip = new Trip();
         public List<Trip> trips = new List<Trip>() {new Trip(312,"dsadsad","dsadsa") };
         public async Task OnPostTripAsync()
         {
