@@ -7,16 +7,22 @@
 
 <link rel="stylesheet" href="~/css/popup.css" />
 
+
+<form method="get">
+    <button type="submit" asp-page="./MainLoggedIn" class="mb-3">Go to main</button>
+</form>
+
+
 <h1 align="center">ManageTrips</h1>
 
 
 <div>
 
     <div class="box">
-        <a class="button" href="#popup1">Create a trip</a>
+        <a class="button" href="#createTripPopup">Create a trip</a>
     </div>
 
-    <div id="popup1" class="overlay">
+    <div id="createTripPopup" class="overlay">
         <div class="popup">
             <h2>Create a trip</h2>
             <a class="close" href="#">&times;</a>
@@ -29,20 +35,20 @@
                     </span>
 
                     <span class="input">
-                    <input type="text" name="Date" value="@Model.trip.Date" placeholder="Date"/><br />
+                        <input type="text" name="Date" value="@Model.trip.Date" placeholder="Date" /><br />
                     </span>
 
                     <span class="input">
-                    <input type="text" name="Date" value="@Model.trip.StartingPoint" placeholder="Starting Point"/><br />
+                        <input type="text" name="StartingPoint" value="@Model.trip.StartingPoint" placeholder="Starting Point" /><br />
                     </span>
 
                     <span class="input">
-                    <input type="text" name="Date" value="@Model.trip.EndingPoint" placeholder="Ending Point"/><br />
+                        <input type="text" name="EndingPoint" value="@Model.trip.EndingPoint" placeholder="Ending Point" /><br />
                     </span>
 
                     <br />
-                    <label for="Date">Available seats:</label>
-                    <select name="AvSeats">
+                    <label for="AvailableSeats">Available seats:</label>
+                    <select name="AvailableSeats">
                         <option>1</option>
                         <option>2</option>
                         <option>3</option>
@@ -61,12 +67,10 @@
 
 
     <form method="post" class="text-center">
-        <button asp-page-handler="trip" class="mb-3">Get trip</button>
+        <button asp-page-handler="trip" class="mb-3">Update available trips</button>
     </form>
 
-    <form method="get">
-        <button type="submit" asp-page="./MainLoggedIn" class="mb-3">Go to main</button>
-    </form>
+
 
 
     <div>
@@ -79,7 +83,7 @@
                 <td>Start</td>
                 <td>End</td>
                 <td>Available Seats</td>
-                <td>Reserve</td>
+                <td>&nbsp;</td>
             </tr>
 
             @foreach (Trip t in Model.trips)
@@ -91,10 +95,55 @@
                     <td>@t.StartingPoint</td>
                     <td>@t.EndingPoint</td>
                     <td>@t.AvailableSeats</td>
-                    <td><button id="reserve"></button></td>
+                    <td>
+                        @if (t.AvailableSeats < 1)
+                        {
+                            <p style="color: darkred; text-decoration:solid;">No available space - sorry!</p>
+                        }
+                        else
+                        {
+                            <div style="min-height:45px; margin-top: 5px;">
+                                <a class="button" href="#@t.Title">Reserve</a>
+                            </div>
+
+                        }
+
+
+
+                    </td>
                 </tr>
 
+
+                <div id="@t.Title" class="overlay">
+                    <div class="popup">
+                        <h2>Reservation for trip : @t.Title</h2>
+                        <a class="close" href="#">&times;</a>
+                        <div class="content">
+
+                            <div align="center">
+
+
+                                <label for="Date">How many seats?</label>
+                                <select name="ReservedSeats">
+                                    @for(int i=1; i <= t.AvailableSeats; i-=-1)
+                                    {
+                                        <option>@i</option>
+                                    }
+                                </select>
+
+
+                                <form method="post" class="text-center">
+                                    <button asp-page-handler="reservation" class="mb-3">Reserve</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             }
+
+
+
+
         </table>
     </div>
 

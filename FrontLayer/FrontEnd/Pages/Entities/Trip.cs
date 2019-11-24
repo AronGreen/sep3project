@@ -23,7 +23,6 @@ namespace FrontEnd.Pages.Entities
             this.Title = title;
             this.Date = date;
 
-
         }
 
         public Trip()
@@ -31,8 +30,17 @@ namespace FrontEnd.Pages.Entities
 
         }
 
+        public Trip(string title, string date, string startingPoint, string endingPoint, int availableSeats)
+        {
+            this.Title = title;
+            this.Date = date;
+            this.StartingPoint = startingPoint;
+            this.EndingPoint = endingPoint;
+            this.AvailableSeats = availableSeats;
 
-        
+        }
+
+
     }
 }
     
