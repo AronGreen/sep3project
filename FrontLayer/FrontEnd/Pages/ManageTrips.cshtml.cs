@@ -38,7 +38,7 @@ namespace FrontEnd.Pages
             var date = Request.Form["Date"];
             var spoint = Request.Form["StartingPoint"];
             var epoint = Request.Form["EndingPoint"];
-            int seats = Int32.Parse(Request.Form["AvailableSeats"]);
+            int seats = Int32.Parse(Request.Form["AvailableSeats"].);
 
             Trip sendTrip = new Trip(title, date, spoint, epoint, seats);
 
