@@ -1,22 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using FrontEnd.Pages.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 
 namespace FrontEnd.Pages
 {
     public class ManageTripsModel : PageModel
     {
+        [BindProperty]
+        public int AvailableSeats { get; set; }
+        public int ReservedSeats { get; set; }
+        public List<SelectListItem> Seats { get; set; }
 
+        
         public string Message { get; set; } = "Initial message";
         public Trip trip = new Trip();
         public List<Trip> trips = new List<Trip>() {new Trip("TriperoPrimero","yesterday", "somewhere", "you are not going anywhere", 0), 
                                                     new Trip("LauTransport", "tomorrow", "Uni", "Home", 3) };
+
+
+        public void OnGet()
+        {
+            Seats = new List<SelectListItem> {
+                new SelectListItem { Value = "1", Text = "1"},
+                new SelectListItem { Value = "2", Text = "2"},
+                new SelectListItem { Value = "3", Text = "3"},
+                new SelectListItem { Value = "4", Text = "4"},
+                new SelectListItem { Value = "5", Text = "5"}
+
+            };
+        }
         public async Task OnPostTripAsync()
         {
             HttpClient client = new HttpClient();
@@ -33,14 +53,20 @@ namespace FrontEnd.Pages
         public async Task OnPostSendAsync()
         {
             HttpClient client = new HttpClient();
+
+            
+
+
             
             var title = Request.Form["Title"];
             var date = Request.Form["Date"];
             var spoint = Request.Form["StartingPoint"];
             var epoint = Request.Form["EndingPoint"];
-            int seats = Int32.Parse(Request.Form["AvailableSeats"]);
+            
 
-            Trip sendTrip = new Trip(title, date, spoint, epoint, seats);
+            Trip sendTrip = new Trip(title, date, spoint, epoint, AvailableSeats);
+
+            Debug.WriteLine("" + AvailableSeats);
 
             /*var json = JsonConvert.SerializeObject(sendTrip);
             var content = new StringContent(json, Encoding.UTF8, "application/json");

@@ -48,12 +48,8 @@
 
                     <br />
                     <label for="AvailableSeats">Available seats:</label>
-                    <select name="AvailableSeats" id="AvailableSeats">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
+                    <select name="AvailableSeats" id="AvailableSeats" asp-for="AvailableSeats" asp-items="Model.Seats">
+                       
                     </select>
 
                     <form method="post" class="text-center">
@@ -124,7 +120,7 @@
 
 
                                 <label for="Date">How many seats?</label>
-                                <select name="ReservedSeats">
+                                <select name="ReservedSeats" asp-for="ReservedSeats">
                                     @for(int i=1; i <= t.AvailableSeats; i-=-1)
                                     {
                                         <option value="@i">@i</option>
