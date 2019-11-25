@@ -38,15 +38,16 @@ namespace FrontEnd.Pages
             var date = Request.Form["Date"];
             var spoint = Request.Form["StartingPoint"];
             var epoint = Request.Form["EndingPoint"];
-            var seats = Int32.Parse(Request.Form["AvailableSeats"]);
+            int seats = Int32.Parse(Request.Form["AvailableSeats"]);
 
             Trip sendTrip = new Trip(title, date, spoint, epoint, seats);
 
-            var json = JsonConvert.SerializeObject(sendTrip);
+            /*var json = JsonConvert.SerializeObject(sendTrip);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
             HttpResponseMessage response = await client.PostAsync("http://localhost:8080/api/trips/post", content);
-
+*/
+            trips.Add(sendTrip);
 
         }
 
