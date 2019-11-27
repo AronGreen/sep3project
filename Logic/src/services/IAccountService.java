@@ -11,5 +11,5 @@ public interface IAccountService {
     AccountResponse delete(String email);
     AccountListResponse getAll();
     AccountResponse getByEmail(String email);
-    AccountResponse getPasswordByEmail(String email);
+    DataResponse getPasswordByEmail(String email);
 }
