@@ -9,20 +9,18 @@ namespace Data.Repositories
 
         public Account Create(Account account)
         {
-            using (var context = new ApplicationContext())
+            using var context = new ApplicationContext();
+            try
             {
-                try
-                {
-                    var result = context.Accounts.Add(account).Entity;
-                    context.SaveChanges();
+                var result = context.Accounts.Add(account).Entity;
+                context.SaveChanges();
 
-                    return result;
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                    return null;
-                }
+                return result;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return null;
             }
         }
 
