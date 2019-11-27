@@ -15,7 +15,7 @@ public class TripService implements ITripService {
     }
 
     @Override
-    public DataResponse<String> create(Trip trip) {
+    public DataResponse create(Trip trip) {
         // Construct the Request based on the Trip and the method
         DataRequest req = new DataRequest("trip", "create", trip.toJson());
 
@@ -23,13 +23,13 @@ public class TripService implements ITripService {
         String json = connection.sendRequest(req);
 
         // Construct the Response
-        DataResponse<String> res = DataResponse.fromJson(json, String.class);
+        DataResponse res = JsonConverter.fromJson(json, DataResponse.class);
 
         return res;
     }
 
     @Override
-    public DataResponse<String> delete(int id) {
+    public DataResponse delete(int id) {
         // Construct the Request based on the id and the method
         DataRequest req = new DataRequest("trip", "delete", "" + id);
 
@@ -37,13 +37,13 @@ public class TripService implements ITripService {
         String json = connection.sendRequest(req);
 
         // Construct the Response
-        DataResponse<String> res = DataResponse.fromJson(json, String.class);
+        DataResponse res = JsonConverter.fromJson(json, DataResponse.class);
 
         return res;
     }
 
     @Override
-    public DataResponse<String> getById(int id) {
+    public DataResponse getById(int id) {
         // Construct the Request based on the id and the method
         DataRequest req = new DataRequest("trip", "getById", id + "");
 
@@ -51,13 +51,13 @@ public class TripService implements ITripService {
         String json = connection.sendRequest(req);
 
         // Construct the Response
-        DataResponse<String> res = DataResponse.fromJson(json, String.class);
+        DataResponse res = JsonConverter.fromJson(json, DataResponse.class);
 
         return res;
     }
 
     @Override
-    public DataResponse<String> getFiltered(TripFilter filter) {
+    public DataResponse getFiltered(TripFilter filter) {
         // Construct the Request based on the filter and the method
         // TODO add filter json
         DataRequest req = new DataRequest("trip", "getFiltered", JsonConverter.toJson(filter));
@@ -65,6 +65,6 @@ public class TripService implements ITripService {
         // Send the Request and receive the response json
         String json = connection.sendRequest(req);
 
-        return DataResponse.fromJson(json, String.class);
+        return JsonConverter.fromJson(json, DataResponse.class);
     }
 }

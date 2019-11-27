@@ -1,8 +1,10 @@
 package handlers;
 
+import helpers.Password;
 import models.Account;
+import models.response.AccountListResponse;
+import models.response.AccountResponse;
 import services.AccountService;
-import services.DataResponse;
 import services.IAccountService;
 
 public class AccountHandler implements IAccountHandler {
@@ -14,32 +16,38 @@ public class AccountHandler implements IAccountHandler {
     }
 
     @Override
-    public DataResponse<String> create(Account account) {
+    public AccountResponse create(Account account) {
+        String plaintextPw = account.getPassword();
+        try {
+            account.setPassword(Password.getSaltedHash(plaintextPw));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return accountService.create(account);
     }
 
     @Override
-    public DataResponse<String> update(Account account) {
+    public AccountResponse update(Account account) {
         return accountService.update(account);
     }
 
     @Override
-    public DataResponse<String> delete(String email) {
+    public AccountResponse delete(String email) {
         return accountService.delete(email);
     }
 
     @Override
-    public DataResponse<String> getAll() {
+    public AccountListResponse getAll() {
         return accountService.getAll();
     }
 
     @Override
-    public DataResponse<String> getByEmail(String email) {
+    public AccountResponse getByEmail(String email) {
         return accountService.getByEmail(email);
     }
 
     @Override
-    public DataResponse<String> getPasswordByEmail(String email) {
+    public AccountResponse getPasswordByEmail(String email) {
         return accountService.getPasswordByEmail(email);
     }
 }

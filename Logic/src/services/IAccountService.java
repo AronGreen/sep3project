@@ -1,13 +1,15 @@
 package services;
 
 import models.Account;
+import models.response.AccountListResponse;
+import models.response.AccountResponse;
 
 public interface IAccountService {
 
-    DataResponse<String> create(Account account);
-    DataResponse<String> update(Account account);
-    DataResponse<String> delete(String email);
-    DataResponse<String> getAll();
-    DataResponse<String> getByEmail(String email);
-    DataResponse<String> getPasswordByEmail(String email);
+    AccountResponse create(Account account);
+    AccountResponse update(Account account);
+    AccountResponse delete(String email);
+    AccountListResponse getAll();
+    AccountResponse getByEmail(String email);
+    AccountResponse getPasswordByEmail(String email);
 }
