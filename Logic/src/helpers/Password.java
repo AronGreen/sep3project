@@ -3,6 +3,7 @@ package helpers;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Base64;
@@ -26,7 +27,7 @@ public class Password {
         SecureRandom secureRandom = new SecureRandom();
         byte[] salt = secureRandom.generateSeed(saltLength);
         // store the salt with the password
-        return Arrays.toString(Base64.getEncoder().encode(salt)) + "$" + hash(password, salt);
+        return new String(Base64.getEncoder().encode(salt)) + "$" + hash(password, salt);
     }
 
     /**
@@ -52,6 +53,6 @@ public class Password {
         SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
         SecretKey key = f.generateSecret(new PBEKeySpec(
                 password.toCharArray(), salt, iterations, desiredKeyLength));
-        return Arrays.toString(Base64.getEncoder().encode(key.getEncoded()));
+        return new String(Base64.getEncoder().encode(key.getEncoded()), StandardCharsets.UTF_8);
     }
 }

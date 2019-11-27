@@ -6,12 +6,12 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 
-public class DataResponse<T> {
+public class DataResponse {
 
     private String status;
-    private T body;
+    private String body;
 
-    public DataResponse(String status, T body) {
+    public DataResponse(String status, String body) {
         this.status = status;
         this.body = body;
     }
@@ -20,7 +20,7 @@ public class DataResponse<T> {
         return status;
     }
 
-    public T getBody() {
+    public String getBody() {
         return body;
     }
 
@@ -31,12 +31,12 @@ public class DataResponse<T> {
     //     return gson.toJson(this);
     // }
 
-    public static <T> DataResponse<T> fromJson(String json, Class<T> type) {
-        Gson gson = new GsonBuilder()
-                .setLenient()
-                .create();
-        Type thisType = new TypeToken<DataResponse<T>>() {
-        }.getType();
-        return gson.fromJson(json, thisType);
-    }
+//    public static <T> DataResponse fromJson(String json, Class<T> type) {
+//        Gson gson = new GsonBuilder()
+//                .setLenient()
+//                .create();
+//        Type thisType = new TypeToken<DataResponse<T>>() {
+//        }.getType();
+//        return gson.fromJson(json, thisType);
+//    }
 }

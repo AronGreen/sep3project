@@ -6,7 +6,8 @@ import handlers.AccountHandler;
 import handlers.IAccountHandler;
 import helpers.JsonConverter;
 import models.Account;
-import services.DataResponse;
+import models.response.AccountListResponse;
+import models.response.AccountResponse;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -25,7 +26,7 @@ public class AccountController {
     public Response create(String json) {
         Account account = JsonConverter.fromJson(json, Account.class);
 
-        DataResponse<String> response = handler.create(account);
+        AccountResponse response = handler.create(account);
 
         int status = StatusMapper.map(response.getStatus());
 
@@ -42,7 +43,7 @@ public class AccountController {
     public Response update(String json) {
         Account account = JsonConverter.fromJson(json, Account.class);
 
-        DataResponse<String> response = handler.update(account);
+        AccountResponse response = handler.update(account);
 
         int status = StatusMapper.map(response.getStatus());
 
@@ -56,7 +57,7 @@ public class AccountController {
     @Path("delete/{email}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response delete(@PathParam("email") String email) {
-        DataResponse<String> response = handler.delete(email);
+        AccountResponse response = handler.delete(email);
 
         int status = StatusMapper.map(response.getStatus());
 
@@ -70,7 +71,7 @@ public class AccountController {
     @Path("getAll")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAll() {
-        DataResponse<String> response = handler.getAll();
+        AccountListResponse response = handler.getAll();
 
         int status = StatusMapper.map(response.getStatus());
 
@@ -84,13 +85,14 @@ public class AccountController {
     @Path("get/{email}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getByEmail(@PathParam("email") String email) {
-        DataResponse<String> response = handler.getByEmail(email);
+        AccountResponse response = handler.getByEmail(email);
 
         int status = StatusMapper.map(response.getStatus());
 
+        String entity = JsonConverter.toJson(response.getBody());
         return Response
                 .status(status)
-                .entity(response.getBody())
+                .entity(entity)
                 .build();
     }
 
@@ -98,7 +100,7 @@ public class AccountController {
     @Path("getPassword/{email}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getPasswordByEmail(@PathParam("email") String email) {
-        DataResponse<String> response = handler.getPasswordByEmail(email);
+        AccountResponse response = handler.getPasswordByEmail(email);
 
         int status = StatusMapper.map(response.getStatus());
 
