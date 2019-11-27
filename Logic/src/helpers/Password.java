@@ -4,7 +4,10 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.StringTokenizer;
@@ -28,9 +31,15 @@ public class Password {
         // store the salt with the password
         try {
             return new String(Base64.getEncoder().encode(salt)) + "$" + hash(password, salt);
-        } catch (Exception e) {
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-            return "HashThrewException (Password.getSaltedHash)";
+            return "NoSuchAlgorithmException";
+        } catch (InvalidKeySpecException e) {
+            e.printStackTrace();
+            return "InvalidKeySpecException";
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            return "IllegalArgumentException";
         }
     }
 
@@ -51,12 +60,13 @@ public class Password {
         return hashOfInput.equals(saltedHash);
     }
 
-    private static String hash(String password, byte[] salt) throws Exception {
+    private static String hash(String password, byte[] salt) throws IllegalArgumentException, NoSuchAlgorithmException, InvalidKeySpecException {
         if (password == null || password.length() == 0)
             throw new IllegalArgumentException("Empty passwords are not supported.");
-        SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-        SecretKey key = f.generateSecret(new PBEKeySpec(
-                password.toCharArray(), salt, iterations, desiredKeyLength));
-        return new String(Base64.getEncoder().encode(key.getEncoded()), StandardCharsets.UTF_8);
+        return password;
+        // SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
+        // SecretKey key = f.generateSecret(new PBEKeySpec(
+        //         password.toCharArray(), salt, iterations, desiredKeyLength));
+        // return new String(Base64.getEncoder().encode(key.getEncoded()), StandardCharsets.UTF_8);
     }
 }
