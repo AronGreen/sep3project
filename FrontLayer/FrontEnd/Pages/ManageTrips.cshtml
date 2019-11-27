@@ -48,9 +48,10 @@
 
                     <br />
                     <label for="AvailableSeats">Available seats:</label>
-                    @*<select name="AvailableSeats" id="AvailableSeats" asp-for="AvailableSeats" asp-items="Model.Seats">
-                       <option value="1">1</option>
-                    </select>*@
+
+                    <select asp-for="AvailableSeats" asp-items="Model.Seats">
+                       <option value=""></option>
+                    </select>
 
                    
 

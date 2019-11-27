@@ -17,7 +17,7 @@ namespace FrontEnd.Pages
         [BindProperty]
         public int AvailableSeats { get; set; }
         public int ReservedSeats { get; set; }
-        public List<SelectListItem> Seats { get; set; }
+        public SelectList Seats { get; set; }
 
         
         public string Message { get; set; } = "Initial message";
@@ -28,14 +28,11 @@ namespace FrontEnd.Pages
 
         public void OnGet()
         {
-            Seats = new List<SelectListItem> {
-                new SelectListItem { Value = "1", Text = "1"},
-                new SelectListItem { Value = "2", Text = "2"},
-                new SelectListItem { Value = "3", Text = "3"},
-                new SelectListItem { Value = "4", Text = "4"},
-                new SelectListItem { Value = "5", Text = "5"}
+            var listOfSeats = new List<int>
+            { 1, 2, 3, 4, 5};
 
-            };
+            Seats = new SelectList(listOfSeats);
+
         }
         public async Task OnPostTripAsync()
         {
