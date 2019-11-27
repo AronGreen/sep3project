@@ -3,10 +3,11 @@
 @{
     ViewData["Title"] = "Register";
 }
+<link rel="stylesheet" href="~/css/popup.css" />
 
 <h1>Create account</h1>
 
-<div class="register-container">
+<div align="center">
 
 
 
@@ -14,7 +15,7 @@
         <label>First Name: </label>
         <p>
             <span class="input">
-                <input type="text" placeholder="First Name">
+                <input type="text" placeholder="First name" name="firstName">
                 <span></span>
             </span>
         </p>
@@ -22,7 +23,7 @@
             <label>Last Name: </label>
             <p>
                 <span class="input">
-                    <input type="text" placeholder="Last Name">
+                    <input type="text" placeholder="Last name" name="lastName">
                     <span></span>
                 </span>
             </p>
@@ -36,7 +37,7 @@
         <label>Password</label>
         <p>
             <span class="input">
-                <input type="password" placeholder="Your password">
+                <input type="password" placeholder="Password" name="password">
                 <span></span>
             </span>
         </p>
@@ -46,7 +47,7 @@
         <label>Repeat password:</label>
         <p>
             <span class="input">
-                <input type="password" placeholder="Repeated password">
+                <input type="password" placeholder="Repeat password" name="repeatedPassword">
                 <span></span>
             </span>
         </p>
@@ -56,7 +57,15 @@
         <label>E-mail:</label>
         <p>
             <span class="input">
-                <input type="text" placeholder="Your e-mail">
+                <input type="text" placeholder="Your e-mail" name="email">
+                <span></span>
+            </span>
+        </p>
+
+        <label>Phone Number</label>
+        <p>
+            <span class="input">
+                <input type="number" placeholder="Phone number" name="phoneNumber">
                 <span></span>
             </span>
         </p>
@@ -66,24 +75,35 @@
         <label>Date of Birth:</label>
         <p>
             <span class="input">
-                <input type="date">
+                <input type="date" name="dateOfBirth">
                 <span></span>
             </span>
         </p>
 
     </div>
     <div>
+
+
         
-        <p>
-            <span class="input">
-                <button type="submit" class="login-button">Register</button>
-                <span></span>
-            </span>
-        </p>
-
-    </div>
+            <form method="post" class="text-center">
+                <a type="submit" class="login-button" href="#popup">Register</a>
+            </form>
+        
 
 
+        <div id="popup" class="overlay">
+            <div class="popup">
+                <h2>Register</h2>
+                <a class="close" href="#">&times;</a>
+                <div class="content">
 
+                    <div align="center">
+                        <h3>Message dependant on server response</h3>
+                        
+                    </div>
+                </div>
 
+            </div>
+        </div>
+        </div>
 </div>
