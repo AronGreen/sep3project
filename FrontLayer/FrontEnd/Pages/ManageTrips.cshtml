@@ -48,13 +48,17 @@
 
                     <br />
                     <label for="AvailableSeats">Available seats:</label>
-                    <select name="AvailableSeats" id="AvailableSeats" asp-for="AvailableSeats" asp-items="Model.Seats">
-                       
-                    </select>
+                    @*<select name="AvailableSeats" id="AvailableSeats" asp-for="AvailableSeats" asp-items="Model.Seats">
+                       <option value="1">1</option>
+                    </select>*@
+
+                   
 
                     <form method="post" class="text-center">
                         <button asp-page-handler="send" class="mb-3">Create Trip</button>
                     </form>
+
+                   
                 </div>
             </div>
         </div>
@@ -66,7 +70,7 @@
         <button asp-page-handler="trip" class="mb-3">Update available trips</button>
     </form>
 
-
+    ()
 
 
     <div>

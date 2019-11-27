@@ -63,7 +63,7 @@ namespace FrontEnd.Pages
             var spoint = Request.Form["StartingPoint"];
             var epoint = Request.Form["EndingPoint"];
             
-
+            
             Trip sendTrip = new Trip(title, date, spoint, epoint, AvailableSeats);
 
             Debug.WriteLine("" + AvailableSeats);
