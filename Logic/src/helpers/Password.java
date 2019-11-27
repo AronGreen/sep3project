@@ -20,14 +20,18 @@ public class Password {
      * Returns generated salt together with the salted hash of the password
      * in the format "salt$saltedHash"
      * @param password the password to store
-     * @return Salt and salted hash of password delimited by '$'
-     * @throws Exception
+     * @return Salt and salted hash of password delimited by '$', or null if exception is thrown
      */
-    public static String getSaltedHash(String password) throws Exception {
+    public static String getSaltedHash(String password) {
         SecureRandom secureRandom = new SecureRandom();
         byte[] salt = secureRandom.generateSeed(saltLength);
         // store the salt with the password
-        return new String(Base64.getEncoder().encode(salt)) + "$" + hash(password, salt);
+        try {
+            return new String(Base64.getEncoder().encode(salt)) + "$" + hash(password, salt);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "HashThrewException (Password.getSaltedHash)";
+        }
     }
 
     /**
