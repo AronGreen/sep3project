@@ -3,8 +3,7 @@ package helpers;
 import models.Account;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -15,16 +14,18 @@ public class AuthToken {
     private static final int TIMEOUT_MINUTES = 180;
     private static final int CLEANUP_INTERVAL_MINUTES = 20;
 
-    private LocalDateTime lastCleanup;
     private HashMap<String, TokenData> _map;
 
     private AuthToken() {
         _map = new HashMap<>();
-        lastCleanup = LocalDateTime.now();
+
+        TimerTask cleanupTask = new CleanupTask();
+        Timer timer = new Timer();
+        timer.schedule(cleanupTask, CLEANUP_INTERVAL_MINUTES * 1000 * 60);
     }
 
-    public static AuthToken getInstance(){
-        if (INSTANCE == null){
+    public static AuthToken getInstance() {
+        if (INSTANCE == null) {
             synchronized (lock) {
                 if (INSTANCE == null) {
                     INSTANCE = new AuthToken();
@@ -34,9 +35,9 @@ public class AuthToken {
         return INSTANCE;
     }
 
-    public String add(Account account){
-        if (account.getRoles() == null || account.getRoles().length() == 0){
-            throw  new IllegalArgumentException("List of roles must not be empty");
+    public String add(Account account) {
+        if (account.getRoles() == null || account.getRoles().length() == 0) {
+            throw new IllegalArgumentException("List of roles must not be empty");
         }
         String token = UUID.randomUUID().toString();
 
@@ -45,16 +46,14 @@ public class AuthToken {
         return token;
     }
 
-    public void revoke(String token){
-        if(_map.containsKey(token)){
-            _map.remove(token);
-        }
+    public void revoke(String token) {
+        _map.remove(token);
     }
 
-    public boolean hasRole(String token, String role){
+    public boolean hasRole(String token, String role) {
         TokenData data = _map.get(token);
         LocalDateTime expired = LocalDateTime.now().minusMinutes(TIMEOUT_MINUTES);
-        if (data.getLastUsed().isBefore(expired)){
+        if (data.getLastUsed().isBefore(expired)) {
             _map.remove(token);
             return false;
         }
@@ -63,17 +62,31 @@ public class AuthToken {
         return roles.contains(role);
     }
 
-    private void cleanUp(){
-        if (lastCleanup.isBefore(LocalDateTime.now().minusMinutes(CLEANUP_INTERVAL_MINUTES))){
-           // TODO: clean map
+    private class CleanupTask extends TimerTask {
+        @Override
+        public void run() {
+            if (!_map.isEmpty()) {
+                LocalDateTime expiry = LocalDateTime.now().minusMinutes(TIMEOUT_MINUTES);
+                ArrayList<String> toRemove = new ArrayList<>();
+
+                for (Map.Entry<String, TokenData> entry : _map.entrySet()) {
+                    TokenData data = entry.getValue();
+                    if (data.getLastUsed().isBefore(expiry)) {
+                        toRemove.add(entry.getKey());
+                    }
+                }
+                for (String key :
+                        toRemove) {
+                    _map.remove(key);
+                }
+            }
         }
     }
 
-    private class TokenData{
+    private static class TokenData {
         private String email;
         private String roles;
         private LocalDateTime lastUsed;
-
 
         TokenData(String email, String roles) {
             this.email = email;
@@ -85,14 +98,15 @@ public class AuthToken {
             return email;
         }
 
-        public String getRoles() {
+        String getRoles() {
             return roles;
         }
 
-        public LocalDateTime getLastUsed() {
+        LocalDateTime getLastUsed() {
             return lastUsed;
         }
-        public void updateLastUsed(){
+
+        void updateLastUsed() {
             lastUsed = LocalDateTime.now();
         }
     }

@@ -3,6 +3,8 @@ package services;
 import com.google.gson.reflect.TypeToken;
 import helpers.JsonConverter;
 import models.Account;
+import models.response.AccountListResponse;
+import models.response.AccountResponse;
 
 import javax.xml.crypto.Data;
 
@@ -15,56 +17,56 @@ public class AccountService  implements IAccountService{
     }
 
     @Override
-    public DataResponse<String> create(Account account) {
+    public AccountResponse create(Account account) {
         DataRequest request = new DataRequest("account", "create", JsonConverter.toJson(account));
 
         String json = connection.sendRequest(request);
 
-        return DataResponse.fromJson(json, String.class);
+        return JsonConverter.fromJson(json, AccountResponse.class);
     }
 
     @Override
-    public DataResponse<String> update(Account account) {
+    public AccountResponse update(Account account) {
         DataRequest request = new DataRequest("account", "update", JsonConverter.toJson(account));
 
         String json = connection.sendRequest(request);
 
-        return DataResponse.fromJson(json, String.class);
+        return JsonConverter.fromJson(json, AccountResponse.class);
     }
 
     @Override
-    public DataResponse<String> delete(String email) {
+    public AccountResponse delete(String email) {
         DataRequest request = new DataRequest("account", "delete", email);
 
         String json = connection.sendRequest(request);
 
-        return DataResponse.fromJson(json, String.class);
+        return JsonConverter.fromJson(json, AccountResponse.class);
     }
 
     @Override
-    public DataResponse<String> getAll() {
+    public AccountListResponse getAll() {
         DataRequest request = new DataRequest("account", "getAll", null);
 
         String json = connection.sendRequest(request);
 
-        return DataResponse.fromJson(json, String.class);
+        return JsonConverter.fromJson(json, AccountListResponse.class);
     }
 
     @Override
-    public DataResponse<String> getByEmail(String email) {
+    public AccountResponse getByEmail(String email) {
         DataRequest request = new DataRequest("account", "getByEmail", email);
 
         String json = connection.sendRequest(request);
 
-        return DataResponse.fromJson(json, String.class);
+        return JsonConverter.fromJson(json, AccountResponse.class);
     }
 
     @Override
-    public DataResponse<String> getPasswordByEmail(String email) {
+    public AccountResponse getPasswordByEmail(String email) {
         DataRequest request = new DataRequest("account", "getPasswordByEmail", email);
 
         String json = connection.sendRequest(request);
 
-        return DataResponse.fromJson(json, String.class);
+        return JsonConverter.fromJson(json, AccountResponse.class);
     }
 }
