@@ -30,36 +30,36 @@
 
                 <div align="center">
 
-                    <span class="input">
-                        <input type="text" name="Title" value="@Model.trip.Title" placeholder="Title" /><br />
-                    </span>
-
-                    <span class="input">
-                        <input type="text" name="Date" value="@Model.trip.Date" placeholder="Date" /><br />
-                    </span>
-
-                    <span class="input">
-                        <input type="text" name="StartingPoint" value="@Model.trip.StartingPoint" placeholder="Starting Point" /><br />
-                    </span>
-
-                    <span class="input">
-                        <input type="text" name="EndingPoint" value="@Model.trip.EndingPoint" placeholder="Ending Point" /><br />
-                    </span>
-
-                    <br />
-                    <label for="AvailableSeats">Available seats:</label>
-
-                    <select asp-for="AvailableSeats" asp-items="Model.Seats">
-                       <option value=""></option>
-                    </select>
-
-                   
-
                     <form method="post" class="text-center">
+
+
+                        <span class="input">
+                            <input type="text" name="Title" value="@Model.trip.Title" placeholder="Title" /><br />
+                        </span>
+
+                        <span class="input">
+                            <input type="text" name="Date" value="@Model.trip.Date" placeholder="Date" /><br />
+                        </span>
+
+                        <span class="input">
+                            <input type="text" name="StartingPoint" value="@Model.trip.StartingPoint" placeholder="Starting Point" /><br />
+                        </span>
+
+                        <span class="input">
+                            <input type="text" name="EndingPoint" value="@Model.trip.EndingPoint" placeholder="Ending Point" /><br />
+                        </span>
+
+                        <br />
+                        <label for="AvailableSeats">Available seats:</label>
+
+                        <select asp-for="AvailableSeats" asp-items="Model.Seats">
+                            <option value=""></option>
+                        </select>
+
                         <button asp-page-handler="send" class="mb-3">Create Trip</button>
                     </form>
 
-                   
+
                 </div>
             </div>
         </div>
@@ -124,16 +124,18 @@
                             <div align="center">
 
 
-                                <label for="Date">How many seats?</label>
-                                <select name="ReservedSeats" asp-for="ReservedSeats">
-                                    @for(int i=1; i <= t.AvailableSeats; i-=-1)
-                                    {
-                                        <option value="@i">@i</option>
-                                    }
-                                </select>
-
-
                                 <form method="post" class="text-center">
+
+                                    <label for="Date">How many seats?</label>
+                                    <select name="ReservedSeats" asp-for="ReservedSeats">
+                                        @for (int i = 1; i <= t.AvailableSeats; i -= -1)
+                                        {
+                                            <option value="@i">@i</option>
+                                        }
+                                    </select>
+
+
+
                                     <button asp-page-handler="reservation" class="mb-3">Reserve</button>
                                 </form>
                             </div>
