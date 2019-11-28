@@ -8,6 +8,7 @@ import helpers.JsonConverter;
 import models.Account;
 import models.response.AccountListResponse;
 import models.response.AccountResponse;
+import services.DataResponse;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -100,7 +101,7 @@ public class AccountController {
     @Path("getPassword/{email}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getPasswordByEmail(@PathParam("email") String email) {
-        AccountResponse response = handler.getPasswordByEmail(email);
+        DataResponse response = handler.getPasswordByEmail(email);
 
         int status = StatusMapper.map(response.getStatus());
 
