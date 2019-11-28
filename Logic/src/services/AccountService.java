@@ -62,11 +62,11 @@ public class AccountService  implements IAccountService{
     }
 
     @Override
-    public AccountResponse getPasswordByEmail(String email) {
+    public DataResponse getPasswordByEmail(String email) {
         DataRequest request = new DataRequest("account", "getPasswordByEmail", email);
 
         String json = connection.sendRequest(request);
 
-        return JsonConverter.fromJson(json, AccountResponse.class);
+        return JsonConverter.fromJson(json, DataResponse.class);
     }
 }

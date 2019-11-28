@@ -4,7 +4,10 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.StringTokenizer;
@@ -20,14 +23,24 @@ public class Password {
      * Returns generated salt together with the salted hash of the password
      * in the format "salt$saltedHash"
      * @param password the password to store
-     * @return Salt and salted hash of password delimited by '$'
-     * @throws Exception
+     * @return Salt and salted hash of password delimited by '$', or null if exception is thrown
      */
-    public static String getSaltedHash(String password) throws Exception {
+    public static String getSaltedHash(String password) {
         SecureRandom secureRandom = new SecureRandom();
         byte[] salt = secureRandom.generateSeed(saltLength);
         // store the salt with the password
-        return new String(Base64.getEncoder().encode(salt)) + "$" + hash(password, salt);
+        try {
+            return new String(Base64.getEncoder().encode(salt)) + "$" + hash(password, salt);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return "NoSuchAlgorithmException";
+        } catch (InvalidKeySpecException e) {
+            e.printStackTrace();
+            return "InvalidKeySpecException";
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            return "IllegalArgumentException";
+        }
     }
 
     /**
@@ -47,12 +60,13 @@ public class Password {
         return hashOfInput.equals(saltedHash);
     }
 
-    private static String hash(String password, byte[] salt) throws Exception {
+    private static String hash(String password, byte[] salt) throws IllegalArgumentException, NoSuchAlgorithmException, InvalidKeySpecException {
         if (password == null || password.length() == 0)
             throw new IllegalArgumentException("Empty passwords are not supported.");
-        SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-        SecretKey key = f.generateSecret(new PBEKeySpec(
-                password.toCharArray(), salt, iterations, desiredKeyLength));
-        return new String(Base64.getEncoder().encode(key.getEncoded()), StandardCharsets.UTF_8);
+        return password;
+        // SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
+        // SecretKey key = f.generateSecret(new PBEKeySpec(
+        //         password.toCharArray(), salt, iterations, desiredKeyLength));
+        // return new String(Base64.getEncoder().encode(key.getEncoded()), StandardCharsets.UTF_8);
     }
 }
