@@ -38,6 +38,7 @@ public class AuthController {
             DataResponse response = handler.authenticate(username, password);
 
             return Response.status(StatusMapper.map(response.getStatus()))
+                    .entity(response)
                     .build();
         } catch (Exception e) {
             e.printStackTrace();

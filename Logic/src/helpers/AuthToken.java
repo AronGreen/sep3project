@@ -14,10 +14,14 @@ public class AuthToken {
     private static final int TIMEOUT_MINUTES = 180;
     private static final int CLEANUP_INTERVAL_MINUTES = 20;
 
-    private HashMap<String, TokenData> _map;
+    // NOTE: Would be nice to have a bi-directional map to work with
+    // Guava from google could do the trick
+    private Map<String, TokenData> map;
+    private Map<TokenData, String> reverseMap;
 
     private AuthToken() {
-        _map = new HashMap<>();
+        map = new HashMap<>();
+        reverseMap = new HashMap<>();
 
         TimerTask cleanupTask = new CleanupTask();
         Timer timer = new Timer();
@@ -36,25 +40,35 @@ public class AuthToken {
     }
 
     public String add(Account account) {
-        if (account.getRoles() == null || account.getRoles().length() == 0) {
-            throw new IllegalArgumentException("List of roles must not be empty");
+        if(account.getEmail() == null || account.getEmail().equals("")){
+            return "";
         }
-        String token = UUID.randomUUID().toString();
+        if (account.getRoles() == null || account.getRoles().length() == 0) {
+            account.setRoles("NONE");
+        }
+        TokenData compareTokenData = TokenData.compareToken(account.getEmail());
+        if (reverseMap.containsKey(compareTokenData)){
+            return reverseMap.get(compareTokenData);
+        }
 
-        _map.put(token, new TokenData(account.getEmail(), account.getRoles()));
+        String token = UUID.randomUUID().toString();
+        TokenData tokenData = new TokenData(account.getEmail(), account.getRoles());
+
+        map.put(token, tokenData);
+        reverseMap.put(tokenData, token);
 
         return token;
     }
 
     public void revoke(String token) {
-        _map.remove(token);
+        map.remove(token);
     }
 
     public boolean hasRole(String token, String role) {
-        TokenData data = _map.get(token);
+        TokenData data = map.get(token);
         LocalDateTime expired = LocalDateTime.now().minusMinutes(TIMEOUT_MINUTES);
         if (data.getLastUsed().isBefore(expired)) {
-            _map.remove(token);
+            map.remove(token);
             return false;
         }
         data.updateLastUsed();
@@ -65,11 +79,11 @@ public class AuthToken {
     private class CleanupTask extends TimerTask {
         @Override
         public void run() {
-            if (!_map.isEmpty()) {
+            if (!map.isEmpty()) {
                 LocalDateTime expiry = LocalDateTime.now().minusMinutes(TIMEOUT_MINUTES);
                 ArrayList<String> toRemove = new ArrayList<>();
 
-                for (Map.Entry<String, TokenData> entry : _map.entrySet()) {
+                for (Map.Entry<String, TokenData> entry : map.entrySet()) {
                     TokenData data = entry.getValue();
                     if (data.getLastUsed().isBefore(expiry)) {
                         toRemove.add(entry.getKey());
@@ -77,7 +91,7 @@ public class AuthToken {
                 }
                 for (String key :
                         toRemove) {
-                    _map.remove(key);
+                    map.remove(key);
                 }
             }
         }
@@ -108,6 +122,18 @@ public class AuthToken {
 
         void updateLastUsed() {
             lastUsed = LocalDateTime.now();
+        }
+
+        static TokenData compareToken(String email){
+            return new TokenData(email, "N/A");
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj == null) return false;
+            if (!(obj instanceof  TokenData)) return false;
+            TokenData other = (TokenData) obj;
+            return this.email.equals(other.getEmail());
         }
     }
 }

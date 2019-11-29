@@ -5,6 +5,7 @@ import models.Account;
 import models.response.AccountListResponse;
 import models.response.AccountResponse;
 import services.AccountService;
+import services.DataResponse;
 import services.IAccountService;
 
 public class AccountHandler implements IAccountHandler {
@@ -47,7 +48,7 @@ public class AccountHandler implements IAccountHandler {
     }
 
     @Override
-    public AccountResponse getPasswordByEmail(String email) {
+    public DataResponse getPasswordByEmail(String email) {
         return accountService.getPasswordByEmail(email);
     }
 }
