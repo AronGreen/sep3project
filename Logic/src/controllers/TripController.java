@@ -45,7 +45,7 @@ public class TripController {
         Trip t = Trip.fromJson(json);
 
         // Send request and receive Response
-        DataResponse<String> res = handler.create(t);
+        DataResponse res = handler.create(t);
 
         // Extract http response code
         int status = StatusMapper.map(res.getStatus());
@@ -60,7 +60,7 @@ public class TripController {
     @Path("delete/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response delete(@PathParam("id") int id) {
-        DataResponse<String> response = handler.delete(id);
+        DataResponse response = handler.delete(id);
 
         int status = StatusMapper.map(response.getStatus());
 
@@ -75,7 +75,7 @@ public class TripController {
     @Produces(MediaType.APPLICATION_JSON )
     public Response getFiltered(){
         // Send request and receive Response
-        DataResponse<String> res = handler.getFiltered(new TripFilter());
+        DataResponse res = handler.getFiltered(new TripFilter());
 
         // Extract http response data
         int status = StatusMapper.map(res.getStatus());
@@ -92,7 +92,7 @@ public class TripController {
     @Produces(MediaType.APPLICATION_JSON )
     public Response get(@PathParam("id") int id){
         // Send request and receive Response
-        DataResponse<String> res = handler.getById(id);
+        DataResponse res = handler.getById(id);
 
         // Extract http response code
         int status = StatusMapper.map(res.getStatus());

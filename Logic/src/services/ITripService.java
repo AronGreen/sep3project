@@ -5,9 +5,9 @@ import models.TripFilter;
 
 public interface ITripService {
 
-    DataResponse<String> create(Trip trip);
-    DataResponse<String> delete(int id);
-    DataResponse<String> getById(int id);
-    DataResponse<String> getFiltered(TripFilter filter);
+    DataResponse create(Trip trip);
+    DataResponse delete(int id);
+    DataResponse getById(int id);
+    DataResponse getFiltered(TripFilter filter);
 
 }

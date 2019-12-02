@@ -64,7 +64,7 @@ public class ReservationController {
         Reservation t = Reservation.fromJson(json);
 
         // Send request and receive Response
-        DataResponse<String> res = handler.create(t);
+        DataResponse res = handler.create(t);
 
         // Extract http response code
         int status = StatusMapper.map(res.getStatus());
@@ -82,7 +82,7 @@ public class ReservationController {
     public Response update(String json) {
         Reservation reservation = JsonConverter.fromJson(json, Reservation.class);
 
-        DataResponse<String> response = handler.update(reservation);
+        DataResponse response = handler.update(reservation);
 
         int status = StatusMapper.map(response.getStatus());
 
@@ -96,7 +96,7 @@ public class ReservationController {
     @Path("delete/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response delete(@PathParam("id") int id) {
-        DataResponse<String> response = handler.delete(id);
+        DataResponse response = handler.delete(id);
 
         int status = StatusMapper.map(response.getStatus());
 
@@ -110,7 +110,7 @@ public class ReservationController {
     @Path("get/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getById(@PathParam("id") int id) {
-        DataResponse<String> response = handler.getById(id);
+        DataResponse response = handler.getById(id);
 
         int status = StatusMapper.map(response.getStatus());
 
@@ -125,7 +125,7 @@ public class ReservationController {
     @Produces(MediaType.APPLICATION_JSON )
     public Response get(@PathParam("id") int id){
         // Send request and receive Response
-        DataResponse<String> res = handler.getByTripId(id);
+        DataResponse res = handler.getByTripId(id);
 
         // Extract http response code
         int status = StatusMapper.map(res.getStatus());
@@ -140,7 +140,7 @@ public class ReservationController {
     @Path("getByEmail/{email}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getByEmail(@PathParam("email") String email) {
-        DataResponse<String> response = handler.getByEmail(email);
+        DataResponse response = handler.getByEmail(email);
 
         int status = StatusMapper.map(response.getStatus());
 

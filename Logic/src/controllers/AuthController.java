@@ -1,9 +1,14 @@
 package controllers;
 
+import handlers.AuthHandler;
+import handlers.IAuthHandler;
+import services.DataResponse;
+
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.Response;
 import java.util.StringTokenizer;
 import java.util.Base64;
 
@@ -13,8 +18,10 @@ public class AuthController {
     private static final String AUTHORIZATION_PROPERTY = "Authorization";
     private static final String AUTHENTICATION_SCHEME = "Basic ";
 
+    private IAuthHandler handler = new AuthHandler();
+
     @POST
-    public String authenticate(@Context HttpHeaders httpheaders){
+    public Response authenticate(@Context HttpHeaders httpheaders){
 
         try {
             String encodedCredentials = httpheaders.getRequestHeader(AUTHORIZATION_PROPERTY)
@@ -28,10 +35,13 @@ public class AuthController {
             final String username = tokenizer.nextToken();
             final String password = tokenizer.nextToken();
 
-            return username + ", " + password;
+            DataResponse response = handler.authenticate(username, password);
+
+            return Response.status(StatusMapper.map(response.getStatus()))
+                    .build();
         } catch (Exception e) {
             e.printStackTrace();
-            return "No credentials, no cookies";
+            return Response.status(Response.Status.BAD_REQUEST).entity("No credentials, no cookies").build();
         }
 
     }
