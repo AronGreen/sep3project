@@ -8,7 +8,7 @@ using Data.Models.Entities;
 using FrontEnd.Pages.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace FrontEnd.Pages
 {
@@ -55,7 +55,7 @@ namespace FrontEnd.Pages
 
             HttpClient client = new HttpClient();
 
-            var json = JsonConvert.SerializeObject(account);
+            var json = JsonSerializer.Serialize(account);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             HttpResponseMessage response = await client.PutAsync("http://localhost:8080/Logic_war_exploded/reservations/update", content);  
 

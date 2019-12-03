@@ -8,11 +8,14 @@ using Data.Models.Entities;
 using System.Net.Mime;
 using System.Text.Json;
 
+
+
 namespace FrontEnd.Pages
 {
     public class RegisterModel : PageModel
     {
-
+        public string Message { get; set; }
+        
 
         public async Task OnPostRegister()
         {
@@ -46,6 +49,10 @@ namespace FrontEnd.Pages
             HttpResponseMessage response = await client.PostAsync("http://localhost:8080/Logic_war_exploded/accounts/create", content);
 
 
+            if (response.IsSuccessStatusCode) {
+                Message = "Account created succesfully";
+                
+            }
 
             RedirectToPage("Index");
         }
