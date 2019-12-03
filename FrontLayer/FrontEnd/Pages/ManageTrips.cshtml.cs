@@ -19,6 +19,8 @@ namespace FrontEnd.Pages
         public int ReservedSeats { get; set; }
         public SelectList Seats { get; set; }
 
+        public Reservation Reservation { get; set; }
+
         
         public string Message { get; set; } = "Initial message";
         public Trip trip = new Trip();

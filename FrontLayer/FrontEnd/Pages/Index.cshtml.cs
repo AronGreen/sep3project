@@ -73,7 +73,7 @@ namespace FrontEnd.Pages
                 GlobalAccess.Instance.setAccount(account);
 
             }*/
-            Account account = new Account()
+           /* Account account = new Account()
             {
                 FirstName = "Oleg",
                 LastName = "Dupa",
@@ -84,14 +84,14 @@ namespace FrontEnd.Pages
             };
             if (account is Account)
             {
-                GlobalAccess.Instance.setAccount(account);
+                GlobalAccess.setAccount(account);
                
             }
             else { 
-            
+            */
             
             //DISPLAY ERROR MESSAGE
-            }
+            
 
            return RedirectToPage("MainLoggedIn");
 

@@ -126,6 +126,22 @@
 
                                 <form method="post" class="text-center">
 
+                                    <span class="input">
+                                        <input type="text" name="StartingPoint" value="@Model.Reservation.PickupAddress" placeholder="Where to pick you up?" /><br />
+                                    </span>
+                                    <br />
+                                    <span class="input">
+                                        <input type="text" name="StartingPoint" value="@Model.Reservation.PickupTime" placeholder="When to pick you up?" /><br />
+                                    </span>
+                                    <br />
+                                    <span class="input">
+                                        <input type="text" name="StartingPoint" value="@Model.Reservation.DropoffAddress" placeholder="Where to drop you off?" /><br />
+                                    </span>
+                                    <br />
+                                    
+
+
+
                                     <label for="Date">How many seats?</label>
                                     <select name="ReservedSeats" asp-for="ReservedSeats">
                                         @for (int i = 1; i <= t.AvailableSeats; i -= -1)
