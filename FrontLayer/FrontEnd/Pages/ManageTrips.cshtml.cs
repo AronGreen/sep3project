@@ -8,7 +8,7 @@ using FrontEnd.Pages.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace FrontEnd.Pages
 {
@@ -19,6 +19,7 @@ namespace FrontEnd.Pages
         public int ReservedSeats { get; set; }
         public SelectList Seats { get; set; }
 
+        [BindProperty]
         public Reservation Reservation { get; set; }
 
         
@@ -41,7 +42,7 @@ namespace FrontEnd.Pages
             HttpClient client = new HttpClient();
             Console.WriteLine("Fetching data...");
             var s = await client.GetStringAsync("http://localhost:8080/Logic_war_exploded/trips/get");
-            List<Trip> temp = JsonConvert.DeserializeObject<List<Trip>>(s);
+            List<Trip> temp = JsonSerializer.Deserialize<List<Trip>>(s);
 
 
             trips = temp;
@@ -76,6 +77,31 @@ namespace FrontEnd.Pages
 
         }
 
+        public async Task OnPostReservationAsync()
+        {
+            var tripId = Int32.Parse(Request.Form["TripID"]);
+            var pickUpPoint = Request.Form["PickUpPoint"];
+            var pickUpTime = Request.Form["PickUpTime"];
+            var dropOffPoint = Request.Form["DropOffPoint"];
+
+
+            Reservation sendReservation = new Reservation()
+            {
+                TripId = tripId,
+                PickupAddress = pickUpPoint,
+                PickupTime = pickUpTime,
+                DropoffAddress = dropOffPoint
+
+            };
+
+
+            /*var json = JsonSerializer.Serialize(sendReservation);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response = await client.PostAsync("http://localhost:8080/api/reservations/post", content);*/
+
+        }
+
 
 
 
@@ -90,3 +116,4 @@ namespace FrontEnd.Pages
 
     }
 }
+ 

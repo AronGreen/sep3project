@@ -126,16 +126,20 @@
 
                                 <form method="post" class="text-center">
 
+                                    <input name="TripID" value="@t.Id" disabled />
+                                    <br />
                                     <span class="input">
-                                        <input type="text" name="StartingPoint" value="@Model.Reservation.PickupAddress" placeholder="Where to pick you up?" /><br />
+                                        <input type="text" name="PickUpPoint" placeholder="Where to pick you up?" /><br />
+                                    </span>
+                                    <br />
+
+                                    <label>When do you want to be picked up?</label>
+                                    <span class="input">
+                                        <input type="time" name="PickUpTime" placeholder="When to pick you up?" /><br />
                                     </span>
                                     <br />
                                     <span class="input">
-                                        <input type="text" name="StartingPoint" value="@Model.Reservation.PickupTime" placeholder="When to pick you up?" /><br />
-                                    </span>
-                                    <br />
-                                    <span class="input">
-                                        <input type="text" name="StartingPoint" value="@Model.Reservation.DropoffAddress" placeholder="Where to drop you off?" /><br />
+                                        <input type="text" name="DropOffPoint" placeholder="Where to drop you off?" /><br />
                                     </span>
                                     <br />
                                     
@@ -150,7 +154,7 @@
                                         }
                                     </select>
 
-
+                                    
 
                                     <button asp-page-handler="reservation" class="mb-3">Reserve</button>
                                 </form>
