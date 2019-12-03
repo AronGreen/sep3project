@@ -11,100 +11,100 @@
 <div align="center">
 
 
-
-    <div>
-        <label>First Name: </label>
-        <p>
-            <span class="input">
-                <input type="text" placeholder="First name" name="firstName">
-                <span></span>
-            </span>
-        </p>
+    <form method="post" class="text-center" asp-page-handler="Register">
         <div>
-            <label>Last Name: </label>
+            <label>First Name: </label>
             <p>
                 <span class="input">
-                    <input type="text" placeholder="Last name" name="lastName">
+                    <input type="text" placeholder="First name" name="firstName">
+                    <span></span>
+                </span>
+            </p>
+            <div>
+                <label>Last Name: </label>
+                <p>
+                    <span class="input">
+                        <input type="text" placeholder="Last name" name="lastName">
+                        <span></span>
+                    </span>
+                </p>
+
+            </div>
+
+
+
+        </div>
+        <div>
+            <label>Password</label>
+            <p>
+                <span class="input">
+                    <input type="password" placeholder="Password" name="password">
                     <span></span>
                 </span>
             </p>
 
         </div>
+        <div>
+            <label>Repeat password:</label>
+            <p>
+                <span class="input">
+                    <input type="password" placeholder="Repeat password" name="repeatedPassword">
+                    <span></span>
+                </span>
+            </p>
+
+        </div>
+        <div>
+            <label>E-mail:</label>
+            <p>
+                <span class="input">
+                    <input type="text" placeholder="Your e-mail" name="email">
+                    <span></span>
+                </span>
+            </p>
+
+            <label>Phone Number</label>
+            <p>
+                <span class="input">
+                    <input type="number" placeholder="Phone number" name="phoneNumber">
+                    <span></span>
+                </span>
+            </p>
+
+        </div>
+        <div>
+            <label>Date of Birth:</label>
+            <p>
+                <span class="input">
+                    <input type="date" name="dateOfBirth">
+                    <span></span>
+                </span>
+            </p>
+
+        </div>
+        <div>
 
 
 
-    </div>
-    <div>
-        <label>Password</label>
-        <p>
-            <span class="input">
-                <input type="password" placeholder="Password" name="password">
-                <span></span>
-            </span>
-        </p>
 
-    </div>
-    <div>
-        <label>Repeat password:</label>
-        <p>
-            <span class="input">
-                <input type="password" placeholder="Repeat password" name="repeatedPassword">
-                <span></span>
-            </span>
-        </p>
+            <button type="submit" class="login-button">Register</button>
+    </form>
 
-    </div>
-    <div>
-        <label>E-mail:</label>
-        <p>
-            <span class="input">
-                <input type="text" placeholder="Your e-mail" name="email">
-                <span></span>
-            </span>
-        </p>
+    <div id="popup" class="overlay">
+        <div class="popup">
+            <h2>Register</h2>
+            <a class="close" href="#">&times;</a>
+            <div class="content">
 
-        <label>Phone Number</label>
-        <p>
-            <span class="input">
-                <input type="number" placeholder="Phone number" name="phoneNumber">
-                <span></span>
-            </span>
-        </p>
+                <div align="center">
+                    <h3>Message dependant on server response</h3>
 
-    </div>
-    <div>
-        <label>Date of Birth:</label>
-        <p>
-            <span class="input">
-                <input type="date" name="dateOfBirth">
-                <span></span>
-            </span>
-        </p>
-
-    </div>
-    <div>
-
-
-
-        <form method="post" class="text-center">
-            <a type="submit" class="login-button" href="#popup">Register</a>
-        </form>
-
-        <div id="popup" class="overlay">
-            <div class="popup">
-                <h2>Register</h2>
-                <a class="close" href="#">&times;</a>
-                <div class="content">
-
-                    <div align="center">
-                        <h3>Message dependant on server response</h3>
-
-                    </div>
                 </div>
-
             </div>
+
         </div>
     </div>
+</div>
 
 
 

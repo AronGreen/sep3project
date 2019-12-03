@@ -39,7 +39,7 @@ namespace FrontEnd.Pages
             var dateOfBirth = Request.Form["dateOfBirth"];
             var phoneNumber = Request.Form["phoneNumber"];
 
-            Account account = new Account
+            Account account = new Account()
 
             {
                 Email = email,
