@@ -66,6 +66,7 @@ namespace FrontEnd.Pages
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, new AuthenticationProperties { IsPersistent = RememberMe });
 
 
+<<<<<<< HEAD
                 //SINGLETON SET ACCOUNT
 
                 Console.WriteLine("Fetching data...");
@@ -80,6 +81,28 @@ namespace FrontEnd.Pages
             {
                 // open popup with error message
             }
+=======
+            }*/
+           /* Account account = new Account()
+            {
+                FirstName = "Oleg",
+                LastName = "Dupa",
+                Email = "oleg@gmail.com",
+                Password = "DUPADSADAS",
+                DateOfBirth = "dsdsadsa",
+                Phone = "3132131"
+            };
+            if (account is Account)
+            {
+                GlobalAccess.setAccount(account);
+               
+            }
+            else { 
+            */
+            
+            //DISPLAY ERROR MESSAGE
+            
+>>>>>>> 40c3dc9f57bbb926bcc92a9ac5974b4cd54364a5
 
 
 
