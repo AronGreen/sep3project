@@ -1,24 +1,32 @@
 package controllers;
 
-import com.google.gson.JsonNull;
-import com.sun.media.jfxmediaimpl.MediaUtils;
 import handlers.AccountHandler;
 import handlers.IAccountHandler;
+import helpers.AuthToken;
 import helpers.JsonConverter;
+import helpers.StringHelper;
 import models.Account;
 import models.response.AccountListResponse;
 import models.response.AccountResponse;
 import services.DataResponse;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.awt.*;
+import java.util.Base64;
+import java.util.StringTokenizer;
 
 @Path("/accounts")
 public class AccountController {
 
     private IAccountHandler handler = new AccountHandler();
+    private AuthToken authToken = AuthToken.getInstance();
+
+
+    @Context
+    private HttpHeaders httpHeaders;
 
     @POST
     @Path("create")
@@ -72,6 +80,10 @@ public class AccountController {
     @Path("getAll")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAll() {
+        if (!AuthToken.getInstance().validate(httpHeaders, "NONE")){
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+
         AccountListResponse response = handler.getAll();
 
         int status = StatusMapper.map(response.getStatus());

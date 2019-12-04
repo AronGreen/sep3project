@@ -24,9 +24,10 @@ public class AuthHandler implements IAuthHandler {
     @Override
     public DataResponse authenticate(String email, String password) {
         AccountResponse userResponse = service.getByEmail(email);
-
+        // TODO: If response status is not "success", return an error or smth
         Account storedAccount = userResponse.getBody();
-//        Account object = new Gson().fromJson(new Gson().toJson(((LinkedTreeMap<String, Object>) userResponse.getBody())), Account.class)
+
+        storedAccount.setPassword(service.getPasswordByEmail(email).getBody());
 
         try {
             if (Password.check(password, storedAccount.getPassword())) {
@@ -35,6 +36,7 @@ public class AuthHandler implements IAuthHandler {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            return new DataResponse(SOCKET_FAILURE, null);
         }
         return new DataResponse(SOCKET_UNAUTHORIZED, null);
         // return 401
