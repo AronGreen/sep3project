@@ -2,6 +2,7 @@ package helpers;
 
 import models.Account;
 
+import javax.ws.rs.core.HttpHeaders;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.locks.Lock;
@@ -13,6 +14,8 @@ public class AuthToken {
     private static final Lock lock = new ReentrantLock();
     private static final int TIMEOUT_MINUTES = 180;
     private static final int CLEANUP_INTERVAL_MINUTES = 20;
+
+    private static final String AUTHENTICATION_SCHEME = "Basic";
 
     // NOTE: Would be nice to have a bi-directional map to work with
     // Guava from google could do the trick
@@ -40,16 +43,20 @@ public class AuthToken {
     }
 
     public String add(Account account) {
-        if(account.getEmail() == null || account.getEmail().equals("")){
+        if (StringHelper.isNullOrEmpty(account.getEmail())) {
             return "";
         }
-        if (account.getRoles() == null || account.getRoles().length() == 0) {
+        if (StringHelper.isNullOrEmpty(account.getRoles())) {
             account.setRoles("NONE");
         }
-        TokenData compareTokenData = TokenData.compareToken(account.getEmail());
-        if (reverseMap.containsKey(compareTokenData)){
-            return reverseMap.get(compareTokenData);
-        }
+
+        // TODO: This does not work. Find a better way
+        // the compareToken will not have the same hash as the desired key
+
+//        TokenData compareToken = TokenData.compareToken(account.getEmail());
+//        if (reverseMap.containsKey(compareToken)) {
+//            return reverseMap.get(compareToken);
+//        }
 
         String token = UUID.randomUUID().toString();
         TokenData tokenData = new TokenData(account.getEmail(), account.getRoles());
@@ -61,14 +68,54 @@ public class AuthToken {
     }
 
     public void revoke(String token) {
+        TokenData temp = map.get(token);
         map.remove(token);
+        reverseMap.remove(temp);
+    }
+
+    public boolean validate(String token, String role) {
+        if (StringHelper.isNullOrEmpty(role)){
+            role = "NONE";
+        }
+        TokenData data = map.get(token);
+        if (data == null) return false;
+        LocalDateTime expired = LocalDateTime.now().minusMinutes(TIMEOUT_MINUTES);
+        if (data.getLastUsed().isBefore(expired)) {
+            revoke(token);
+            return false;
+        }
+        if (data.roles.contains(role)){
+            data.updateLastUsed();
+            return true;
+        }
+        return false;
+    }
+
+    public boolean validate(HttpHeaders httpHeaders, String role) {
+        if (httpHeaders == null) return false;
+
+        String authorizationHeader = httpHeaders.getHeaderString(HttpHeaders.AUTHORIZATION);
+
+        if (StringHelper.isNullOrEmpty(authorizationHeader) ||
+                !StringHelper.startsWith_ignoreCase(AUTHENTICATION_SCHEME + " ", authorizationHeader)) {
+            return false;
+        }
+
+        String headerToken = authorizationHeader
+                .substring(AUTHENTICATION_SCHEME.length()).trim();
+
+        final String decodedToken = new String(Base64.getDecoder().decode(headerToken.getBytes()));
+        final StringTokenizer tokenizer = new StringTokenizer(decodedToken, ":");
+        final String token = tokenizer.nextToken();
+
+        return validate(token,role);
     }
 
     public boolean hasRole(String token, String role) {
         TokenData data = map.get(token);
         LocalDateTime expired = LocalDateTime.now().minusMinutes(TIMEOUT_MINUTES);
         if (data.getLastUsed().isBefore(expired)) {
-            map.remove(token);
+            revoke(token);
             return false;
         }
         data.updateLastUsed();
@@ -124,14 +171,14 @@ public class AuthToken {
             lastUsed = LocalDateTime.now();
         }
 
-        static TokenData compareToken(String email){
+        static TokenData compareToken(String email) {
             return new TokenData(email, "N/A");
         }
 
         @Override
         public boolean equals(Object obj) {
             if (obj == null) return false;
-            if (!(obj instanceof  TokenData)) return false;
+            if (!(obj instanceof TokenData)) return false;
             TokenData other = (TokenData) obj;
             return this.email.equals(other.getEmail());
         }

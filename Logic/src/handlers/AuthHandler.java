@@ -36,6 +36,7 @@ public class AuthHandler implements IAuthHandler {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            return new DataResponse(SOCKET_FAILURE, null);
         }
         return new DataResponse(SOCKET_UNAUTHORIZED, null);
         // return 401

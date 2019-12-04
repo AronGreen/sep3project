@@ -2,48 +2,58 @@ package controllers;
 
 import handlers.AuthHandler;
 import handlers.IAuthHandler;
+import helpers.StringHelper;
 import services.DataResponse;
 
+import javax.ws.rs.NameBinding;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.Provider;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 import java.util.StringTokenizer;
 import java.util.Base64;
+
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Path("/auth")
 public class AuthController {
 
-    private static final String AUTHORIZATION_PROPERTY = "Authorization";
-    private static final String AUTHENTICATION_SCHEME = "Basic ";
 
     private IAuthHandler handler = new AuthHandler();
+    @Context HttpHeaders httpheaders;
 
     @POST
-    public Response authenticate(@Context HttpHeaders httpheaders){
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response authenticate(){
 
         try {
-            String encodedCredentials = httpheaders.getRequestHeader(AUTHORIZATION_PROPERTY)
-                    .get(0)
-                    .replace(AUTHENTICATION_SCHEME , "");
+            String[] credentials = StringHelper.getCredentialsFromHttpHeaders(httpheaders);
+            if (credentials == null ||
+                    StringHelper.isNullOrEmpty(credentials[0]) ||
+                    StringHelper.isNullOrEmpty(credentials[1])){
+                return Response.status(Response
+                        .Status.BAD_REQUEST)
+                        .build();
+            }
 
-
-            String decodedCredentials = new String(Base64.getDecoder().decode(encodedCredentials.getBytes()));
-
-            final StringTokenizer tokenizer = new StringTokenizer(decodedCredentials, ":");
-            final String username = tokenizer.nextToken();
-            final String password = tokenizer.nextToken();
-
-            DataResponse response = handler.authenticate(username, password);
+            DataResponse response = handler.authenticate(credentials[0], credentials[1]);
 
             return Response.status(StatusMapper.map(response.getStatus()))
                     .entity(response)
                     .build();
         } catch (Exception e) {
             e.printStackTrace();
-            return Response.status(Response.Status.BAD_REQUEST).entity("No credentials, no cookies").build();
+            return Response.status(Response.Status.BAD_REQUEST).entity("Something went wrong here...").build();
         }
-
     }
+
+
 }
