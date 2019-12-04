@@ -1,23 +1,20 @@
 package handlers;
 
-import com.google.gson.Gson;
-import com.google.gson.internal.LinkedTreeMap;
-import helpers.AuthToken;
-import helpers.JsonConverter;
 import helpers.Password;
 import models.Account;
 import models.response.AccountResponse;
 import services.AccountService;
+import services.AuthTokenService;
 import services.DataResponse;
 import services.IAccountService;
 
 import static constants.Status.*;
 
-public class AuthHandler implements IAuthHandler {
+public class AuthenticationHandler implements IAuthenticationHandler {
 
     private IAccountService service;
 
-    public AuthHandler() {
+    public AuthenticationHandler() {
         service = new AccountService();
     }
 
@@ -31,7 +28,7 @@ public class AuthHandler implements IAuthHandler {
 
         try {
             if (Password.check(password, storedAccount.getPassword())) {
-                AuthToken token = AuthToken.getInstance();
+                AuthTokenService token = AuthTokenService.getInstance();
                 return new DataResponse(SOCKET_SUCCESS, token.add(storedAccount));
             }
         } catch (Exception e) {

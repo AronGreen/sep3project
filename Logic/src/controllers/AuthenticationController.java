@@ -1,11 +1,10 @@
 package controllers;
 
-import handlers.AuthHandler;
-import handlers.IAuthHandler;
+import handlers.AuthenticationHandler;
+import handlers.IAuthenticationHandler;
 import helpers.StringHelper;
 import services.DataResponse;
 
-import javax.ws.rs.NameBinding;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -13,21 +12,11 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.Provider;
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
-import java.util.StringTokenizer;
-import java.util.Base64;
 
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.ElementType.TYPE;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
+@Path("/authentication")
+public class AuthenticationController {
 
-@Path("/auth")
-public class AuthController {
-
-
-    private IAuthHandler handler = new AuthHandler();
+    private IAuthenticationHandler handler = new AuthenticationHandler();
     @Context HttpHeaders httpheaders;
 
     @POST

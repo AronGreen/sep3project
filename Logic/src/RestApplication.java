@@ -11,7 +11,7 @@ public class RestApplication extends Application {
         HashSet h = new HashSet<Class<?>>();
         h.add(HelloWorldController.class);
         h.add(TripController.class);
-        h.add(AuthController.class);
+        h.add(AuthenticationController.class);
         h.add(AccountController.class);
         h.add(ReservationController.class);
         return h;

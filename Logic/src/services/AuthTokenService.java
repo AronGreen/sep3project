@@ -1,5 +1,7 @@
-package helpers;
+package services;
 
+import constants.Authentication;
+import helpers.StringHelper;
 import models.Account;
 
 import javax.ws.rs.core.HttpHeaders;
@@ -8,75 +10,72 @@ import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class AuthToken {
+/**
+ * Singleton service for handling authentication/authorization tokens
+ */
+public class AuthTokenService {
 
-    private static AuthToken INSTANCE;
+    private static AuthTokenService INSTANCE;
     private static final Lock lock = new ReentrantLock();
-    private static final int TIMEOUT_MINUTES = 180;
+    private static final int TIMEOUT_MINUTES = 40;
     private static final int CLEANUP_INTERVAL_MINUTES = 20;
 
-    private static final String AUTHENTICATION_SCHEME = "Basic";
-
-    // NOTE: Would be nice to have a bi-directional map to work with
-    // Guava from google could do the trick
     private Map<String, TokenData> map;
-    private Map<TokenData, String> reverseMap;
 
-    private AuthToken() {
+    private AuthTokenService() {
         map = new HashMap<>();
-        reverseMap = new HashMap<>();
 
         TimerTask cleanupTask = new CleanupTask();
         Timer timer = new Timer();
         timer.schedule(cleanupTask, CLEANUP_INTERVAL_MINUTES * 1000 * 60);
     }
 
-    public static AuthToken getInstance() {
+    public static AuthTokenService getInstance() {
         if (INSTANCE == null) {
             synchronized (lock) {
                 if (INSTANCE == null) {
-                    INSTANCE = new AuthToken();
+                    INSTANCE = new AuthTokenService();
                 }
             }
         }
         return INSTANCE;
     }
 
+    /**
+     * Adds an account to the active tokens and returns its token string.
+     * Returns an empty string on error.
+     * Tokens will be removed after 40 minutes of inactivity (no validation requests on the token)
+     * @param account the account to generate a token for
+     * @return the generated token
+     */
     public String add(Account account) {
         if (StringHelper.isNullOrEmpty(account.getEmail())) {
             return "";
         }
-        if (StringHelper.isNullOrEmpty(account.getRoles())) {
-            account.setRoles("NONE");
-        }
-
-        // TODO: This does not work. Find a better way
-        // the compareToken will not have the same hash as the desired key
-
-//        TokenData compareToken = TokenData.compareToken(account.getEmail());
-//        if (reverseMap.containsKey(compareToken)) {
-//            return reverseMap.get(compareToken);
-//        }
 
         String token = UUID.randomUUID().toString();
-        TokenData tokenData = new TokenData(account.getEmail(), account.getRoles());
+        TokenData tokenData = new TokenData(account.getEmail(), account.getAccessLevel());
 
         map.put(token, tokenData);
-        reverseMap.put(tokenData, token);
 
         return token;
     }
 
+    /**
+     * Revokes the access granted by the given token
+     * @param token the token to revoke
+     */
     public void revoke(String token) {
-        TokenData temp = map.get(token);
         map.remove(token);
-        reverseMap.remove(temp);
     }
 
-    public boolean validate(String token, String role) {
-        if (StringHelper.isNullOrEmpty(role)){
-            role = "NONE";
-        }
+    /**
+     * Checks if a given token exists, has not expired and has the given access level.
+     * @param token the token to validate
+     * @param accessLevel the desired access level
+     * @return true if token is active and has the given access level or above
+     */
+    public boolean validate(String token, int accessLevel) {
         TokenData data = map.get(token);
         if (data == null) return false;
         LocalDateTime expired = LocalDateTime.now().minusMinutes(TIMEOUT_MINUTES);
@@ -84,43 +83,38 @@ public class AuthToken {
             revoke(token);
             return false;
         }
-        if (data.roles.contains(role)){
-            data.updateLastUsed();
-            return true;
-        }
-        return false;
+        data.updateLastUsed();
+        return hasAccess(accessLevel, data.getAccessLevel());
     }
 
-    public boolean validate(HttpHeaders httpHeaders, String role) {
+    /**
+     * A helper method that tries to get an access token from the given HttpHeaders object.
+     * @param httpHeaders HttpHeaders object with a Authorization header
+     * @param accessLevel the desired access level
+     * @return true if the headers have a valid, active token of the given access level
+     */
+    public boolean validate(HttpHeaders httpHeaders, int accessLevel) {
         if (httpHeaders == null) return false;
 
         String authorizationHeader = httpHeaders.getHeaderString(HttpHeaders.AUTHORIZATION);
 
         if (StringHelper.isNullOrEmpty(authorizationHeader) ||
-                !StringHelper.startsWith_ignoreCase(AUTHENTICATION_SCHEME + " ", authorizationHeader)) {
+                !StringHelper.startsWith_ignoreCase(Authentication.AUTHENTICATION_SCHEME + " ", authorizationHeader)) {
             return false;
         }
 
         String headerToken = authorizationHeader
-                .substring(AUTHENTICATION_SCHEME.length()).trim();
+                .substring(Authentication.AUTHENTICATION_SCHEME.length()).trim();
 
         final String decodedToken = new String(Base64.getDecoder().decode(headerToken.getBytes()));
         final StringTokenizer tokenizer = new StringTokenizer(decodedToken, ":");
         final String token = tokenizer.nextToken();
 
-        return validate(token,role);
+        return validate(token, accessLevel);
     }
 
-    public boolean hasRole(String token, String role) {
-        TokenData data = map.get(token);
-        LocalDateTime expired = LocalDateTime.now().minusMinutes(TIMEOUT_MINUTES);
-        if (data.getLastUsed().isBefore(expired)) {
-            revoke(token);
-            return false;
-        }
-        data.updateLastUsed();
-        String roles = data.getRoles();
-        return roles.contains(role);
+    private boolean hasAccess(int desiredLevel, int actualLevel) {
+        return desiredLevel <= actualLevel;
     }
 
     private class CleanupTask extends TimerTask {
@@ -146,12 +140,12 @@ public class AuthToken {
 
     private static class TokenData {
         private String email;
-        private String roles;
+        private int accessLevel;
         private LocalDateTime lastUsed;
 
-        TokenData(String email, String roles) {
+        TokenData(String email, int role) {
             this.email = email;
-            this.roles = roles;
+            this.accessLevel = role;
             lastUsed = LocalDateTime.now();
         }
 
@@ -159,8 +153,8 @@ public class AuthToken {
             return email;
         }
 
-        String getRoles() {
-            return roles;
+        int getAccessLevel() {
+            return accessLevel;
         }
 
         LocalDateTime getLastUsed() {
@@ -169,10 +163,6 @@ public class AuthToken {
 
         void updateLastUsed() {
             lastUsed = LocalDateTime.now();
-        }
-
-        static TokenData compareToken(String email) {
-            return new TokenData(email, "N/A");
         }
 
         @Override
