@@ -42,58 +42,60 @@ namespace FrontEnd.Pages
             var json = JsonSerializer.Serialize(credentials);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             HttpResponseMessage response = await client.PostAsync("http://localhost:8080/Logic_war_exploded/auth", content);
-            
+
             //TODO GET TOKEN AND STORE IT IN SINGLETON
 
 
 
             if (response.IsSuccessStatusCode)
-            {
-               
+
+
 
 
                 // Create the identity from the user info
                 var claims = new List<Claim> {
                 new Claim(ClaimTypes.NameIdentifier, email),
-                new Claim(ClaimTypes.Name, email),
                 new Claim(ClaimTypes.Role, "User") };
 
 
-                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-                // Authenticate using the identity
-                var principal = new ClaimsPrincipal(identity);
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, new AuthenticationProperties { IsPersistent = RememberMe });
-
-
-                //SINGLETON SET ACCOUNT
-
-                Console.WriteLine("Fetching data...");
-                var s = await client.GetStringAsync("http://localhost:8080/Logic_war_exploded/accounts/get/" + $"{email}");
-                var account = JsonSerializer.Deserialize<Account>(s);
-
-                GlobalAccess.Instance.setAccount(account);
-
-                RedirectToPage("MainLoggedIn");
-            }
-            else
-            {
-                // open popup with error message
-            }
+            // Authenticate using the identity
+            var principal = new ClaimsPrincipal(identity);
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal};
 
 
 
 
+        Console.WriteLine("Fetching data...");
+            var s = await client.GetStringAsync("http://localhost:8080/Logic_war_exploded/accounts/get/" + $"{email}");
+        var account = JsonSerializer.Deserialize<Account>(s);
 
+        //SINGLETON SET ACCOUNT
+        GlobalAccess.Instance.setAccount(account);
 
-
-        }
-
-
-
+            RedirectToPage("MainLoggedIn");
 
     }
 }
-    
+
+
+}     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
