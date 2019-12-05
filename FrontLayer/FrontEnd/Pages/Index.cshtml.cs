@@ -47,13 +47,13 @@ namespace FrontEnd.Pages
 
 
 
-            if (response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode) { }
 
 
 
 
-                // Create the identity from the user info
-                var claims = new List<Claim> {
+            // Create the identity from the user info
+            var claims = new List<Claim> {
                 new Claim(ClaimTypes.NameIdentifier, email),
                 new Claim(ClaimTypes.Role, "User") };
 
@@ -62,25 +62,25 @@ namespace FrontEnd.Pages
 
             // Authenticate using the identity
             var principal = new ClaimsPrincipal(identity);
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal};
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
 
 
 
-        Console.WriteLine("Fetching data...");
+            Console.WriteLine("Fetching data...");
             var s = await client.GetStringAsync("http://localhost:8080/Logic_war_exploded/accounts/get/" + $"{email}");
-        var account = JsonSerializer.Deserialize<Account>(s);
+            var account = JsonSerializer.Deserialize<Account>(s);
 
-        //SINGLETON SET ACCOUNT
-        GlobalAccess.Instance.setAccount(account);
+            //SINGLETON SET ACCOUNT
+            GlobalAccess.Instance.setAccount(account);
 
             RedirectToPage("MainLoggedIn");
 
+        }
     }
+
+
 }
-
-
-}     
 
 
 
