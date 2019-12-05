@@ -2,6 +2,7 @@ package models;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import helpers.StringHelper;
 
 public class Account {
 
@@ -11,7 +12,7 @@ public class Account {
     private String lastName;
     private String dateOfBirth;
     private String phone;
-    private String roles;
+    private int accessLevel;
 
     public String getEmail() {
         return email;
@@ -61,12 +62,12 @@ public class Account {
         this.phone = phone;
     }
 
-    public String getRoles() {
-        return roles;
+    public void setAccessLevel(int accessLevel) {
+        this.accessLevel = accessLevel;
     }
 
-    public void setRoles(String roles) {
-        this.roles = roles;
+    public int getAccessLevel(){
+        return accessLevel;
     }
 
     public String toJson(){

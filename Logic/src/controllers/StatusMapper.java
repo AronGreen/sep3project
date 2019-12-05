@@ -1,6 +1,6 @@
 package controllers;
 
-import static constants.Status.*;
+import static constants.ResponseStatus.*;
 
 public class StatusMapper {
 
@@ -10,7 +10,7 @@ public class StatusMapper {
             case SOCKET_SUCCESS:
                 return HTTP_SUCCESS;
             case SOCKET_FAILURE:
-                return HTTP_FAILURE;
+                return HTTP_BAD_REQUEST;
             case SOCKET_UNAUTHORIZED:
                 return HTTP_UNAUTHORIZED;
         }

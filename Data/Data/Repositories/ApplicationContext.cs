@@ -17,5 +17,16 @@ namespace Data.Repositories
             base.OnConfiguring(builder);
         }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.Entity<Reservation>()
+                .HasOne<Trip>("Trip")
+                .WithMany()
+                .HasForeignKey("TripId")
+                .OnDelete(DeleteBehavior.SetNull);
+        }
+
     }
 }

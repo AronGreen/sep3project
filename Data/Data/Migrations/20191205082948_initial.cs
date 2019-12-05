@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Data.Migrations
 {
@@ -13,10 +12,12 @@ namespace Data.Migrations
                 {
                     Email = table.Column<string>(nullable: false),
                     Password = table.Column<string>(nullable: true),
+                    PasswordSalt = table.Column<string>(nullable: true),
                     FirstName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
-                    DateOfBirth = table.Column<DateTime>(nullable: false),
-                    Phone = table.Column<string>(nullable: true)
+                    DateOfBirth = table.Column<string>(nullable: true),
+                    Phone = table.Column<string>(nullable: true),
+                    AccessLevel = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -30,7 +31,7 @@ namespace Data.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     DriverEmail = table.Column<string>(nullable: false),
-                    Arrival = table.Column<DateTime>(nullable: false),
+                    Arrival = table.Column<string>(nullable: false),
                     StartAddress = table.Column<string>(nullable: false),
                     DestinationAddress = table.Column<string>(nullable: false),
                     BasePrice = table.Column<double>(nullable: false),
@@ -61,8 +62,8 @@ namespace Data.Migrations
                     PassengerEmail = table.Column<string>(nullable: false),
                     PickupAddress = table.Column<string>(nullable: false),
                     DropoffAddress = table.Column<string>(nullable: false),
-                    Approved = table.Column<DateTime>(nullable: true),
-                    PickupTime = table.Column<DateTime>(nullable: true)
+                    State = table.Column<string>(nullable: true),
+                    PickupTime = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -78,7 +79,7 @@ namespace Data.Migrations
                         column: x => x.TripId,
                         principalTable: "Trips",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateIndex(

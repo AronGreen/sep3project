@@ -1,17 +1,13 @@
 package controllers;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import handlers.ITripHandler;
 import handlers.TripHandler;
 import helpers.JsonConverter;
-import jdk.net.SocketFlow;
 import models.Trip;
 import models.TripFilter;
-import services.DataResponse;
+import models.response.TripListResponse;
+import models.response.TripResponse;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
@@ -45,7 +41,7 @@ public class TripController {
         Trip t = Trip.fromJson(json);
 
         // Send request and receive Response
-        DataResponse res = handler.create(t);
+        TripResponse res = handler.create(t);
 
         // Extract http response code
         int status = StatusMapper.map(res.getStatus());
@@ -60,7 +56,7 @@ public class TripController {
     @Path("delete/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response delete(@PathParam("id") int id) {
-        DataResponse response = handler.delete(id);
+        TripResponse response = handler.delete(id);
 
         int status = StatusMapper.map(response.getStatus());
 
@@ -71,11 +67,16 @@ public class TripController {
     }
 
     @GET
-    @Path("get")
-    @Produces(MediaType.APPLICATION_JSON )
-    public Response getFiltered(){
+    @Path("get/")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getFiltered(
+            @DefaultValue("") @QueryParam("driverEmail") String driverEmail,
+            @DefaultValue("") @QueryParam("passengerEmail") String passengerEmail,
+            @DefaultValue("") @QueryParam("minimumArrivalDate") String minimumArrivalDate,
+            @DefaultValue("") @QueryParam("maximumArrivalDate") String maximumArrivalDate)
+    {
         // Send request and receive Response
-        DataResponse res = handler.getFiltered(new TripFilter());
+        TripListResponse res = handler.getFiltered(new TripFilter(driverEmail, passengerEmail, minimumArrivalDate, maximumArrivalDate));
 
         // Extract http response data
         int status = StatusMapper.map(res.getStatus());
@@ -92,7 +93,7 @@ public class TripController {
     @Produces(MediaType.APPLICATION_JSON )
     public Response get(@PathParam("id") int id){
         // Send request and receive Response
-        DataResponse res = handler.getById(id);
+        TripResponse res = handler.getById(id);
 
         // Extract http response code
         int status = StatusMapper.map(res.getStatus());

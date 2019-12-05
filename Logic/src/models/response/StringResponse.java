@@ -1,4 +1,4 @@
-package services;
+package models.response;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -6,12 +6,12 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 
-public class DataResponse {
+public class StringResponse {
 
     private String status;
     private String body;
 
-    public DataResponse(String status, String body) {
+    public StringResponse(String status, String body) {
         this.status = status;
         this.body = body;
     }
@@ -31,11 +31,11 @@ public class DataResponse {
     //     return gson.toJson(this);
     // }
 
-//    public static <T> DataResponse fromJson(String json, Class<T> type) {
+//    public static <T> StringResponse fromJson(String json, Class<T> type) {
 //        Gson gson = new GsonBuilder()
 //                .setLenient()
 //                .create();
-//        Type thisType = new TypeToken<DataResponse<T>>() {
+//        Type thisType = new TypeToken<StringResponse<T>>() {
 //        }.getType();
 //        return gson.fromJson(json, thisType);
 //    }

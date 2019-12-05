@@ -1,12 +1,10 @@
 package services;
 
-import com.google.gson.reflect.TypeToken;
 import helpers.JsonConverter;
 import models.Account;
 import models.response.AccountListResponse;
 import models.response.AccountResponse;
-
-import javax.xml.crypto.Data;
+import models.response.StringResponse;
 
 public class AccountService  implements IAccountService{
 
@@ -62,11 +60,11 @@ public class AccountService  implements IAccountService{
     }
 
     @Override
-    public DataResponse getPasswordByEmail(String email) {
+    public StringResponse getPasswordByEmail(String email) {
         DataRequest request = new DataRequest("account", "getPasswordByEmail", email);
 
         String json = connection.sendRequest(request);
 
-        return JsonConverter.fromJson(json, DataResponse.class);
+        return JsonConverter.fromJson(json, StringResponse.class);
     }
 }

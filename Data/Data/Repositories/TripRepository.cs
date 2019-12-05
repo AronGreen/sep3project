@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Data.Data;
 using Data.Models.Entities;
+using Data.Models.Helpers;
+using Microsoft.EntityFrameworkCore.ValueGeneration;
 
 namespace Data.Repositories
 {
@@ -49,11 +53,53 @@ namespace Data.Repositories
 
         public Trip[] GetFiltered(TripFilter filter = null)
         {
+            
             using var context = new ApplicationContext();
-            // TODO add filtering
 
             return context.Trips
                 .Select(x => x)
+                .AsEnumerable()
+                .Where(x =>
+                {
+                    if (filter == null)
+                        return true;
+
+                    // Driver email filter
+                    if (filter.DriverEmail != "" && filter.DriverEmail != x.DriverEmail)
+                    {
+                        return false;
+                    }
+
+                    // Passenger email filter
+                    var reservations = context.Reservations
+                        .Select(r => r)
+                        .Where(r => r.TripId == x.Id)
+                        .ToArray();
+                    if (filter.PassengerEmail != "" && reservations.All(r => r.PassengerEmail != filter.PassengerEmail))
+                    {
+                        return false;
+                    }
+
+                    // Minimum Date filter
+                    if (filter.MinimumArrivalDate != "")
+                    {
+                        var filterDate = DateTimeHelper.FromString(filter.MinimumArrivalDate);
+                        var tripDate = DateTimeHelper.FromString(x.Arrival);
+                        if (tripDate.CompareTo(filterDate) < 0)
+                            return false;
+                    }
+
+                    // Maximum date filter
+                    if (filter.MaximumArrivalDate != "")
+                    {
+                        var filterDate = DateTimeHelper.FromString(filter.MaximumArrivalDate);
+                        var tripDate = DateTimeHelper.FromString(x.Arrival);
+                        if (tripDate.CompareTo(filterDate) > 0)
+                            return false;
+                    }
+                        
+                    return true;
+                })
                 .ToArray();
         }
 

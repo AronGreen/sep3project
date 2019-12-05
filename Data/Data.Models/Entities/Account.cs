@@ -31,5 +31,8 @@ namespace Data.Models.Entities
         [JsonPropertyName("phone")]
         public string Phone { get; set; }
 
+        [JsonPropertyName("accessLevel")]
+        public int AccessLevel { get; set; }
+
     }
 }
