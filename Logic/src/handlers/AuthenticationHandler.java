@@ -4,11 +4,11 @@ import helpers.Password;
 import models.Account;
 import models.response.AccountResponse;
 import services.AccountService;
+import models.response.StringResponse;
 import services.AuthTokenService;
-import services.DataResponse;
 import services.IAccountService;
 
-import static constants.Status.*;
+import static constants.ResponseStatus.*;
 
 public class AuthenticationHandler implements IAuthenticationHandler {
 
@@ -19,7 +19,7 @@ public class AuthenticationHandler implements IAuthenticationHandler {
     }
 
     @Override
-    public DataResponse authenticate(String email, String password) {
+    public StringResponse authenticate(String email, String password) {
         AccountResponse userResponse = service.getByEmail(email);
         // TODO: If response status is not "success", return an error or smth
         Account storedAccount = userResponse.getBody();
@@ -29,13 +29,12 @@ public class AuthenticationHandler implements IAuthenticationHandler {
         try {
             if (Password.check(password, storedAccount.getPassword())) {
                 AuthTokenService token = AuthTokenService.getInstance();
-                return new DataResponse(SOCKET_SUCCESS, token.add(storedAccount));
+                return new StringResponse(SOCKET_SUCCESS, token.add(storedAccount));
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return new DataResponse(SOCKET_FAILURE, null);
+            return new StringResponse(SOCKET_FAILURE, null);
         }
-        return new DataResponse(SOCKET_UNAUTHORIZED, null);
-        // return 401
+        return new StringResponse(SOCKET_UNAUTHORIZED, null);
     }
 }

@@ -1,18 +1,13 @@
 package controllers;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import handlers.IReservationHandler;
-import handlers.ITripHandler;
 import handlers.ReservationHandler;
-import handlers.TripHandler;
 import helpers.JsonConverter;
 import models.Reservation;
-import models.Trip;
-import services.DataResponse;
+import models.response.ReservationListResponse;
+import models.response.ReservationResponse;
+import models.response.StringResponse;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
@@ -42,7 +37,7 @@ public class ReservationController {
 //    @Produces(MediaType.APPLICATION_JSON )
 //    public Response get(){
 //        // Send request and receive Response
-//        DataResponse<String> res = handler.getFiltered(null);
+//        StringResponse<String> res = handler.getFiltered(null);
 //
 //        // Extract http response data
 //        int status = StatusMapper.map(res.getStatus());
@@ -64,7 +59,7 @@ public class ReservationController {
         Reservation t = Reservation.fromJson(json);
 
         // Send request and receive Response
-        DataResponse res = handler.create(t);
+        ReservationResponse res = handler.create(t);
 
         // Extract http response code
         int status = StatusMapper.map(res.getStatus());
@@ -82,7 +77,7 @@ public class ReservationController {
     public Response update(String json) {
         Reservation reservation = JsonConverter.fromJson(json, Reservation.class);
 
-        DataResponse response = handler.update(reservation);
+        ReservationResponse response = handler.update(reservation);
 
         int status = StatusMapper.map(response.getStatus());
 
@@ -96,7 +91,7 @@ public class ReservationController {
     @Path("delete/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response delete(@PathParam("id") int id) {
-        DataResponse response = handler.delete(id);
+        ReservationResponse response = handler.delete(id);
 
         int status = StatusMapper.map(response.getStatus());
 
@@ -110,7 +105,7 @@ public class ReservationController {
     @Path("get/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getById(@PathParam("id") int id) {
-        DataResponse response = handler.getById(id);
+        ReservationResponse response = handler.getById(id);
 
         int status = StatusMapper.map(response.getStatus());
 
@@ -125,7 +120,7 @@ public class ReservationController {
     @Produces(MediaType.APPLICATION_JSON )
     public Response get(@PathParam("id") int id){
         // Send request and receive Response
-        DataResponse res = handler.getByTripId(id);
+        ReservationListResponse res = handler.getByTripId(id);
 
         // Extract http response code
         int status = StatusMapper.map(res.getStatus());
@@ -140,7 +135,7 @@ public class ReservationController {
     @Path("getByEmail/{email}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getByEmail(@PathParam("email") String email) {
-        DataResponse response = handler.getByEmail(email);
+        ReservationListResponse response = handler.getByEmail(email);
 
         int status = StatusMapper.map(response.getStatus());
 

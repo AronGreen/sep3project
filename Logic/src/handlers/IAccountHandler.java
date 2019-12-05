@@ -3,7 +3,7 @@ package handlers;
 import models.Account;
 import models.response.AccountListResponse;
 import models.response.AccountResponse;
-import services.DataResponse;
+import models.response.StringResponse;
 
 public interface IAccountHandler {
 
@@ -12,6 +12,6 @@ public interface IAccountHandler {
     AccountResponse delete(String email);
     AccountListResponse getAll();
     AccountResponse getByEmail(String email);
-    DataResponse getPasswordByEmail(String email);
+    StringResponse getPasswordByEmail(String email);
 
 }

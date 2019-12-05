@@ -1,15 +1,16 @@
 package handlers;
 
 import models.Reservation;
-import services.DataResponse;
+import models.response.ReservationListResponse;
+import models.response.ReservationResponse;
 
 public interface IReservationHandler {
 
-    DataResponse create(Reservation reservation);
-    DataResponse update(Reservation reservation);
-    DataResponse delete(int id);
-    DataResponse getById(int id);
-    DataResponse getByTripId(int tripId);
-    DataResponse getByEmail(String email);
+    ReservationResponse create(Reservation reservation);
+    ReservationResponse update(Reservation reservation);
+    ReservationResponse delete(int id);
+    ReservationResponse getById(int id);
+    ReservationListResponse getByTripId(int tripId);
+    ReservationListResponse getByEmail(String email);
 
 }

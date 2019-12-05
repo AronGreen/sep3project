@@ -3,7 +3,7 @@ package controllers;
 import handlers.AuthenticationHandler;
 import handlers.IAuthenticationHandler;
 import helpers.StringHelper;
-import services.DataResponse;
+import models.response.StringResponse;
 
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -33,7 +33,7 @@ public class AuthenticationController {
                         .build();
             }
 
-            DataResponse response = handler.authenticate(credentials[0], credentials[1]);
+            StringResponse response = handler.authenticate(credentials[0], credentials[1]);
 
             return Response.status(StatusMapper.map(response.getStatus()))
                     .entity(response)

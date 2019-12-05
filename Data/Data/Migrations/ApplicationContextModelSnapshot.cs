@@ -52,9 +52,6 @@ namespace Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Approved")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("DropoffAddress")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -68,6 +65,9 @@ namespace Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PickupTime")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("State")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("TripId")
@@ -141,7 +141,7 @@ namespace Data.Migrations
                     b.HasOne("Data.Models.Entities.Trip", "Trip")
                         .WithMany()
                         .HasForeignKey("TripId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired();
                 });
 

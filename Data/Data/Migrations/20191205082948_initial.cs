@@ -2,7 +2,7 @@
 
 namespace Data.Migrations
 {
-    public partial class hello : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -62,7 +62,7 @@ namespace Data.Migrations
                     PassengerEmail = table.Column<string>(nullable: false),
                     PickupAddress = table.Column<string>(nullable: false),
                     DropoffAddress = table.Column<string>(nullable: false),
-                    Approved = table.Column<string>(nullable: true),
+                    State = table.Column<string>(nullable: true),
                     PickupTime = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -79,7 +79,7 @@ namespace Data.Migrations
                         column: x => x.TripId,
                         principalTable: "Trips",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateIndex(

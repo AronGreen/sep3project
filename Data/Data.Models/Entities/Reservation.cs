@@ -58,8 +58,8 @@ namespace Data.Models.Entities
         /// <summary>
         /// The flag that indicates whether the driver has accepted the Reservation or not
         /// </summary>
-        [JsonPropertyName("approved")]
-        public string Approved { get; set; }
+        [JsonPropertyName("state")]
+        public string State { get; set; }
 
         /// <summary>
         /// The time the driver specifies to meet and pick up the passenger(s)
