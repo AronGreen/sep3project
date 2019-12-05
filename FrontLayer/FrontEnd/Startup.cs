@@ -7,10 +7,11 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Internal;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
 
 namespace FrontEnd
 {
@@ -31,16 +32,21 @@ namespace FrontEnd
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
+            
+            });
+
+            services.Configure<MvcOptions>(options =>
+            {
+                options.EnableEndpointRouting = false;
             });
 
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-            
-        .AddCookie();
+                .AddCookie();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
-
+     
             
         }
 
@@ -62,7 +68,7 @@ namespace FrontEnd
             app.UseStaticFiles();
             app.UseAuthentication();
             app.UseCookiePolicy();
-
+            
             app.UseMvc();
 
 

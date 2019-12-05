@@ -1,0 +1,115 @@
+﻿@page
+@model FrontEnd.Pages.ManageAccountModel
+@using Pages.Entities
+@{
+    ViewData["Title"] = "ManageAccount";
+
+
+}
+
+<div class="text-center">
+    <h1 class="display-4">Manage Account</h1>
+</div>
+
+<form method="get">
+    <button type="submit" asp-page="./MainLoggedIn">Go Back!</button>
+</form>
+
+<form method="delete">
+    <button type="submit" asp-page-handler="Delete">Delete account</button>
+</form>
+
+
+@{
+    var account = GlobalAccess.Instance.GetAccount();
+
+    
+    
+     
+
+}
+
+
+
+<div class="text-center">
+    <label>First Name: </label>
+    <p>
+        <span class="input">
+            <input type="text" placeholder="First name" name="firstName" value="@account.FirstName">
+
+            <span></span>
+        </span>
+    </p>
+    <div>
+        <label>Last Name: </label>
+        <p>
+            <span class="input">
+                <input type="text" placeholder="Last name" name="lastName" value="@account.LastName">
+                <span></span>
+            </span>
+        </p>
+
+    </div>
+
+
+
+
+    <div>
+        <label>Password</label>
+        <p>
+            <span class="input">
+                <input type="password" placeholder="Password" name="password" value="@account.Password">
+                <span></span>
+            </span>
+        </p>
+
+    </div>
+
+    <div>
+        <label>E-mail:</label>
+        <p>
+            <span class="input">
+                <input type="text" placeholder="Your e-mail" name="email" value="@account.Email">
+                <span></span>
+            </span>
+        </p>
+    </div>
+
+    <label>Phone Number</label>
+    <p>
+        <span class="input">
+            <input type="number" placeholder="Phone number" name="phoneNumber" value="@account.Phone">
+            <span></span>
+        </span>
+    </p>
+
+
+    <div>
+        <label>Date of Birth:</label>
+        <p>
+            <span class="input">
+                <input type="date" name="dateOfBirth" disabled value="@account.DateOfBirth">
+                <span></span>
+            </span>
+        </p>
+
+    </div>
+    <div>
+
+
+
+        <form method="put">
+
+            <input typeof="button" asp-page-handler="Update" type="submit" class="login-button" id="button" value="Update">
+
+        </form>
+
+
+
+
+
+    </div>
+
+
+</div>
+

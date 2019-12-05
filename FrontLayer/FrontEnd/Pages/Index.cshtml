@@ -9,7 +9,7 @@
 
 @{
     ViewData["Title"] = "MainPage";
-
+   
 
 }
 
@@ -53,10 +53,11 @@ spans.forEach((span, idx) => {
 
     <div align="center" class="login-container">
 
+
         <form method="post" asp-page-handler="Login">
             <p>
                 <span class="input">
-                    <input type="text" placeholder="Username"  class="form-control" name="username">
+                    <input type="email" placeholder="Email"  class="form-control" name="email">
                     <span></span>
                 </span>
             </p>
