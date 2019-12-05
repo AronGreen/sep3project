@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20191204095919_hell")]
-    partial class hell
+    [Migration("20191205082948_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,6 +21,9 @@ namespace Data.Migrations
                 {
                     b.Property<string>("Email")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("AccessLevel")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("DateOfBirth")
                         .HasColumnType("TEXT");

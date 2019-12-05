@@ -1,7 +1,9 @@
 package controllers;
 
+import constants.Authentication;
 import handlers.AccountHandler;
 import handlers.IAccountHandler;
+import services.AuthTokenService;
 import helpers.JsonConverter;
 import models.Account;
 import models.response.AccountListResponse;
@@ -9,6 +11,8 @@ import models.response.AccountResponse;
 import models.response.StringResponse;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -16,6 +20,10 @@ import javax.ws.rs.core.Response;
 public class AccountController {
 
     private IAccountHandler handler = new AccountHandler();
+    private AuthTokenService authToken = AuthTokenService.getInstance();
+
+    @Context
+    private HttpHeaders httpHeaders;
 
     @POST
     @Path("create")
@@ -69,6 +77,10 @@ public class AccountController {
     @Path("getAll")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAll() {
+        if (!AuthTokenService.getInstance().validate(httpHeaders, Authentication.Role.USER)){
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+
         AccountListResponse response = handler.getAll();
 
         int status = StatusMapper.map(response.getStatus());

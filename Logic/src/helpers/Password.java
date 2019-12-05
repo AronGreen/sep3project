@@ -49,24 +49,28 @@ public class Password {
      * @param password the password to verify
      * @param stored the persisted password with its salt
      * @return true on match
-     * @throws Exception
      */
-    public static boolean check(String password, String stored) throws Exception{
-        StringTokenizer tokenizer = new StringTokenizer(stored, "$");
-        final String salt = tokenizer.nextToken();
-        final String saltedHash = tokenizer.nextToken();
+    public static boolean check(String password, String stored){
+        try {
+            StringTokenizer tokenizer = new StringTokenizer(stored, "$");
+            final String salt = tokenizer.nextToken();
+            final String saltedHash = tokenizer.nextToken();
 
-        String hashOfInput = hash(password, Base64.getDecoder().decode(salt));
-        return hashOfInput.equals(saltedHash);
+            String hashOfInput = hash(password, Base64.getDecoder().decode(salt));
+            return hashOfInput.equals(saltedHash);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     private static String hash(String password, byte[] salt) throws IllegalArgumentException, NoSuchAlgorithmException, InvalidKeySpecException {
         if (password == null || password.length() == 0)
             throw new IllegalArgumentException("Empty passwords are not supported.");
-        return password;
-        // SecretKeyFactory f = SecretKeyFactory.getInstance("HmacSHA512");
-        // SecretKey key = f.generateSecret(new PBEKeySpec(
-        //         password.toCharArray(), salt, iterations, desiredKeyLength));
-        // return new String(Base64.getEncoder().encode(key.getEncoded()), StandardCharsets.UTF_8);
+
+        SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+        SecretKey key = f.generateSecret(new PBEKeySpec(
+                password.toCharArray(), salt, iterations, desiredKeyLength));
+        return new String(Base64.getEncoder().encode(key.getEncoded()), StandardCharsets.UTF_8);
     }
 }

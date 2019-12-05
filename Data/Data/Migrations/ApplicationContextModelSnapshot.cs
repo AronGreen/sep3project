@@ -20,6 +20,9 @@ namespace Data.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("AccessLevel")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("DateOfBirth")
                         .HasColumnType("TEXT");
 
