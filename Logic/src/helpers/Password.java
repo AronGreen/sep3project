@@ -7,12 +7,13 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.security.Security;
 import java.security.spec.InvalidKeySpecException;
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.StringTokenizer;
 
 public class Password {
+
     // inspired by this: https://stackoverflow.com/a/11038230
     private static final int iterations = 20000;
     private static final int saltLength = 32;
