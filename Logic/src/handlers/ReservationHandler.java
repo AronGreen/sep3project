@@ -1,7 +1,8 @@
 package handlers;
 
 import models.Reservation;
-import services.DataResponse;
+import models.response.ReservationListResponse;
+import models.response.ReservationResponse;
 import services.IReservationService;
 import services.ReservationService;
 
@@ -14,38 +15,38 @@ public class ReservationHandler implements IReservationHandler {
     }
 
     @Override
-    public DataResponse create(Reservation reservation) {
+    public ReservationResponse create(Reservation reservation) {
         // No logic is implemented for now
 
         return service.create(reservation);
     }
 
     @Override
-    public DataResponse update(Reservation reservation) {
+    public ReservationResponse update(Reservation reservation) {
         // No logic is implemented for now
 
         return service.update(reservation);
     }
 
     @Override
-    public DataResponse delete(int id) {
+    public ReservationResponse delete(int id) {
         return service.delete(id);
     }
 
     @Override
-    public DataResponse getById(int id) {
+    public ReservationResponse getById(int id) {
         return service.getById(id);
     }
 
     @Override
-    public DataResponse getByTripId(int tripId) {
+    public ReservationListResponse getByTripId(int tripId) {
         // No logic is implemented for now
 
         return service.getByTripId(tripId);
     }
 
     @Override
-    public DataResponse getByEmail(String email) {
+    public ReservationListResponse getByEmail(String email) {
         return service.getByEmail(email);
     }
 }

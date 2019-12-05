@@ -12,7 +12,7 @@ public class Reservation {
     private Account passenger;
     private String pickupAddress;
     private String dropoffAddress;
-    private String approved;
+    private String state;
     private String pickupTime;
 
     public int getTripId() {
@@ -71,12 +71,12 @@ public class Reservation {
         this.dropoffAddress = dropoffAddress;
     }
 
-    public String getApproved() {
-        return approved;
+    public String getState() {
+        return state;
     }
 
-    public void setApproved(String approved) {
-        this.approved = approved;
+    public void setState(String state) {
+        this.state = state;
     }
 
     public String getPickupTime() {

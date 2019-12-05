@@ -1,16 +1,15 @@
 package models.response;
 
-import models.Account;
+import models.Trip;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class AccountListResponse {
+public class TripListResponse {
 
-    String status;
-    private List<Account> body;
+    private String status;
+    private List<Trip> body;
 
-    public AccountListResponse(String status, List<Account> body) {
+    public TripListResponse(String status, List<Trip> body) {
         this.status = status;
         this.body = body;
     }
@@ -23,11 +22,11 @@ public class AccountListResponse {
         this.status = status;
     }
 
-    public List<Account> getBody() {
+    public List<Trip> getBody() {
         return body;
     }
 
-    public void setBody(List<Account> body) {
+    public void setBody(List<Trip> body) {
         this.body = body;
     }
 }
