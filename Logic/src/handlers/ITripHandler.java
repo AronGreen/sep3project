@@ -2,7 +2,8 @@ package handlers;
 
 import models.Trip;
 import models.TripFilter;
-import services.DataResponse;
+import models.response.TripListResponse;
+import models.response.TripResponse;
 
 
 /**
@@ -10,9 +11,9 @@ import services.DataResponse;
  */
 public interface ITripHandler {
 
-    DataResponse create(Trip trip);
-    DataResponse delete(int id);
-    DataResponse getFiltered(TripFilter filter);
-    DataResponse getById(int id);
+    TripResponse create(Trip trip);
+    TripResponse delete(int id);
+    TripListResponse getFiltered(TripFilter filter);
+    TripResponse getById(int id);
 
 }

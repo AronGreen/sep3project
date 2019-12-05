@@ -1,19 +1,16 @@
 package controllers;
 
-import com.google.gson.JsonNull;
-import com.sun.media.jfxmediaimpl.MediaUtils;
 import handlers.AccountHandler;
 import handlers.IAccountHandler;
 import helpers.JsonConverter;
 import models.Account;
 import models.response.AccountListResponse;
 import models.response.AccountResponse;
-import services.DataResponse;
+import models.response.StringResponse;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.awt.*;
 
 @Path("/accounts")
 public class AccountController {
@@ -101,7 +98,7 @@ public class AccountController {
     @Path("getPassword/{email}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getPasswordByEmail(@PathParam("email") String email) {
-        DataResponse response = handler.getPasswordByEmail(email);
+        StringResponse response = handler.getPasswordByEmail(email);
 
         int status = StatusMapper.map(response.getStatus());
 

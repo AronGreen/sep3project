@@ -2,7 +2,7 @@ package controllers;
 
 import handlers.AuthHandler;
 import handlers.IAuthHandler;
-import services.DataResponse;
+import models.response.StringResponse;
 
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -35,7 +35,7 @@ public class AuthController {
             final String username = tokenizer.nextToken();
             final String password = tokenizer.nextToken();
 
-            DataResponse response = handler.authenticate(username, password);
+            StringResponse response = handler.authenticate(username, password);
 
             return Response.status(StatusMapper.map(response.getStatus()))
                     .build();

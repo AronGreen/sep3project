@@ -64,7 +64,7 @@ public class Password {
         if (password == null || password.length() == 0)
             throw new IllegalArgumentException("Empty passwords are not supported.");
         return password;
-        // SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
+        // SecretKeyFactory f = SecretKeyFactory.getInstance("HmacSHA512");
         // SecretKey key = f.generateSecret(new PBEKeySpec(
         //         password.toCharArray(), salt, iterations, desiredKeyLength));
         // return new String(Base64.getEncoder().encode(key.getEncoded()), StandardCharsets.UTF_8);

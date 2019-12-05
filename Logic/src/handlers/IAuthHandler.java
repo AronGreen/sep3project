@@ -1,8 +1,8 @@
 package handlers;
 
-import services.DataResponse;
+import models.response.StringResponse;
 
 public interface IAuthHandler {
 
-    DataResponse authenticate(String email, String password);
+    StringResponse authenticate(String email, String password);
 }

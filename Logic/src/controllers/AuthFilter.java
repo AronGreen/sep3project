@@ -34,7 +34,7 @@
 //            //Access denied for all
 //            if(method.isAnnotationPresent(DenyAll.class))
 //            {
-//                requestContext.abortWith(Response.status(Response.Status.FORBIDDEN)
+//                requestContext.abortWith(Response.status(Response.ResponseStatus.FORBIDDEN)
 //                        .entity("Access blocked for all users !!").build());
 //                return;
 //            }
@@ -48,7 +48,7 @@
 //            //If no authorization information present; block access
 //            if(authorization == null || authorization.isEmpty())
 //            {
-//                requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
+//                requestContext.abortWith(Response.status(Response.ResponseStatus.UNAUTHORIZED)
 //                        .entity("You cannot access this resource").build());
 //                return;
 //            }
@@ -82,7 +82,7 @@
 //                //Is user valid?
 //                if( ! isUserAllowed(username, password, rolesSet))
 //                {
-//                    requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
+//                    requestContext.abortWith(Response.status(Response.ResponseStatus.UNAUTHORIZED)
 //                            .entity("You cannot access this resource").build(););
 //                    return;
 //                }

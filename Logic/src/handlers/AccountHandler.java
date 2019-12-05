@@ -6,7 +6,7 @@ import models.Account;
 import models.response.AccountListResponse;
 import models.response.AccountResponse;
 import services.AccountService;
-import services.DataResponse;
+import models.response.StringResponse;
 import services.IAccountService;
 
 public class AccountHandler implements IAccountHandler {
@@ -27,7 +27,7 @@ public class AccountHandler implements IAccountHandler {
     public AccountResponse create(Account account) {
         account.setPassword(
                 hashPassword(account.getPassword()));
-
+        
         AccountResponse response = accountService.create(account);
         removePassword(response.getBody());
 
@@ -74,7 +74,7 @@ public class AccountHandler implements IAccountHandler {
     }
 
     @Override
-    public DataResponse getPasswordByEmail(String email) {
+    public StringResponse getPasswordByEmail(String email) {
         return accountService.getPasswordByEmail(email);
     }
 
