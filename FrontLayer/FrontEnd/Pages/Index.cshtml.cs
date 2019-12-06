@@ -45,8 +45,10 @@ namespace FrontEnd.Pages
 
             //TODO COOKIE TOKEN
 
+
             if (response.IsSuccessStatusCode)
             {
+
 
                 Console.WriteLine("Fetching data...");
                 var s = await client.GetStringAsync("http://localhost:8080/Logic_war_exploded/accounts/get/" + $"{email}");
@@ -69,15 +71,14 @@ namespace FrontEnd.Pages
 
 
 
-
                 //Values stored in the cookies for 30 minutes
                 var cookieOptions = new CookieOptions
                 {
 
                     Expires = DateTime.Now.AddMinutes(30),
                     Secure = true
-                
-                    
+
+
                 };
                 Response.Cookies.Append("EmailCookie", $"{account.Email}", cookieOptions);
                 Response.Cookies.Append("FirstNameCookie", $"{account.FirstName}", cookieOptions);
@@ -88,12 +89,12 @@ namespace FrontEnd.Pages
                 Response.Cookies.Append("TokenCookie", $"{token}", cookieOptions);
 
 
-                return RedirectToPage("MainLoggedIn");
-            }
 
-                                                                                         
+                return RedirectToPage("MainLoggedIn");
+
+
+            }
             return RedirectToPage("MainLoggedIn");
-                                                                                                                        
         }
     }
 }
@@ -116,6 +117,10 @@ namespace FrontEnd.Pages
 
 
 
+
+=======
+}
+>>>>>>> 16e9ceed73c46b908b5e81da03f18f0964e8c51e
 
 
 
