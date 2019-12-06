@@ -15,11 +15,11 @@ namespace FrontEnd.Pages
     public class ManageAccountModel : PageModel
     {
 
-        GlobalAccess GlobalAccess = GlobalAccess.Instance;
-        string Email = GlobalAccess.Instance.GetAccount().Email;
-        public string Label = "Edit";
-
         
+        
+        public string Label = "Edit";
+        
+
 
 
 
@@ -64,6 +64,7 @@ namespace FrontEnd.Pages
 
         }
         public async Task onDeleteDeleteAsync() {
+            var Email = Request.Cookies["EmailCookie"];
 
             HttpClient client = new HttpClient();
             HttpResponseMessage response = await client.DeleteAsync("http://localhost:8080/Logic_war_exploded/accounts/delete/" + $"{Email}" );

@@ -23,10 +23,12 @@
 @{
     var account = GlobalAccess.Instance.GetAccount();
 
-    
-    
-     
-
+    var email = Request.Cookies["EmailCookie"];
+    var firstName = Request.Cookies["FirstNameCookie"];
+    var lastName = Request.Cookies["LastNameCookie"];
+    var password = Request.Cookies["PasswordCookie"];
+    var dateOfBirth = Request.Cookies["DobCookie"];
+    var phone = Request.Cookies["PhoneCookie"];
 }
 
 
@@ -35,7 +37,7 @@
     <label>First Name: </label>
     <p>
         <span class="input">
-            <input type="text" placeholder="First name" name="firstName" value="@account.FirstName">
+            <input type="text" placeholder="First name" name="firstName" value="@firstName">
 
             <span></span>
         </span>
@@ -44,7 +46,7 @@
         <label>Last Name: </label>
         <p>
             <span class="input">
-                <input type="text" placeholder="Last name" name="lastName" value="@account.LastName">
+                <input type="text" placeholder="Last name" name="lastName" value="@lastName">
                 <span></span>
             </span>
         </p>
@@ -58,7 +60,7 @@
         <label>Password</label>
         <p>
             <span class="input">
-                <input type="password" placeholder="Password" name="password" value="@account.Password">
+                <input type="password" placeholder="Password" name="password" value="@password">
                 <span></span>
             </span>
         </p>
@@ -69,7 +71,7 @@
         <label>E-mail:</label>
         <p>
             <span class="input">
-                <input type="text" placeholder="Your e-mail" name="email" value="@account.Email">
+                <input type="text" placeholder="Your e-mail" name="email" value="@email">
                 <span></span>
             </span>
         </p>
@@ -78,7 +80,7 @@
     <label>Phone Number</label>
     <p>
         <span class="input">
-            <input type="number" placeholder="Phone number" name="phoneNumber" value="@account.Phone">
+            <input type="number" placeholder="Phone number" name="phoneNumber" value="@phone">
             <span></span>
         </span>
     </p>
@@ -88,7 +90,7 @@
         <label>Date of Birth:</label>
         <p>
             <span class="input">
-                <input type="date" name="dateOfBirth" disabled value="@account.DateOfBirth">
+                <input type="text" name="dateOfBirth" disabled value="@dateOfBirth.ToString">
                 <span></span>
             </span>
         </p>

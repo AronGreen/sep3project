@@ -7,7 +7,7 @@ using FrontEnd.Pages.Entities;
 using Data.Models.Entities;
 using System.Net.Mime;
 using System.Text.Json;
-
+using System.Collections.Specialized;
 
 
 namespace FrontEnd.Pages
@@ -15,8 +15,11 @@ namespace FrontEnd.Pages
     public class RegisterModel : PageModel
     {
         public string Message { get; set; }
-        
 
+        public async void OnGet()
+        {
+
+        }
         public async Task OnPostRegister()
         {
             string email = Request.Form["email"];
@@ -49,12 +52,13 @@ namespace FrontEnd.Pages
             HttpResponseMessage response = await client.PostAsync("http://localhost:8080/Logic_war_exploded/accounts/create", content);
 
 
-            if (response.IsSuccessStatusCode) {
-                Message = "Account created succesfully";
-                
+
+            if (response.IsSuccessStatusCode)
+            {
+
+                RedirectToPage("Index");
             }
 
-            RedirectToPage("Index");
         }
     }
 }
