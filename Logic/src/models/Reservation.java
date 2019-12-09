@@ -14,6 +14,7 @@ public class Reservation {
     private String dropoffAddress;
     private String state;
     private String pickupTime;
+    private int bookedSeats;
 
     public int getTripId() {
         return tripId;
@@ -86,6 +87,10 @@ public class Reservation {
     public void setPickupTime(String pickupTime) {
         this.pickupTime = pickupTime;
     }
+
+    public void setBookedSeats(int bookedSeats) { this.bookedSeats = bookedSeats; }
+
+    public int getBookedSeats() { return bookedSeats; }
 
     public String toJson(){
         Gson gson = new GsonBuilder()

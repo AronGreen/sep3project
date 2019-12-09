@@ -49,7 +49,7 @@ public class ReservationHandler implements IReservationHandler {
         ReservationResponse failed = new ReservationResponse();
         failed.setBody(null);
         failed.setStatus(ResponseStatus.SOCKET_FAILURE);
-        
+
         return failed;
 
     }
