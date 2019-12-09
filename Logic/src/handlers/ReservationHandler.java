@@ -34,11 +34,11 @@ public class ReservationHandler implements IReservationHandler {
         // This implementation should be modified when the "bookedSeats" is added to Reservation object!
 
         int availableSeats = refTrip.getTotalSeats();
-        for (Reservation res: reservationList) {
+        for (Reservation res : reservationList) {
             availableSeats--;
         }
 
-        if(availableSeats>0 &&
+        if (availableSeats > 0 &&
                 StringHelper.isNullOrEmpty(reservation.getDropoffAddress()) &&
                 StringHelper.isNullOrEmpty(reservation.getPickupAddress()) &&
                 StringHelper.isNullOrEmpty(reservation.getPickupTime()) &&
@@ -46,19 +46,20 @@ public class ReservationHandler implements IReservationHandler {
             return service.create(reservation);
         }
 
-        ReservationResponse failed = new ReservationResponse();
-        failed.setBody(null);
-        failed.setStatus(ResponseStatus.SOCKET_FAILURE);
-        
-        return failed;
+        return new ReservationResponse(ResponseStatus.SOCKET_BAD_REQUEST, null);
 
     }
 
     @Override
     public ReservationResponse update(Reservation reservation) {
-        // No logic is implemented for now
+        if (StringHelper.isNullOrEmpty(reservation.getDropoffAddress()) &&
+                StringHelper.isNullOrEmpty(reservation.getPickupAddress()) &&
+                StringHelper.isNullOrEmpty(reservation.getPickupTime())) {
 
-        return service.update(reservation);
+            return service.update(reservation);
+        } else {
+            return new ReservationResponse(ResponseStatus.SOCKET_BAD_REQUEST, null);
+        }
     }
 
     @Override
@@ -73,7 +74,7 @@ public class ReservationHandler implements IReservationHandler {
 
     @Override
     public ReservationListResponse getByTripId(int tripId) {
-        // No logic is implemented for now
+
 
         return service.getByTripId(tripId);
     }
