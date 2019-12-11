@@ -5,6 +5,7 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Data.Models.Entities;
 using Microsoft.AspNetCore.Authentication;
@@ -24,24 +25,21 @@ namespace FrontEnd.Pages
 
         public string Token { get; set; }
 
-
-
-
         public async Task<IActionResult> OnPostLoginAsync()
         {
             var email = Request.Form["email"];
             var password = Request.Form["password"];
-
-
 
             HttpClient client = new HttpClient();
             string credentials = Convert.ToBase64String(UTF8Encoding.UTF8.GetBytes($"{email}:{password}"));
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", credentials);
             var json = JsonSerializer.Serialize(credentials);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await client.PostAsync("http://localhost:8080/Logic_war_exploded/auth", content);
+            HttpResponseMessage response = await client.PostAsync("http://localhost:8080/Logic_war_exploded/authentication", content);
 
-            var token = response.Content;
+            var stringContent = await response.Content.ReadAsStringAsync();
+
+            
 
             //TODO COOKIE TOKEN
 
@@ -96,46 +94,15 @@ namespace FrontEnd.Pages
             }
             return RedirectToPage("MainLoggedIn");
         }
+
+        private class TokenResponse
+        {
+            [JsonPropertyName("status")]
+            public string Status { get; set; }
+            [JsonPropertyName("token")]
+            public string Token { get; set; }
+        }
     }
+
+   
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=======
-}
->>>>>>> 16e9ceed73c46b908b5e81da03f18f0964e8c51e
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -35,7 +35,7 @@ namespace FrontEnd.Pages
             { 1, 2, 3, 4, 5};
 
             Seats = new SelectList(listOfSeats);
-
+            
         }
         public async Task OnPostTripAsync()
         {
