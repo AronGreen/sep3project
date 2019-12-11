@@ -70,11 +70,11 @@ namespace FrontEnd.Pages
 
 
 
-                //Values stored in the cookies for 30 minutes
+                //Values stored in the cookies for 12 months
                 var cookieOptions = new CookieOptions
                 {
 
-                    Expires = DateTime.Now.AddMinutes(30),
+                    Expires = DateTime.Now.AddMonths(12),
                     Secure = true
 
 
@@ -82,10 +82,11 @@ namespace FrontEnd.Pages
                 Response.Cookies.Append("EmailCookie", $"{account.Email}", cookieOptions);
                 Response.Cookies.Append("FirstNameCookie", $"{account.FirstName}", cookieOptions);
                 Response.Cookies.Append("LastNameCookie", $"{account.LastName}", cookieOptions);
-                Response.Cookies.Append("PasswordCookie", $"{account.Password}", cookieOptions);
-                Response.Cookies.Append("DateOfBirth", $"{account.DateOfBirth}", cookieOptions);
+                Response.Cookies.Append("DateOfBirthCookie", $"{account.DateOfBirth}", cookieOptions);
                 Response.Cookies.Append("PhoneCookie", $"{account.Phone}", cookieOptions);
                 Response.Cookies.Append("TokenCookie", $"{token.Token}", cookieOptions);
+
+                
 
 
 
