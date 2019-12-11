@@ -15,7 +15,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 
-
 namespace FrontEnd.Pages
 {
     public class IndexModel : PageModel
@@ -33,24 +32,25 @@ namespace FrontEnd.Pages
             HttpClient client = new HttpClient();
             string credentials = Convert.ToBase64String(UTF8Encoding.UTF8.GetBytes($"{email}:{password}"));
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", credentials);
-            var json = JsonSerializer.Serialize(credentials);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await client.PostAsync("http://localhost:8080/Logic_war_exploded/authentication", content);
 
-            var stringContent = await response.Content.ReadAsStringAsync();
+            var response = await client.PostAsync("http://localhost:8080/Logic_war_exploded/authentication", new StringContent(""));
+            var message = await response.Content.ReadAsStringAsync();
+            var token = JsonSerializer.Deserialize<string>(message);
 
-            
 
-            //TODO COOKIE TOKEN
+
+
 
 
             if (response.IsSuccessStatusCode)
             {
 
+                
+                string authenticationToken = Convert.ToBase64String(UTF8Encoding.UTF8.GetBytes($"{token}" + ":"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authenticationToken);
 
-                Console.WriteLine("Fetching data...");
                 var s = await client.GetStringAsync("http://localhost:8080/Logic_war_exploded/accounts/get/" + $"{email}");
-                var account = JsonSerializer.Deserialize<Account>(s);
+                Account account = JsonSerializer.Deserialize<Account>(s);
 
 
 
@@ -92,7 +92,13 @@ namespace FrontEnd.Pages
 
 
             }
-            return RedirectToPage("MainLoggedIn");
+            else {
+
+                //ERROR MESSAGE
+                return RedirectToPage("Index");
+            }
+            
+
         }
 
         private class TokenResponse

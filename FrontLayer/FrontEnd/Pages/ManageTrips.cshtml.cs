@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Text.Json;
+using System.Net.Http.Headers;
 
 namespace FrontEnd.Pages
 {
@@ -94,11 +95,14 @@ namespace FrontEnd.Pages
 
             };
 
-
-            /*var json = JsonSerializer.Serialize(sendReservation);
+            HttpClient client = new HttpClient();
+            var token = Request.Cookies["TokenCookie"];
+            var json = JsonSerializer.Serialize(sendReservation);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
+            string authenticationToken = Convert.ToBase64String(UTF8Encoding.UTF8.GetBytes($"{token}" + ":"));
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authenticationToken);
 
-            HttpResponseMessage response = await client.PostAsync("http://localhost:8080/api/reservations/post", content);*/
+            HttpResponseMessage response = await client.PostAsync("http://localhost:8080/api/reservations/post", content);
 
         }
 

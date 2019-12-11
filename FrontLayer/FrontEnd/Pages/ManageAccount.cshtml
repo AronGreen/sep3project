@@ -21,7 +21,7 @@
 
 
 @{
-    var account = GlobalAccess.Instance.GetAccount();
+    //var account = GlobalAccess.Instance.GetAccount();
 
     var email = Request.Cookies["EmailCookie"];
     var firstName = Request.Cookies["FirstNameCookie"];
@@ -90,7 +90,7 @@
         <label>Date of Birth:</label>
         <p>
             <span class="input">
-                <input type="text" name="dateOfBirth" disabled value="@dateOfBirth.ToString">
+                <input type="text" name="dateOfBirth" disabled value="@dateOfBirth.ToString()">
                 <span></span>
             </span>
         </p>
