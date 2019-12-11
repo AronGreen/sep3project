@@ -40,6 +40,9 @@ public class AccountHandler implements IAccountHandler {
             account.setPassword(
                     hashPassword(account.getPassword()));
         }
+        else {
+            account.setPassword(accountService.getPasswordByEmail(account.getEmail()).getBody());
+        }
 
         AccountResponse response = accountService.update(account);
         removePassword(response.getBody());
@@ -68,7 +71,7 @@ public class AccountHandler implements IAccountHandler {
     @Override
     public AccountResponse getByEmail(String email) {
         AccountResponse response = accountService.getByEmail(email);
-        response.getBody().setPassword("");
+        removePassword(response.getBody());
 
         return response;
     }
