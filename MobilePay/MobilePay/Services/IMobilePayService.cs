@@ -36,5 +36,10 @@
         void SetTokens(string idToken, string accessToken, string refreshToken, int expiresIn);
         void SendInvoice();
 
+        string GetTokens();
+        string GetCode();
+        string GetCodeVerifier();
+        string GetCodeChallenge();
+
     }
 }

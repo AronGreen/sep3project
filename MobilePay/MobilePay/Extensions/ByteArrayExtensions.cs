@@ -22,7 +22,7 @@ namespace MobilePay.Extensions
             using var sha256 = SHA256.Create();
 
             var hashedBytes = sha256.ComputeHash(bytes);
-
+            
             return hashedBytes.GetHexString();
         }
 
