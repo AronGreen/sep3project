@@ -8,7 +8,7 @@ using Data.Models.Entities;
 using System.Net.Mime;
 using System.Text.Json;
 using System.Collections.Specialized;
-
+using Microsoft.AspNetCore.Mvc;
 
 namespace FrontEnd.Pages
 {
@@ -20,7 +20,7 @@ namespace FrontEnd.Pages
         {
 
         }
-        public async Task OnPostRegister()
+        public async Task<IActionResult> OnPostRegister()
         {
             string email = Request.Form["email"];
             string password = Request.Form["password"];
@@ -53,10 +53,13 @@ namespace FrontEnd.Pages
 
 
 
-            if (response.IsSuccessStatusCode)
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
 
-                RedirectToPage("Index");
+                return RedirectToPage("Index");
+            }
+            else {
+                return RedirectToPage("Register");
             }
 
         }

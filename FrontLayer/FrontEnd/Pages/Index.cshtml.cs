@@ -5,6 +5,7 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Data.Models.Entities;
 using Microsoft.AspNetCore.Authentication;
@@ -23,30 +24,26 @@ namespace FrontEnd.Pages
 
         public string Token { get; set; }
 
-
-
-
         public async Task<IActionResult> OnPostLoginAsync()
         {
             var email = Request.Form["email"];
             var password = Request.Form["password"];
-
-
-
-            HttpClient client = new HttpClient();
+            var url = new Uri("http://localhost:8080/Logic_war_exploded/");
+            using HttpClient client = new HttpClient();
+            client.BaseAddress = url;
             string credentials = Convert.ToBase64String(UTF8Encoding.UTF8.GetBytes($"{email}:{password}"));
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", credentials);
 
-            var response = await client.PostAsync("http://localhost:8080/Logic_war_exploded/authentication", new StringContent(""));
-            var message = await response.Content.ReadAsStringAsync();
-            var token = JsonSerializer.Deserialize<string>(message);
+            var response = await client.PostAsync("authentication", new StringContent(""));
+            var message = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            
+
+            var token = JsonSerializer.Deserialize<TokenResponse>(message);
 
 
 
 
-
-
-            if (response.IsSuccessStatusCode)
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
 
                 
@@ -88,7 +85,7 @@ namespace FrontEnd.Pages
                 Response.Cookies.Append("PasswordCookie", $"{account.Password}", cookieOptions);
                 Response.Cookies.Append("DateOfBirth", $"{account.DateOfBirth}", cookieOptions);
                 Response.Cookies.Append("PhoneCookie", $"{account.Phone}", cookieOptions);
-                Response.Cookies.Append("TokenCookie", $"{token}", cookieOptions);
+                Response.Cookies.Append("TokenCookie", $"{token.Token}", cookieOptions);
 
 
 
@@ -104,44 +101,15 @@ namespace FrontEnd.Pages
             
 
         }
+
+        private class TokenResponse
+        {
+            [JsonPropertyName("status")]
+            public string Status { get; set; }
+            [JsonPropertyName("token")]
+            public string Token { get; set; }
+        }
     }
+
+   
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
