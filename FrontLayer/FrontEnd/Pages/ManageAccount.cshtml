@@ -11,106 +11,102 @@
     <h1 class="display-4">Manage Account</h1>
 </div>
 
-<form method="get">
+<form>
     <button type="submit" asp-page="./MainLoggedIn">Go Back!</button>
 </form>
-
-<form method="delete">
-    <button type="submit" asp-page-handler="Delete">Delete account</button>
-</form>
+<div>
+    <form method="post" asp-page-handler="Delete">
+        <button type="submit">Delete account</button>
+    </form>
+</div>
 
 
 @{
-
     var email = Request.Cookies["EmailCookie"];
     var firstName = Request.Cookies["FirstNameCookie"];
     var lastName = Request.Cookies["LastNameCookie"];
-    var password = Request.Cookies["PasswordCookie"];
-    var dateOfBirth = Request.Cookies["DobCookie"];
+    var dateOfBirth = Request.Cookies["DateOfBirthCookie"];
     var phone = Request.Cookies["PhoneCookie"];
+
+
 }
 
 
 
 <div class="text-center">
-    <label>First Name: </label>
-    <p>
-        <span class="input">
-            <input type="text" placeholder="First name" name="firstName" value="@firstName">
-
-            <span></span>
-        </span>
-    </p>
-    <div>
-        <label>Last Name: </label>
+    <form method="post" asp-page-handler="Update">
+        <label>First Name: </label>
         <p>
             <span class="input">
-                <input type="text" placeholder="Last name" name="lastName" value="@lastName">
+                <input type="text" placeholder="First name" name="firstName" value="@firstName">
+
+                <span></span>
+            </span>
+        </p>
+        <div>
+            <label>Last Name: </label>
+            <p>
+                <span class="input">
+                    <input type="text" placeholder="Last name" name="lastName" value="@lastName">
+                    <span></span>
+                </span>
+            </p>
+
+        </div>
+
+
+
+
+        <div>
+            <label>Password</label>
+            <p>
+                <span class="input">
+                    <input type="password" placeholder="Password" name="password" >
+                    <span></span>
+                </span>
+            </p>
+
+        </div>
+
+        <div>
+            <label>E-mail:</label>
+            <p>
+                <span class="input">
+                    <input type="text" placeholder="Your e-mail" name="email" value="@email" disabled>
+                    <span></span>
+                </span>
+            </p>
+        </div>
+
+        <label>Phone Number</label>
+        <p>
+            <span class="input">
+                <input type="number" placeholder="Phone number" name="phoneNumber" value="@phone">
                 <span></span>
             </span>
         </p>
 
-    </div>
+
+        <div>
+            <label>Date of Birth:</label>
+            <p>
+                <span class="input">
+                    <input type="text" name="dateOfBirth" disabled value="@dateOfBirth">
+                    <span></span>
+                </span>
+            </p>
+
+        </div>
+
+        <button type="submit" class="login-button">Update</button>
+
+    </form>
 
 
 
-
-    <div>
-        <label>Password</label>
-        <p>
-            <span class="input">
-                <input type="password" placeholder="Password" name="password" value="@password">
-                <span></span>
-            </span>
-        </p>
-
-    </div>
-
-    <div>
-        <label>E-mail:</label>
-        <p>
-            <span class="input">
-                <input type="text" placeholder="Your e-mail" name="email" value="@email">
-                <span></span>
-            </span>
-        </p>
-    </div>
-
-    <label>Phone Number</label>
-    <p>
-        <span class="input">
-            <input type="number" placeholder="Phone number" name="phoneNumber" value="@phone">
-            <span></span>
-        </span>
-    </p>
-
-
-    <div>
-        <label>Date of Birth:</label>
-        <p>
-            <span class="input">
-                <input type="text" name="dateOfBirth" disabled value="@dateOfBirth">
-                <span></span>
-            </span>
-        </p>
-
-    </div>
-    <div>
-
-
-
-        <form method="put">
-
-            <input typeof="button" asp-page-handler="Update" type="submit" class="login-button" id="button" value="Update">
-
-        </form>
-
-
-
-
-
-    </div>
 
 
 </div>
+
+
 
