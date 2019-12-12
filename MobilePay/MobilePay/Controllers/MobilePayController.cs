@@ -56,6 +56,13 @@ namespace MobilePay.Controllers
         }
 
         [HttpGet]
+        [Route("getState")]
+        public string GetState()
+        {
+            return _mobilePayService.GetState();
+        }
+
+        [HttpGet]
         [Route("initiateConsent")]
         public IActionResult InitiateConsent()
         {

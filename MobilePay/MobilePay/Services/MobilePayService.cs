@@ -59,17 +59,17 @@ namespace MobilePay.Services
         public string RequestTokens(string code, string state, string idToken)
         {
             _code = code;
-            if (state != _consentParameters.State)
-                return "States don't match :("; // States don't match
-
-            var url = "https://api.sandbox.mobilepay.dk/";
+//            if (state != _consentParameters.State)
+//                return "States don't match :(";
+            return "";
+            const string url = "https://api.sandbox.mobilepay.dk/";
 
             var client = new HttpClient
             {
-                BaseAddress = new Uri(url)
+                //BaseAddress = new Uri(url)
             };
 
-            var request = new HttpRequestMessage(HttpMethod.Post, "merchant-authentication-openidconnect/connect/token")
+            var request = new HttpRequestMessage(HttpMethod.Post, url + "merchant-authentication-openidconnect/connect/token")
             {
                 Content = new FormUrlEncodedContent(
                     new[] 
@@ -127,6 +127,11 @@ namespace MobilePay.Services
         public string GetCodeChallenge()
         {
             return _pkce.Challenge;
+        }
+
+        public string GetState()
+        {
+            return _consentParameters.State;
         }
 
         private void RefreshTokens() // Step 4

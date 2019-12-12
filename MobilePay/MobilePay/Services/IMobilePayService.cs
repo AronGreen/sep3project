@@ -40,6 +40,7 @@
         string GetCode();
         string GetCodeVerifier();
         string GetCodeChallenge();
+        string GetState();
 
     }
 }
