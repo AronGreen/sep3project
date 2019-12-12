@@ -46,10 +46,7 @@ public class ReservationHandler implements IReservationHandler {
             return service.create(reservation);
         }
 
-        ReservationResponse failed = new ReservationResponse();
-        failed.setBody(null);
-        failed.setStatus(ResponseStatus.SOCKET_FAILURE);
-
+        ReservationResponse failed = new ReservationResponse(ResponseStatus.SOCKET_FAILURE,null);
         return failed;
 
     }
