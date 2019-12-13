@@ -6,6 +6,10 @@ public class ReservationResponse {
 
     private String status;
     private Reservation body;
+    public ReservationResponse(String status,Reservation body){
+        this.body = body;
+        this.status = status;
+    }
 
     public String getStatus() {
         return status;

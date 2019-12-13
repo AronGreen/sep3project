@@ -66,5 +66,12 @@ namespace Data.Models.Entities
         /// </summary>
         [JsonPropertyName("pickupTime")]
         public string PickupTime { get; set; }
+
+
+        /// <summary>
+        /// The time the driver specifies to meet and pick up the passenger(s)
+        /// </summary>
+        [JsonPropertyName("bookedSeats")]
+        public string BookedSeats { get; set; }
     }
 }

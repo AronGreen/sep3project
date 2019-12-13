@@ -1,6 +1,7 @@
 package handlers;
 
 import constants.ResponseStatus;
+import helpers.StringHelper;
 import models.Invoice;
 import models.Reservation;
 import models.ReservationState;
@@ -9,6 +10,8 @@ import models.response.ReservationListResponse;
 import models.response.ReservationResponse;
 import models.response.TripResponse;
 import services.*;
+
+import java.util.List;
 
 public class ReservationHandler implements IReservationHandler {
 
@@ -22,9 +25,29 @@ public class ReservationHandler implements IReservationHandler {
 
     @Override
     public ReservationResponse create(Reservation reservation) {
-        // No logic is implemented for now
+        Trip refTrip = tripService.getById(reservation.getTripId()).getBody();
+        List<Reservation> reservationList = reservationService.getByTripId(refTrip.getId()).getBody();
 
-        return reservationService.create(reservation);
+        // For now reservation allows to book only one seat.
+        // This implementation should be modified when the "bookedSeats" is added to Reservation object!
+
+        int availableSeats = refTrip.getTotalSeats();
+        for (Reservation res: reservationList) {
+            if (!res.getState().equals(ReservationState.REJECTED) && !res.getState().equals(ReservationState.CANCELLED))
+            availableSeats--;
+        }
+
+        if(availableSeats > 0 &&
+                StringHelper.isNullOrEmpty(reservation.getDropoffAddress()) &&
+                StringHelper.isNullOrEmpty(reservation.getPickupAddress()) &&
+                StringHelper.isNullOrEmpty(reservation.getPickupTime()) &&
+                StringHelper.isNullOrEmpty(reservation.getPassengerEmail())) {
+            return reservationService.create(reservation);
+        }
+
+        ReservationResponse failed = new ReservationResponse(ResponseStatus.SOCKET_FAILURE,null);
+
+        return failed;
     }
 
     @Override

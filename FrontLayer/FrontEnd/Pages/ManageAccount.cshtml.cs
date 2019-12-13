@@ -21,7 +21,7 @@ namespace FrontEnd.Pages
         public async Task<IActionResult> OnPostUpdateAsync()
         {
 
-            var email = Request.Form["email"];
+            var email = Request.Cookies["EmailCookie"];
             var password = Request.Form["password"];
             var firstName = Request.Form["firstName"];
             var lastName = Request.Form["lastName"];
@@ -50,7 +50,7 @@ namespace FrontEnd.Pages
 
             var json = JsonSerializer.Serialize(account);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await client.PutAsync("http://localhost:8080/Logic_war_exploded/reservations/update", content);
+            HttpResponseMessage response = await client.PutAsync("http://localhost:8080/Logic_war_exploded/accounts/update", content);
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 var cookieOptions = new CookieOptions
