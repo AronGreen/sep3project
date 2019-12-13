@@ -1,16 +1,10 @@
 package handlers;
 
 import constants.ResponseStatus;
-import models.Reservation;
-import models.ReservationState;
-import models.Trip;
-import models.TripFilter;
+import models.*;
 import models.response.TripListResponse;
 import models.response.TripResponse;
-import services.IReservationService;
-import services.ITripService;
-import services.ReservationService;
-import services.TripService;
+import services.*;
 
 import java.util.List;
 
@@ -18,6 +12,8 @@ public class TripHandler implements ITripHandler {
 
     private ITripService tripService;
     private IReservationService reservationService;
+    private IAccountService accountService;
+    private IInvoiceHandler invoiceHandler = new InvoiceHandler();
 
     public TripHandler() {
         tripService = new TripService();
@@ -51,14 +47,33 @@ public class TripHandler implements ITripHandler {
     public TripResponse delete(int id) {
         // Get all reservations
         List<Reservation> reservations = reservationService.getByTripId(id).getBody();
+        TripResponse res = tripService.getById(id);
+        if (!res.getStatus().equals(ResponseStatus.SOCKET_SUCCESS))
+            return res;
 
-        // !! Send notification
+        Trip trip = res.getBody();
 
-        // !! Pay out cancellation fee
+        // Pay out cancellation fee
+        reservations.forEach(r -> {
+            if (r.getState().equals(ReservationState.APPROVED)) {
+                invoiceHandler.create(new Invoice(
+                        trip.getDriverEmail(),
+                        r.getPassengerEmail(),
+                        "Trip cancellation fee",
+                        trip.getCancellationFee()
+                ));
+            }
+        });
 
         // Set reservation states to cancelled
         reservations.forEach(r -> {
-            r.setState(ReservationState.CANCELLED);
+            // TODO send notifications
+            switch (r.getState()) {
+                case ReservationState.PENDING:
+                case ReservationState.APPROVED:
+                    r.setState(ReservationState.CANCELLED);
+                    break;
+            }
             r = reservationService.update(r).getBody();
         });
 

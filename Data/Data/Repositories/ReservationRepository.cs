@@ -80,7 +80,7 @@ namespace Data.Repositories
             }
         }
 
-        public Reservation[] GetByTripId(int tripId)
+        public Reservation[] GetAllByTripId(int tripId)
         {
             using var context = new ApplicationContext();
             return context.Reservations

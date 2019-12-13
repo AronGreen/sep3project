@@ -4,7 +4,7 @@ using Data.Models.Entities;
 using Data.Network;
 using Data.Repositories;
 
-namespace Data.Logic
+namespace Data.Logic.RequestTables
 {
     public class ReservationRequestTableComposer : IRequestTableComposer
     {
@@ -72,7 +72,7 @@ namespace Data.Logic
 
         private Handler GetByTripId() => body =>
         {
-            var result = _reservationRepository.GetByTripId(int.Parse(body));
+            var result = _reservationRepository.GetAllByTripId(int.Parse(body));
             var status = result == null ? "internalError" : "success";
             return new Response()
             {

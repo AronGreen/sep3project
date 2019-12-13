@@ -46,6 +46,33 @@ namespace Data.Migrations
                     b.ToTable("Accounts");
                 });
 
+            modelBuilder.Entity("Data.Models.Entities.Invoice", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("REAL");
+
+                    b.Property<string>("PayeeEmail")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PayerEmail")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Invoices");
+                });
+
             modelBuilder.Entity("Data.Models.Entities.Reservation", b =>
                 {
                     b.Property<int>("Id")

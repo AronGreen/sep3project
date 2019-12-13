@@ -5,7 +5,7 @@ using Data.Models.Entities;
 using Data.Network;
 using Data.Repositories;
 
-namespace Data.Logic
+namespace Data.Logic.RequestTables
 {
     public class TripRequestTableComposer : IRequestTableComposer
     {

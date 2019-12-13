@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore.Query;
+﻿using System.Collections.Generic;
 
-namespace Data.Logic
+namespace Data.Logic.RequestTables
 {
     public class RequestTable : IRequestTable
     {
