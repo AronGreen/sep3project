@@ -72,7 +72,7 @@ namespace Data.Logic.RequestTables
 
         private Handler GetByTripId() => body =>
         {
-            var result = _reservationRepository.GetByTripId(int.Parse(body));
+            var result = _reservationRepository.GetAllByTripId(int.Parse(body));
             var status = result == null ? "internalError" : "success";
             return new Response()
             {

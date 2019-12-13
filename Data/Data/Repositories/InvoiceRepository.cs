@@ -58,20 +58,37 @@ namespace Data.Repositories
             }
         }
 
-        public Invoice[] GetAllByEmail(string email)
+        public Invoice[] GetAllByPayerEmail(string payerEmail)
         {
             using var context = new ApplicationContext();
             try
             {
                 return context.Invoices
                     .Select(x => x)
-                    .Where(x => x.PayerEmail == email)
+                    .Where(x => x.PayerEmail == payerEmail)
                     .ToArray();
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 return null;
+            }
+        }
+
+        public Invoice[] GetAllUnpaidByPayerEmail(string payerEmail)
+        {
+            using var context = new ApplicationContext();
+            try
+            {
+                return context.Invoices
+                    .Select(x => x)
+                    .Where(x => x.PayerEmail == payerEmail && (x.State == "Pending" || x.State == "Rejected"))
+                    .ToArray();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
             }
         }
     }

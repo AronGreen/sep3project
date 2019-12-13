@@ -15,7 +15,7 @@ namespace Data.Repositories
         /// </summary>
         /// <param name="tripId"></param>
         /// <returns></returns>
-        Reservation[] GetByTripId(int tripId);
+        Reservation[] GetAllByTripId(int tripId);
 
         /// <summary>
         /// Get all the Reservations placed by a given user

@@ -70,6 +70,10 @@ public class Account {
         return accessLevel;
     }
 
+    public PaymentMethod getPaymentMethod() {
+        return new PaymentMethod(phone);
+    }
+
     public String toJson(){
         Gson gson = new GsonBuilder()
                 .setLenient()

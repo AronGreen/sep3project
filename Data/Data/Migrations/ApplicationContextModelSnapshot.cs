@@ -56,11 +56,9 @@ namespace Data.Migrations
                         .HasColumnType("REAL");
 
                     b.Property<string>("PayeeEmail")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PayerEmail")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("State")
@@ -68,7 +66,6 @@ namespace Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Type")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

@@ -8,7 +8,8 @@ namespace Data.Repositories
         Invoice Create(Invoice invoice);
         Invoice UpdateState(int id, string state);
         Invoice GetById(int id);
-        Invoice[] GetAllByEmail(string email);
+        Invoice[] GetAllByPayerEmail(string payerEmail);
+        Invoice[] GetAllUnpaidByPayerEmail(string email);
 
     }
 }

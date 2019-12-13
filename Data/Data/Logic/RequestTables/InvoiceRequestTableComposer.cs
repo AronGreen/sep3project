@@ -23,7 +23,8 @@ namespace Data.Logic.RequestTables
             map.Add(("invoice", "create"), CreateInvoice());
             map.Add(("invoice", "updateState"), UpdateState());
             map.Add(("invoice", "getById"), GetById());
-            map.Add(("invoice", "getAllByEmail"), GetAllByEmail());
+            map.Add(("invoice", "getAllByPayerEmail"), GetAllByPayerEmail());
+            map.Add(("invoice", "getAllUnpaidByPayerEmail"), GetAllUnpaidByPayerEmail());
         }
 
         private Handler CreateInvoice() => body =>
@@ -60,9 +61,9 @@ namespace Data.Logic.RequestTables
             };
         };
 
-        private Handler GetAllByEmail() => body =>
+        private Handler GetAllByPayerEmail() => body =>
         {
-            var result = _invoiceRepository.GetAllByEmail(body);
+            var result = _invoiceRepository.GetAllByPayerEmail(body);
             var status = result == null ? "internalError" : "success";
             return new Response()
             {
@@ -70,5 +71,17 @@ namespace Data.Logic.RequestTables
                 Body = result
             };
         };
+
+        private Handler GetAllUnpaidByPayerEmail() => body =>
+        {
+            var result = _invoiceRepository.GetAllUnpaidByPayerEmail(body);
+            var status = result == null ? "internalError" : "success";
+            return new Response()
+            {
+                Status = status,
+                Body = result
+            };
+        };
+
     }
 }
