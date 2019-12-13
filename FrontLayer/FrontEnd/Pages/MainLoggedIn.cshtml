@@ -5,21 +5,7 @@
 
 
 @section header{
-
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="" asp-page="/ManageTrips">Manage trips</a>
-    </li>
-
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="" asp-page="/ManageAccount">Manage your awesome account</a>
-    </li>
-
-    <li class="nav-item">
-        <form method="post" asp-page-handler="Logout">
-            <button type="submit" class="nav-link text-dark">LOOOGOOUT</button>
-        </form>
-    </li>
-
+    <partial name="_HeaderItems" />
 }
 
 <div class="text-center">
