@@ -3,6 +3,9 @@ package helpers;
 import constants.Authentication;
 
 import javax.ws.rs.core.HttpHeaders;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.StringTokenizer;
 
@@ -18,6 +21,7 @@ public class StringHelper {
         return str1.toLowerCase().equals(str2.toLowerCase());
     }
 
+    // TODO: remove and use the corresponding method from the jdk
     public static boolean startsWith_ignoreCase(String prefix, String str){
         return str.toLowerCase().startsWith(prefix.toLowerCase());
     }
@@ -61,5 +65,14 @@ public class StringHelper {
         credentials[0] = tokenizer.nextToken();
         credentials[1] = tokenizer.nextToken();
         return credentials;
+    }
+
+    public static String urlEncode(String string) {
+        try {
+            return URLEncoder.encode(string, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e.getCause());
+        }
     }
 }

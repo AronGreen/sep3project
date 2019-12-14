@@ -1,6 +1,17 @@
 package controllers;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import helpers.DateTimeHelper;
+import models.Reservation;
+import models.Trip;
+import models.TripDetails;
+import serviceproviders.navigation.BingMapsServiceProvider;
+
+import javax.print.attribute.standard.Destination;
 import javax.ws.rs.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 @Path("/helloworld")
 public class HelloWorldController {
@@ -31,29 +42,28 @@ public class HelloWorldController {
         return "Big number";
     }
 
-// <<<<<<< HEAD
-//     @POST
-//     @Path("message")
-//     @Produces("text/json")
-//     public Response message (@FormParam("name") String name, @FormParam("message") String message){
-// //
-// //        String response   = name + " successfully sent message: " + message;
-// //         SampleFormModel model = new SampleFormModel(name, message);
-//         GsonBuilder builder = new GsonBuilder();
-//         Gson gson = builder.create();
-//         return Response.status(200).entity(gson.toJson(null)).build();
-//     }
-// =======
-// //    @POST
-// //    @Path("message")
-// //    @Produces("text/json")
-// //    public Response message (@FormParam("name") String name, @FormParam("message") String message){
-// ////
-// ////        String response   = name + " successfully sent message: " + message;
-// //        SampleFormModel model = new SampleFormModel(name, message);
-// //        GsonBuilder builder = new GsonBuilder();
-// //        Gson gson = builder.create();
-// //        return Response.status(200).entity(gson.toJson(model)).build();
-// //    }
-// >>>>>>> develop
+
+    @GET
+    @Path("bing")
+    @Produces("application/json")
+    public String bing (){
+        BingMapsServiceProvider bingMapsServiceProvider = new BingMapsServiceProvider();
+
+        Trip trip = new Trip();
+        trip.setStartAddress("Fussingsvej 8, 8700 Horsens");
+        trip.setDestinationAddress("Chr M Østergaards Vej 4, 8700 Horsens");
+        trip.setArrival(DateTimeHelper.toString(LocalDateTime.now()));
+
+        ArrayList<Reservation> reservations = new ArrayList<>();
+        Reservation res1 = new Reservation();
+        res1.setPickupAddress("Sundvej 109, 8700 Horsens");
+        res1.setDropoffAddress("Hede Nielsens Vej 2, 8700 Horsens");
+        reservations.add(res1);
+
+        TripDetails td = bingMapsServiceProvider.getTripDetails(trip, reservations);
+
+        Gson gson = new GsonBuilder().create();
+        return gson.toJson(td);
+    }
+
 }

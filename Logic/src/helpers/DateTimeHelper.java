@@ -30,7 +30,7 @@ public class DateTimeHelper {
     public static String toString(LocalDateTime t) {
         return String.join("-",
                 t.getYear() + "",
-                t.getMonth() + "",
+                t.getMonthValue() + "",
                 t.getDayOfMonth() + "",
                 t.getHour() + "",
                 t.getMinute() + "");
