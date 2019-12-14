@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 
+import static helpers.StringHelper.containsIgnoreCase;
 import static helpers.StringHelper.urlEncode;
 
 public class BingMapsServiceProvider implements INavigationServiceProvider {
@@ -26,20 +27,60 @@ public class BingMapsServiceProvider implements INavigationServiceProvider {
 
     // optimize for time
     // do not include itinerary in result
-    // do not allow the api to optimize the order of waypoints
+    // allow the api to optimize the order of waypoints
     private static final String DEFAULT_PARAMETERS = "&optmz=time" +
             "&ra=excludeItinerary" +
-            "&optWp=false" +
+            "&optWp=true" +
             "&key=" + API_KEY;
 
     @Override
-    public List<Trip> getTripsForPickupPoint(List<Trip> trips, String pickupPoint, double delayRate) {
-        return null;
+    public List<Trip> getTripsForReservation(List<Trip> trips, Reservation reservation, double delayRate) {
+        // TODO: change pickup point to a reservation,
+        //  then check if the pickup point is before the dropoff point during the delay calc
+        //  this way we can get a list of trips that won't be delayed more than delayRate
+        //  and that have the passenger go in the right direction.
+        List<Trip> results = new ArrayList<>();
+
+        for (Trip trip : trips) {
+            // TODO: build waypoints from already accepted reservation addresses
+            List<String> addresses = getAddressList(trip, new ArrayList<>());
+            String waypoints = buildWaypoints(addresses);
+            BingMapResource currentRoute = doBingMapRouteRequest(waypoints);
+
+            // We need to add the new address before
+            addresses.add(addresses.size() - 1, reservation.getPickupAddress());
+            addresses.add(addresses.size() - 1, reservation.getDropoffAddress());
+            waypoints = buildWaypoints(addresses);
+            BingMapResource potentialRoute = doBingMapRouteRequest(waypoints);
+
+            if (potentialRoute == null || currentRoute == null) continue;
+
+            // TODO: this is not perfect. If the api has to make assumptions about the address
+            //  this function will not work. Find a better way
+            boolean wrongDirection = false;
+            for (BingMapResource.RouteSubLeg subLeg :
+                    potentialRoute.getRouteSubLegs()) {
+                if (containsIgnoreCase(subLeg.getStartWaypoint().getDescription(), reservation.getDropoffAddress()) &&
+                        containsIgnoreCase(subLeg.getEndWaypoint().getDescription(), reservation.getPickupAddress())) {
+                    wrongDirection = true;
+                    break;
+                }
+            }
+            if (wrongDirection) continue;
+
+            double potentialDelayRate = ((potentialRoute.getTravelDuration() - currentRoute.getTravelDuration()) / (double) currentRoute.getTravelDuration()) * 100;
+
+            if (potentialDelayRate > delayRate) {
+                results.add(trip);
+            }
+        }
+
+        return results;
     }
 
     @Override
-    public List<Trip> getTripsForPickupPoint(List<Trip> trips, String pickupPoint) {
-        return getTripsForPickupPoint(trips, pickupPoint, 10);
+    public List<Trip> getTripsForReservation(List<Trip> trips, Reservation reservation) {
+        return getTripsForReservation(trips, reservation, 10);
     }
 
     @Override

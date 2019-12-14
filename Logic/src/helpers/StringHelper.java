@@ -21,9 +21,13 @@ public class StringHelper {
         return str1.toLowerCase().equals(str2.toLowerCase());
     }
 
-    // TODO: remove and use the corresponding method from the jdk
+    // TODO: Rename this ugly s.o.a.b
     public static boolean startsWith_ignoreCase(String prefix, String str){
         return str.toLowerCase().startsWith(prefix.toLowerCase());
+    }
+
+    public static boolean containsIgnoreCase(String whole, String part){
+        return whole.toLowerCase().contains(part.toLowerCase());
     }
 
     public static String getTokenFromHttpHeaders(HttpHeaders httpHeaders){

@@ -1,6 +1,7 @@
 package serviceproviders.navigation;
 
 import java.util.ArrayList;
+import java.util.List;
 
 class BingMapResource {
     private double travelDistance;
@@ -28,8 +29,8 @@ class BingMapResource {
         return routeLegs.get(0);
     }
 
-    public ArrayList<RouteLeg> getRouteLegs() {
-        return routeLegs;
+    public List<RouteSubLeg> getRouteSubLegs() {
+        return routeLegs.get(0).getRouteSubLegs();
     }
 
     public int getStatusCode() {
