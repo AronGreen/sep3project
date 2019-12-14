@@ -30,7 +30,7 @@ namespace Data.Logic.RequestTables
         private Handler CreateAccount() => body =>
         {
             var result = _accountRepository.Create(JsonSerializer.Deserialize<Account>(body));
-            var status = result == null ? "alreadyExists" : "success";
+            var status = result == null ? "forbidden" : "success";
             return new Response()
             {
                 Status = status,
@@ -63,7 +63,7 @@ namespace Data.Logic.RequestTables
         private Handler GetAll() => body =>
         {
             var result = _accountRepository.GetAll();
-            var status = "success";
+            var status = result == null ? "internalError" : "success";
             return new Response()
             {
                 Status = status,

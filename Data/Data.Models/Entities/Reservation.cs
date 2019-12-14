@@ -19,7 +19,6 @@ namespace Data.Models.Entities
         /// The Id of the Trip the Reservation belongs to
         /// </summary>
         [JsonPropertyName("tripId")]
-        [Required]
         public int TripId { get; set; }
 
         /// <summary>
@@ -72,6 +71,6 @@ namespace Data.Models.Entities
         /// The time the driver specifies to meet and pick up the passenger(s)
         /// </summary>
         [JsonPropertyName("bookedSeats")]
-        public string BookedSeats { get; set; }
+        public int BookedSeats { get; set; }
     }
 }

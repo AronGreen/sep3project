@@ -29,7 +29,7 @@ namespace Data.Logic.RequestTables
         private Handler CreateReservation() => body =>
         {
             var result = _reservationRepository.Create(JsonSerializer.Deserialize<Reservation>(body));
-            var status = result == null ? "internalError" : "success";
+            var status = result == null ? "badRequest" : "success";
             return new Response()
             {
                 Status = status,
@@ -40,7 +40,7 @@ namespace Data.Logic.RequestTables
         private Handler UpdateReservation() => body =>
         {
             var result = _reservationRepository.Update(JsonSerializer.Deserialize<Reservation>(body));
-            var status = result == null ? "notFound" : "success";
+            var status = result == null ? "badRequest" : "success";
             return new Response()
             {
                 Status = status,

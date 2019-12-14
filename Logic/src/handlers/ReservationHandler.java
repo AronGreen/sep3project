@@ -38,10 +38,10 @@ public class ReservationHandler implements IReservationHandler {
         }
 
         if(availableSeats > 0 &&
-                StringHelper.isNullOrEmpty(reservation.getDropoffAddress()) &&
-                StringHelper.isNullOrEmpty(reservation.getPickupAddress()) &&
-                StringHelper.isNullOrEmpty(reservation.getPickupTime()) &&
-                StringHelper.isNullOrEmpty(reservation.getPassengerEmail())) {
+                !StringHelper.isNullOrEmpty(reservation.getDropoffAddress()) &&
+                !StringHelper.isNullOrEmpty(reservation.getPickupAddress()) &&
+                !StringHelper.isNullOrEmpty(reservation.getPassengerEmail())) {
+            reservation.setState(ReservationState.PENDING);
             return reservationService.create(reservation);
         }
 
