@@ -10,13 +10,15 @@ namespace Data.Logic.RequestTables
         public RequestTable(
             AccountRequestTableComposer accountComposer,
             TripRequestTableComposer tripComposer,
-            ReservationRequestTableComposer reservationComposer)
+            ReservationRequestTableComposer reservationComposer,
+            InvoiceRequestTableComposer invoiceComposer)
         {
             _map = new Dictionary<(string, string), Handler>();
 
             Compose(accountComposer);
             Compose(tripComposer);
             Compose(reservationComposer);
+            Compose(invoiceComposer);
         }
 
         private void Compose(IRequestTableComposer composer)

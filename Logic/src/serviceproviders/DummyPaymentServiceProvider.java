@@ -63,6 +63,9 @@ public class DummyPaymentServiceProvider implements IPaymentServiceProvider {
     }
 
     private int getNextId() {
+        if (payments.isEmpty()) {
+            return 0;
+        }
         int id = payments.get(payments.size() - 1).getId();
 
         return ++id;

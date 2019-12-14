@@ -42,7 +42,7 @@ namespace Data.Logic.RequestTables
         {
             var invoice = JsonSerializer.Deserialize<Invoice>(body);
             var result = _invoiceRepository.UpdateState(invoice.Id, invoice.State);
-            var status = result == null ? "internalError" : "success";
+            var status = result == null ? "badRequest" : "success";
             return new Response
             {
                 Status = status,

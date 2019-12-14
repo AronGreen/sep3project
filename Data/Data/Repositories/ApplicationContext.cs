@@ -27,6 +27,18 @@ namespace Data.Repositories
                 .WithMany()
                 .HasForeignKey("TripId")
                 .OnDelete(DeleteBehavior.SetNull);
+
+            builder.Entity<Trip>()
+                .HasOne<Account>("Driver")
+                .WithMany()
+                .HasForeignKey("DriverEmail")
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Reservation>()
+                .HasOne<Account>("Passenger")
+                .WithMany()
+                .HasForeignKey("PassengerEmail")
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
     }
