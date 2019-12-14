@@ -70,5 +70,11 @@ namespace FrontEnd.Pages.Entities
         /// </summary>
         [JsonPropertyName("pickupTime")]
         public string PickupTime { get; set; }
+
+        /// <summary>
+        /// Passenger specifies how many seats he wants to book
+        /// </summary>
+        [JsonPropertyName("bookedSeats")]
+        public int BookedSeats { get; set; }
     }
 }
