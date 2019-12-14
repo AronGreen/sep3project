@@ -2,7 +2,7 @@
 
 namespace Data.Migrations
 {
-    public partial class initial : Migration
+    public partial class inintial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -42,6 +42,29 @@ namespace Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Notifications",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    AccountEmail = table.Column<string>(nullable: true),
+                    Type = table.Column<string>(nullable: true),
+                    ItemId = table.Column<int>(nullable: false),
+                    Message = table.Column<string>(nullable: true),
+                    Date = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notifications", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Notifications_Accounts_AccountEmail",
+                        column: x => x.AccountEmail,
+                        principalTable: "Accounts",
+                        principalColumn: "Email",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Trips",
                 columns: table => new
                 {
@@ -75,12 +98,13 @@ namespace Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    TripId = table.Column<int>(nullable: false),
+                    TripId = table.Column<int>(nullable: true),
                     PassengerEmail = table.Column<string>(nullable: false),
                     PickupAddress = table.Column<string>(nullable: false),
                     DropoffAddress = table.Column<string>(nullable: false),
                     State = table.Column<string>(nullable: true),
-                    PickupTime = table.Column<string>(nullable: true)
+                    PickupTime = table.Column<string>(nullable: true),
+                    BookedSeats = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -98,6 +122,11 @@ namespace Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.SetNull);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notifications_AccountEmail",
+                table: "Notifications",
+                column: "AccountEmail");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reservations_PassengerEmail",
@@ -119,6 +148,9 @@ namespace Data.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Invoices");
+
+            migrationBuilder.DropTable(
+                name: "Notifications");
 
             migrationBuilder.DropTable(
                 name: "Reservations");

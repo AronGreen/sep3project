@@ -19,7 +19,7 @@ namespace Data.Models.Entities
         /// The Id of the Trip the Reservation belongs to
         /// </summary>
         [JsonPropertyName("tripId")]
-        public int TripId { get; set; }
+        public int? TripId { get; set; }
 
         /// <summary>
         /// The Trip the Reservation belongs to

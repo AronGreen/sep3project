@@ -53,6 +53,7 @@ public class ReservationHandler implements IReservationHandler {
             reservation.setState(ReservationState.PENDING);
 
             ReservationResponse res =  reservationService.create(reservation);
+            reservation = res.getBody();
 
             // Notify driver that a reservation has been created for his trip
             if (res.getStatus().equals(ResponseStatus.SOCKET_SUCCESS)) {
@@ -163,7 +164,7 @@ public class ReservationHandler implements IReservationHandler {
             ));
             notificationService.create(new Notification(
                     trip.getDriverEmail(),
-                    NotificationType.APPROVED_RESERVATION_CANCELLED_BY_PASSENGER.toString(),
+                    NotificationType.APPROVED_RESERVATION_CANCELLED_BY_PASSENGER.getMessage(),
                     reservation.getId(),
                     NotificationType.APPROVED_RESERVATION_CANCELLED_BY_PASSENGER.getMessage(),
                     DateTimeHelper.getCurrentTime()
