@@ -1,22 +1,21 @@
 package handlers;
 
+import constants.ResponseStatus;
 import dependencycollection.DependencyCollection;
 import models.Account;
 import models.Invoice;
-import serviceproviders.DummyPaymentServiceProvider;
-import serviceproviders.IPaymentServiceProvider;
-import serviceproviders.IPaymentUpdateCallback;
-import serviceproviders.Payment;
-import services.AccountService;
-import services.IAccountService;
-import services.IInvoiceService;
-import services.InvoiceService;
+import models.Notification;
+import models.NotificationType;
+import models.response.InvoiceResponse;
+import serviceproviders.*;
+import services.*;
 
 public class InvoiceHandler implements IInvoiceHandler {
 
     private IInvoiceService invoiceService = new InvoiceService();
     private IPaymentServiceProvider paymentServiceProvider;
     private IAccountService accountService = new AccountService();
+    private INotificationService notificationService = DependencyCollection.getNotificationService();
 
     public InvoiceHandler() {
         paymentServiceProvider = DependencyCollection.getPaymentServiceProvider(callback());
@@ -42,9 +41,34 @@ public class InvoiceHandler implements IInvoiceHandler {
     }
 
     private IPaymentUpdateCallback callback() {
-        return (id, state) -> {
-            // TODO remove the notification of having to pay when a user pays an invoice
-            invoiceService.updateState(id, state.toString());
+        return (invoiceId, state) -> {
+            // Handle if invoice does not exist
+            InvoiceResponse res = invoiceService.getById(invoiceId);
+            if (!res.getStatus().equals(ResponseStatus.SOCKET_SUCCESS)) {
+                return;
+            }
+            Invoice invoice = res.getBody();
+
+            // Create notifications according to the state of the payment
+            NotificationType type = null;
+            switch (state) {
+                case PENDING: type = NotificationType.INVOICE_PENDING; break;
+                case CANCELLED: type = NotificationType.INVOICE_CANCELLED; break;
+                case REFUNDED: type = NotificationType.INVOICE_REFUNDED; break;
+                case REJECTED: type = NotificationType.INVOICE_REJECTED; break;
+                case PAID:
+                    notificationService.deleteAllByTypeAndItemId("invoice", invoiceId);
+                    break;
+            }
+
+            if (type != null) {
+                notificationService.create(new Notification(
+                        invoice.getPayerEmail(),
+                        type,
+                        invoiceId
+                ));
+            }
+            invoiceService.updateState(invoiceId, state.toString());
         };
     }
 }

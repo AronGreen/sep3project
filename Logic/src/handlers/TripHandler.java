@@ -1,6 +1,8 @@
 package handlers;
 
 import constants.ResponseStatus;
+import dependencycollection.DependencyCollection;
+import helpers.DateTimeHelper;
 import models.*;
 import models.response.TripListResponse;
 import models.response.TripResponse;
@@ -14,6 +16,7 @@ public class TripHandler implements ITripHandler {
     private IReservationService reservationService;
     private IAccountService accountService;
     private IInvoiceHandler invoiceHandler = new InvoiceHandler();
+    private INotificationService notificationService = DependencyCollection.getNotificationService();
 
     public TripHandler() {
         tripService = new TripService();
@@ -65,16 +68,23 @@ public class TripHandler implements ITripHandler {
             }
         });
 
-        // Set reservation states to cancelled
+        // Set reservation states to cancelled and send notifications
         reservations.forEach(r -> {
-            // TODO send notifications
             switch (r.getState()) {
                 case ReservationState.PENDING:
                 case ReservationState.APPROVED:
                     r.setState(ReservationState.CANCELLED);
+                    notificationService.create(new Notification(
+                            r.getPassengerEmail(),
+                            NotificationType.TRIP_CANCELLED.getEntityType(),
+                            r.getId(),
+                            NotificationType.TRIP_CANCELLED.getMessage(),
+                            DateTimeHelper.getCurrentTime()
+                    ));
                     break;
             }
-            r = reservationService.update(r).getBody();
+
+            reservationService.update(r);
         });
 
         return tripService.delete(id);

@@ -9,14 +9,14 @@ namespace Data.Models.Entities
 
         /*
          * When do we need notifications:
-         *  - A pending reservation has been accepted (notify passenger)
-         *  - A pending reservation has been rejected (notify passenger)
-         *  - An approved reservation has been cancelled (notify driver)
+         *  !- A pending reservation has been accepted (notify passenger)
+         *  !- A pending reservation has been rejected (notify passenger)
+         *  !- An approved reservation has been deleted (notify driver)
          *  !- A reservation has been placed for a trip (notify driver)
-         *  - A trip has been cancelled (notify passengers)
-         *  - A payment has been issued (notify payer)
-         *  - A payment has been revoked (notify payer)
-         *  - A payment has been completed (notify payee)
+         *  !- A trip has been cancelled (notify passengers)
+         *  !- A payment has been issued (notify payer)
+         *  !- A payment has been revoked (notify payer)
+         *  !- A payment has been rejected (notify payer)
          */
 
         [Key]

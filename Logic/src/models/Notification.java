@@ -1,5 +1,7 @@
 package models;
 
+import helpers.DateTimeHelper;
+
 public class Notification {
 
     private int id;
@@ -16,6 +18,14 @@ public class Notification {
         this.itemId = itemId;
         this.message = message;
         this.date = date;
+    }
+
+    public Notification(String accountEmail, NotificationType type, int itemId) {
+        this.accountEmail = accountEmail;
+        this.type = type.getEntityType();
+        this.itemId = itemId;
+        this.message = type.getMessage();
+        this.date = DateTimeHelper.getCurrentTime();
     }
 
     public int getId() {
