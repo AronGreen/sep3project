@@ -618,3 +618,11 @@ MigrationBackup/
 
 # End of https://www.gitignore.io/api/java,intellij,dotnetcore,aspnetcore,visualstudio,visualstudiocode
 Data/Data.sln.DotSettings
+Logic/src/handlers/ReservationHandler_BACKUP_13336.java
+Logic/src/handlers/ReservationHandler_BACKUP_18032.java
+Logic/src/handlers/ReservationHandler_BASE_13336.java
+Logic/src/handlers/ReservationHandler_BASE_18032.java
+Logic/src/handlers/ReservationHandler_LOCAL_13336.java
+Logic/src/handlers/ReservationHandler_LOCAL_18032.java
+Logic/src/handlers/ReservationHandler_REMOTE_13336.java
+Logic/src/handlers/ReservationHandler_REMOTE_18032.java
