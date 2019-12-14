@@ -10,6 +10,7 @@ namespace Data.Repositories
         public DbSet<Reservation> Reservations { get; set; }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Invoice> Invoices { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
@@ -38,6 +39,12 @@ namespace Data.Repositories
                 .HasOne<Account>("Passenger")
                 .WithMany()
                 .HasForeignKey("PassengerEmail")
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Notification>()
+                .HasOne<Account>("Account")
+                .WithMany()
+                .HasForeignKey("AccountEmail")
                 .OnDelete(DeleteBehavior.Cascade);
         }
 

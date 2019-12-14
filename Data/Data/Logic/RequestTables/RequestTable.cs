@@ -11,7 +11,8 @@ namespace Data.Logic.RequestTables
             AccountRequestTableComposer accountComposer,
             TripRequestTableComposer tripComposer,
             ReservationRequestTableComposer reservationComposer,
-            InvoiceRequestTableComposer invoiceComposer)
+            InvoiceRequestTableComposer invoiceComposer,
+            NotificationRequestTableComposer notificationComposer)
         {
             _map = new Dictionary<(string, string), Handler>();
 
@@ -19,6 +20,7 @@ namespace Data.Logic.RequestTables
             Compose(tripComposer);
             Compose(reservationComposer);
             Compose(invoiceComposer);
+            Compose(notificationComposer);
         }
 
         private void Compose(IRequestTableComposer composer)

@@ -1,5 +1,6 @@
 package helpers;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -34,5 +35,9 @@ public class DateTimeHelper {
                 t.getDayOfMonth() + "",
                 t.getHour() + "",
                 t.getMinute() + "");
+    }
+
+    public static String getCurrentTime() {
+        return toString(LocalDateTime.now());
     }
 }
