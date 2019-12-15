@@ -40,6 +40,17 @@ public class InvoiceHandler implements IInvoiceHandler {
         return !invoiceService.getAllUnpaidByPayerEmail(accountEmail).getBody().isEmpty();
     }
 
+    @Override
+    public boolean pay(int invoiceId) {
+        return invoiceService.updateState(invoiceId, PaymentState.PAID.toString())
+                .getStatus().equals(ResponseStatus.SOCKET_SUCCESS);
+    }
+
+    @Override
+    public boolean revoke(int invoiceId) {
+        return paymentServiceProvider.revokePayment(invoiceId) != null;
+    }
+
     private IPaymentUpdateCallback callback() {
         return (invoiceId, state) -> {
             // Handle if invoice does not exist

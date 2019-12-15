@@ -24,28 +24,38 @@ namespace Data.Repositories
             base.OnModelCreating(builder);
 
             builder.Entity<Reservation>()
-                .HasOne<Trip>("Trip")
+                .HasOne<Trip>()
                 .WithMany()
                 .HasForeignKey("TripId")
                 .OnDelete(DeleteBehavior.SetNull);
-
-            builder.Entity<Trip>()
-                .HasOne<Account>("Driver")
-                .WithMany()
-                .HasForeignKey("DriverEmail")
-                .OnDelete(DeleteBehavior.Cascade);
-
             builder.Entity<Reservation>()
-                .HasOne<Account>("Passenger")
+                .HasOne<Account>()
                 .WithMany()
                 .HasForeignKey("PassengerEmail")
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder.Entity<Trip>()
+                .HasOne<Account>()
+                .WithMany()
+                .HasForeignKey("DriverEmail")
+                .OnDelete(DeleteBehavior.Cascade);
+
             builder.Entity<Notification>()
-                .HasOne<Account>("Account")
+                .HasOne<Account>()
                 .WithMany()
                 .HasForeignKey("AccountEmail")
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Invoice>()
+                .HasOne<Trip>()
+                .WithMany()
+                .HasForeignKey("TripId")
+                .OnDelete(DeleteBehavior.SetNull);
+            builder.Entity<Invoice>()
+                .HasOne<Reservation>()
+                .WithMany()
+                .HasForeignKey("ReservationId")
+                .OnDelete(DeleteBehavior.SetNull);
         }
 
     }

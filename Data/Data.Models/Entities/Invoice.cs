@@ -11,6 +11,12 @@ namespace Data.Models.Entities
         [Key]
         public int Id { get; set; }
 
+        [JsonPropertyName("tripId")]
+        public int? TripId { get; set; }
+
+        [JsonPropertyName("reservationId")]
+        public int? ReservationId { get; set; }
+
         [JsonPropertyName("payerEmail")]
         public string PayerEmail { get; set; }
 

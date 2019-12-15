@@ -27,9 +27,6 @@ namespace Data.Models.Entities
         [JsonPropertyName("accountEmail")]
         public string AccountEmail { get; set; }
 
-        [JsonPropertyName("account")]
-        public Account Account { get; set; }
-
         [JsonPropertyName("type")]
         public string Type { get; set; }
 

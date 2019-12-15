@@ -23,6 +23,8 @@ public class DummyPaymentServiceProvider implements IPaymentServiceProvider {
 
     @Override
     public Payment issuePayment(Payment payment) {
+        if (payment.getInvoiceId() == 0)
+            throw new NullPointerException();
         payment.setId(getNextId());
         payment.setState(PaymentState.PENDING);
         payments.add(payment);

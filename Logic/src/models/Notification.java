@@ -6,7 +6,6 @@ public class Notification {
 
     private int id;
     private String accountEmail;
-    private Account account;
     private String type;
     private int itemId;
     private String message;
@@ -34,10 +33,6 @@ public class Notification {
 
     public String getAccountEmail() {
         return accountEmail;
-    }
-
-    public Account getAccount() {
-        return account;
     }
 
     public String getType() {

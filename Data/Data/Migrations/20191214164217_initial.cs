@@ -2,7 +2,7 @@
 
 namespace Data.Migrations
 {
-    public partial class inintial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -22,23 +22,6 @@ namespace Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Accounts", x => x.Email);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Invoices",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    PayerEmail = table.Column<string>(nullable: true),
-                    PayeeEmail = table.Column<string>(nullable: true),
-                    Type = table.Column<string>(nullable: true),
-                    Amount = table.Column<double>(nullable: false),
-                    State = table.Column<string>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Invoices", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -122,6 +105,47 @@ namespace Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.SetNull);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "Invoices",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    TripId = table.Column<int>(nullable: true),
+                    ReservationId = table.Column<int>(nullable: true),
+                    PayerEmail = table.Column<string>(nullable: true),
+                    PayeeEmail = table.Column<string>(nullable: true),
+                    Type = table.Column<string>(nullable: true),
+                    Amount = table.Column<double>(nullable: false),
+                    State = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Invoices", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Invoices_Reservations_ReservationId",
+                        column: x => x.ReservationId,
+                        principalTable: "Reservations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
+                    table.ForeignKey(
+                        name: "FK_Invoices_Trips_TripId",
+                        column: x => x.TripId,
+                        principalTable: "Trips",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Invoices_ReservationId",
+                table: "Invoices",
+                column: "ReservationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Invoices_TripId",
+                table: "Invoices",
+                column: "TripId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Notifications_AccountEmail",

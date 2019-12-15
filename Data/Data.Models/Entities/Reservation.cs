@@ -22,23 +22,11 @@ namespace Data.Models.Entities
         public int? TripId { get; set; }
 
         /// <summary>
-        /// The Trip the Reservation belongs to
-        /// </summary>
-        [JsonPropertyName("trip")]
-        public Trip Trip { get; set; }
-
-        /// <summary>
         /// The Id of the Passenger
         /// </summary>
         [JsonPropertyName("passengerEmail")]
         [Required]
         public string PassengerEmail { get; set; }
-
-        /// <summary>
-        /// The Passenger
-        /// </summary>
-        [JsonPropertyName("passenger")]
-        public Account Passenger { get; set; }
 
         /// <summary>
         /// The address the passenger is picked up from

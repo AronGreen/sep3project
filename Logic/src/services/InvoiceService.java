@@ -58,4 +58,11 @@ public class InvoiceService implements IInvoiceService {
 
         return response;
     }
+
+    @Override
+    public InvoiceResponse getByReservationId(int reservationId) {
+        return JsonConverter.fromJson(connection.sendRequest(new DataRequest(
+                "invoice", "getByReservationId", reservationId + "")
+        ), InvoiceResponse.class);
+    }
 }

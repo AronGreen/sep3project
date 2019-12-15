@@ -100,6 +100,8 @@ public class ReservationHandler implements IReservationHandler {
         // When a pending reservation gets approved, send invoice and notify the passenger
         if (old.getState().equals(ReservationState.PENDING) && reservation.getState().equals(ReservationState.APPROVED)) {
             invoiceHandler.create(new Invoice(
+                    reservation.getTripId(),
+                    reservation.getId(),
                     reservation.getPassengerEmail(),
                     trip.getDriverEmail(),
                     "Reservation fee",
@@ -157,6 +159,8 @@ public class ReservationHandler implements IReservationHandler {
         // If the reservation is approved, send invoice to passenger, and notify the driver
         if (reservation.getState().equals(ReservationState.APPROVED)) {
             invoiceHandler.create(new Invoice(
+                    reservation.getTripId(),
+                    reservation.getId(),
                     reservation.getPassengerEmail(),
                     trip.getDriverEmail(),
                     "Reservation cancellation fee",

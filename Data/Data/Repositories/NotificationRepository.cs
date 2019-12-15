@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Security.Cryptography;
 using Data.Models.Entities;
 using Microsoft.Extensions.Options;
 
@@ -33,7 +35,8 @@ namespace Data.Repositories
 
                 var result = context.Notifications
                     .Select(x => x)
-                    .Where(x => x.AccountEmail == accountEmail);
+                    .Where(x => x.AccountEmail == accountEmail)
+                    .OrderBy(x => x.Date);
                 return limit >= 0 ? result.Take(limit).ToArray() : result.ToArray();
             }
             catch (Exception e)

@@ -62,14 +62,24 @@ namespace Data.Migrations
                     b.Property<string>("PayerEmail")
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("ReservationId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("State")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<int?>("TripId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Type")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ReservationId");
+
+                    b.HasIndex("TripId");
 
                     b.ToTable("Invoices");
                 });
@@ -189,9 +199,22 @@ namespace Data.Migrations
                     b.ToTable("Trips");
                 });
 
+            modelBuilder.Entity("Data.Models.Entities.Invoice", b =>
+                {
+                    b.HasOne("Data.Models.Entities.Reservation", null)
+                        .WithMany()
+                        .HasForeignKey("ReservationId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("Data.Models.Entities.Trip", null)
+                        .WithMany()
+                        .HasForeignKey("TripId")
+                        .OnDelete(DeleteBehavior.SetNull);
+                });
+
             modelBuilder.Entity("Data.Models.Entities.Notification", b =>
                 {
-                    b.HasOne("Data.Models.Entities.Account", "Account")
+                    b.HasOne("Data.Models.Entities.Account", null)
                         .WithMany()
                         .HasForeignKey("AccountEmail")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -199,13 +222,13 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Models.Entities.Reservation", b =>
                 {
-                    b.HasOne("Data.Models.Entities.Account", "Passenger")
+                    b.HasOne("Data.Models.Entities.Account", null)
                         .WithMany()
                         .HasForeignKey("PassengerEmail")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Data.Models.Entities.Trip", "Trip")
+                    b.HasOne("Data.Models.Entities.Trip", null)
                         .WithMany()
                         .HasForeignKey("TripId")
                         .OnDelete(DeleteBehavior.SetNull);
@@ -213,7 +236,7 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Models.Entities.Trip", b =>
                 {
-                    b.HasOne("Data.Models.Entities.Account", "Driver")
+                    b.HasOne("Data.Models.Entities.Account", null)
                         .WithMany()
                         .HasForeignKey("DriverEmail")
                         .OnDelete(DeleteBehavior.Cascade)
