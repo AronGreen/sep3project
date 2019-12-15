@@ -1,5 +1,6 @@
 package handlers;
 
+import constants.ResponseStatus;
 import helpers.Password;
 import models.Account;
 import models.response.AccountResponse;
@@ -33,7 +34,7 @@ public class AuthenticationHandler implements IAuthenticationHandler {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return new StringResponse(SOCKET_FAILURE, null);
+            return new StringResponse(SOCKET_BAD_REQUEST, null);
         }
         return new StringResponse(SOCKET_UNAUTHORIZED, null);
     }

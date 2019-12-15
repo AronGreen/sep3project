@@ -94,7 +94,7 @@ namespace Data.Repositories
             using var context = new ApplicationContext();
             return context.Reservations
                 .Select(x => x)
-                .Where(x => x.Passenger.Email == email)
+                .Where(x => x.PassengerEmail == email)
                 .ToArray();
         }
     }

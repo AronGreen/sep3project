@@ -1,10 +1,12 @@
 package serviceproviders;
 
+import dependencycollection.DependencyCollection;
+import services.INotificationService;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class DummyPaymentServiceProvider implements IPaymentServiceProvider {
-
 
     private IPaymentUpdateCallback callback;
 
@@ -21,6 +23,8 @@ public class DummyPaymentServiceProvider implements IPaymentServiceProvider {
 
     @Override
     public Payment issuePayment(Payment payment) {
+        if (payment.getInvoiceId() == 0)
+            throw new NullPointerException();
         payment.setId(getNextId());
         payment.setState(PaymentState.PENDING);
         payments.add(payment);
@@ -58,6 +62,8 @@ public class DummyPaymentServiceProvider implements IPaymentServiceProvider {
                 p.setState(PaymentState.CANCELLED);
                 break;
         }
+
+        callback.paymentStateUpdate(invoiceId, p.getState());
 
         return p;
     }

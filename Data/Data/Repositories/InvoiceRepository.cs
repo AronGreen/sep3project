@@ -91,5 +91,20 @@ namespace Data.Repositories
                 throw;
             }
         }
+
+        public Invoice GetByReservationId(int reservationId)
+        {
+            using var context = new ApplicationContext();
+            try
+            {
+                return context.Invoices
+                    .Single(x => x.ReservationId == reservationId);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return null;
+            }
+        }
     }
 }

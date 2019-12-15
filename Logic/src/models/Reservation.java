@@ -6,10 +6,8 @@ import com.google.gson.GsonBuilder;
 public class Reservation {
 
     private int id;
-    private Trip trip;
     private int tripId;
     private String passengerEmail;
-    private Account passenger;
     private String pickupAddress;
     private String dropoffAddress;
     private String state;
@@ -38,22 +36,6 @@ public class Reservation {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public Trip getTrip() {
-        return trip;
-    }
-
-    public void setTrip(Trip trip) {
-        this.trip = trip;
-    }
-
-    public Account getPassenger() {
-        return passenger;
-    }
-
-    public void setPassenger(Account passenger) {
-        this.passenger = passenger;
     }
 
     public String getPickupAddress() {
