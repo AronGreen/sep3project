@@ -16,7 +16,7 @@ namespace FrontEnd.Pages
     {
         public string Message { get; set; }
 
-        public async void OnGet()
+        public void OnGet()
         {
 
         }

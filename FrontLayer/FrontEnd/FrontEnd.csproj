@@ -2,9 +2,11 @@
 
   <PropertyGroup>
   
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <LangVersion>preview</LangVersion>
   </PropertyGroup>
+  
 
   <ItemGroup>
     <None Include="wwwroot\css\general.css" />
