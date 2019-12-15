@@ -77,8 +77,8 @@ namespace FrontEnd.Pages
             var json = JsonSerializer.Serialize(sendTrip);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            HttpResponseMessage response = await client.PostAsync("http://localhost:8080/Logic_war_exploded/trips/post", content);
-            trips.Add(sendTrip);
+            HttpResponseMessage response = await client.PostAsync("http://localhost:8080/Logic_war_exploded/trips/create", content);
+       
 
         }
 
@@ -108,7 +108,7 @@ namespace FrontEnd.Pages
             string authenticationToken = Convert.ToBase64String(UTF8Encoding.UTF8.GetBytes($"{token}" + ":"));
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authenticationToken);
 
-            HttpResponseMessage response = await client.PostAsync("http://localhost:8080/api/reservations/post", content);
+            HttpResponseMessage response = await client.PostAsync("http://localhost:8080/Logic_war_exploded/reservations/create", content);
 
         }
 
