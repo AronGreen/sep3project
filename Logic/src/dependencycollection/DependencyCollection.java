@@ -2,10 +2,9 @@ package dependencycollection;
 
 import handlers.IInvoiceHandler;
 import handlers.InvoiceHandler;
-import models.Invoice;
-import serviceproviders.DummyPaymentServiceProvider;
-import serviceproviders.IPaymentServiceProvider;
-import serviceproviders.IPaymentUpdateCallback;
+import serviceproviders.payment.DummyPaymentServiceProvider;
+import serviceproviders.payment.IPaymentServiceProvider;
+import serviceproviders.payment.IPaymentUpdateCallback;
 import services.IInvoiceService;
 import services.INotificationService;
 import services.InvoiceService;

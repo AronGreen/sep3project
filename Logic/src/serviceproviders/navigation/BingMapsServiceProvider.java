@@ -96,7 +96,7 @@ public class BingMapsServiceProvider implements INavigationServiceProvider {
         ArrayList<LocalDateTime> stopTimes = new ArrayList<>();
         stopTimes.add(startTime); // don't worry, LocalDateTime is immutable, so no need to clone :)
         int durationAccumulated = 0;
-        for (BingMapResource.RouteSubLeg subLeg : mapResource.getRouteLeg().getRouteSubLegs()) {
+        for (RouteSubLeg subLeg : mapResource.getRouteLeg().getRouteSubLegs()) {
             stopAddressesSet.add(subLeg.getStartWaypoint().getDescription());
             stopAddressesSet.add(subLeg.getEndWaypoint().getDescription());
 

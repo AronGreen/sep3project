@@ -1,4 +1,4 @@
-package serviceproviders;
+package serviceproviders.payment;
 
 public enum PaymentState {
 

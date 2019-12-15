@@ -1,7 +1,5 @@
 package models;
 
-import serviceproviders.PaymentState;
-
 public class Invoice {
 
     private int id;

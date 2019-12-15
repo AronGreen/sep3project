@@ -7,7 +7,7 @@ import models.*;
 import models.response.InvoiceResponse;
 import models.response.TripListResponse;
 import models.response.TripResponse;
-import serviceproviders.PaymentState;
+import serviceproviders.payment.PaymentState;
 import services.*;
 
 import java.util.List;
