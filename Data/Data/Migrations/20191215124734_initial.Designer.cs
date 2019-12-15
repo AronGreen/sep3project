@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20191214164217_initial")]
+    [Migration("20191215124734_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -153,6 +153,30 @@ namespace Data.Migrations
                     b.ToTable("Reservations");
                 });
 
+            modelBuilder.Entity("Data.Models.Entities.Review", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("RevieweeEmail")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ReviewerEmail")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RevieweeEmail");
+
+                    b.HasIndex("ReviewerEmail");
+
+                    b.ToTable("Reviews");
+                });
+
             modelBuilder.Entity("Data.Models.Entities.Trip", b =>
                 {
                     b.Property<int>("Id")
@@ -234,6 +258,19 @@ namespace Data.Migrations
                         .WithMany()
                         .HasForeignKey("TripId")
                         .OnDelete(DeleteBehavior.SetNull);
+                });
+
+            modelBuilder.Entity("Data.Models.Entities.Review", b =>
+                {
+                    b.HasOne("Data.Models.Entities.Account", null)
+                        .WithMany()
+                        .HasForeignKey("RevieweeEmail")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Data.Models.Entities.Account", null)
+                        .WithMany()
+                        .HasForeignKey("ReviewerEmail")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Data.Models.Entities.Trip", b =>
