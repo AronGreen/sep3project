@@ -35,6 +35,7 @@ namespace Data.Composer
                 .AddTransient<ReservationRequestTableComposer>()
                 .AddTransient<InvoiceRequestTableComposer>()
                 .AddTransient<NotificationRequestTableComposer>()
+                .AddTransient<ReviewRequestTableComposer>()
 
                 // Add request handler table
                 .AddTransient<IRequestTable, RequestTable>()

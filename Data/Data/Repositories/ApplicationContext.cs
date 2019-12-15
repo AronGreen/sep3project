@@ -11,6 +11,7 @@ namespace Data.Repositories
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<Notification> Notifications { get; set; }
+        public DbSet<Review> Reviews { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
@@ -56,6 +57,18 @@ namespace Data.Repositories
                 .WithMany()
                 .HasForeignKey("ReservationId")
                 .OnDelete(DeleteBehavior.SetNull);
+
+            builder.Entity<Review>()
+                .HasOne<Account>()
+                .WithMany()
+                .HasForeignKey("ReviewerEmail")
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Review>()
+                .HasOne<Account>()
+                .WithMany()
+                .HasForeignKey("RevieweeEmail")
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
     }

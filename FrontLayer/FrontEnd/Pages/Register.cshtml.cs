@@ -26,7 +26,7 @@ namespace FrontEnd.Pages
             string password = Request.Form["password"];
             string firstName = Request.Form["firstName"];
             string lastName = Request.Form["lastName"];
-            string dateOfBirth = (string)Request.Form["dateOfBirth"];
+            string dateOfBirth = Request.Form["dateOfBirth"];
             string phoneNumber = Request.Form["phoneNumber"];
 
            Account account = new Account()
