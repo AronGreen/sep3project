@@ -28,6 +28,7 @@ namespace Data.Composer
                 .AddTransient<IReservationRepository, ReservationRepository>()
                 .AddTransient<IInvoiceRepository, InvoiceRepository>()
                 .AddTransient<INotificationRepository, NotificationRepository>()
+                .AddTransient<IReviewRepository, ReviewRepository>()
 
                 // Add request table composers
                 .AddTransient<AccountRequestTableComposer>()
