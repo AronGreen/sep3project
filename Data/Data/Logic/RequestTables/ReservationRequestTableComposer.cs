@@ -4,7 +4,7 @@ using Data.Models.Entities;
 using Data.Network;
 using Data.Repositories;
 
-namespace Data.Logic
+namespace Data.Logic.RequestTables
 {
     public class ReservationRequestTableComposer : IRequestTableComposer
     {
@@ -29,7 +29,7 @@ namespace Data.Logic
         private Handler CreateReservation() => body =>
         {
             var result = _reservationRepository.Create(JsonSerializer.Deserialize<Reservation>(body));
-            var status = result == null ? "internalError" : "success";
+            var status = result == null ? "badRequest" : "success";
             return new Response()
             {
                 Status = status,
@@ -40,7 +40,7 @@ namespace Data.Logic
         private Handler UpdateReservation() => body =>
         {
             var result = _reservationRepository.Update(JsonSerializer.Deserialize<Reservation>(body));
-            var status = result == null ? "notFound" : "success";
+            var status = result == null ? "badRequest" : "success";
             return new Response()
             {
                 Status = status,
@@ -72,7 +72,7 @@ namespace Data.Logic
 
         private Handler GetByTripId() => body =>
         {
-            var result = _reservationRepository.GetByTripId(int.Parse(body));
+            var result = _reservationRepository.GetAllByTripId(int.Parse(body));
             var status = result == null ? "internalError" : "success";
             return new Response()
             {

@@ -1,7 +1,6 @@
-﻿using System;
-using Data.Network;
+﻿using Data.Network;
 
-namespace Data.Logic
+namespace Data.Logic.RequestTables
 {
 
     public delegate Response Handler(string body);

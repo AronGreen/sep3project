@@ -1,5 +1,6 @@
 ﻿using System;
 using Data.Logic;
+using Data.Logic.RequestTables;
 using Data.Network;
 using Data.Repositories;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,11 +26,16 @@ namespace Data.Composer
                 .AddTransient<IAccountRepository, AccountRepository>()
                 .AddTransient<ITripRepository, TripRepository>()
                 .AddTransient<IReservationRepository, ReservationRepository>()
+                .AddTransient<IInvoiceRepository, InvoiceRepository>()
+                .AddTransient<INotificationRepository, NotificationRepository>()
 
                 // Add request table composers
                 .AddTransient<AccountRequestTableComposer>()
                 .AddTransient<TripRequestTableComposer>()
                 .AddTransient<ReservationRequestTableComposer>()
+                .AddTransient<InvoiceRequestTableComposer>()
+                .AddTransient<NotificationRequestTableComposer>()
+                .AddTransient<ReviewRequestTableComposer>()
 
                 // Add request handler table
                 .AddTransient<IRequestTable, RequestTable>()

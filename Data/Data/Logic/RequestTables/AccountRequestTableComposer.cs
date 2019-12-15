@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Reflection.Metadata;
 using System.Text.Json;
 using Data.Models.Entities;
 using Data.Network;
 using Data.Repositories;
 
-namespace Data.Logic
+namespace Data.Logic.RequestTables
 {
     public class AccountRequestTableComposer : IRequestTableComposer
     {
@@ -31,7 +30,7 @@ namespace Data.Logic
         private Handler CreateAccount() => body =>
         {
             var result = _accountRepository.Create(JsonSerializer.Deserialize<Account>(body));
-            var status = result == null ? "alreadyExists" : "success";
+            var status = result == null ? "forbidden" : "success";
             return new Response()
             {
                 Status = status,
@@ -64,7 +63,7 @@ namespace Data.Logic
         private Handler GetAll() => body =>
         {
             var result = _accountRepository.GetAll();
-            var status = "success";
+            var status = result == null ? "internalError" : "success";
             return new Response()
             {
                 Status = status,

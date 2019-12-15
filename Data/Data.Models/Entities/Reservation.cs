@@ -19,14 +19,7 @@ namespace Data.Models.Entities
         /// The Id of the Trip the Reservation belongs to
         /// </summary>
         [JsonPropertyName("tripId")]
-        [Required]
-        public int TripId { get; set; }
-
-        /// <summary>
-        /// The Trip the Reservation belongs to
-        /// </summary>
-        [JsonPropertyName("trip")]
-        public Trip Trip { get; set; }
+        public int? TripId { get; set; }
 
         /// <summary>
         /// The Id of the Passenger
@@ -34,12 +27,6 @@ namespace Data.Models.Entities
         [JsonPropertyName("passengerEmail")]
         [Required]
         public string PassengerEmail { get; set; }
-
-        /// <summary>
-        /// The Passenger
-        /// </summary>
-        [JsonPropertyName("passenger")]
-        public Account Passenger { get; set; }
 
         /// <summary>
         /// The address the passenger is picked up from
@@ -72,6 +59,6 @@ namespace Data.Models.Entities
         /// The time the driver specifies to meet and pick up the passenger(s)
         /// </summary>
         [JsonPropertyName("bookedSeats")]
-        public string BookedSeats { get; set; }
+        public int BookedSeats { get; set; }
     }
 }

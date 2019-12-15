@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20191211094537_helloo")]
-    partial class helloo
+    [Migration("20191214164322_review")]
+    partial class review
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -48,10 +48,40 @@ namespace Data.Migrations
                     b.ToTable("Accounts");
                 });
 
+            modelBuilder.Entity("Data.Models.Entities.Invoice", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("REAL");
+
+                    b.Property<string>("PayeeEmail")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PayerEmail")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Invoices");
+                });
+
             modelBuilder.Entity("Data.Models.Entities.Reservation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("BookedSeats")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("DropoffAddress")
@@ -82,6 +112,30 @@ namespace Data.Migrations
                     b.HasIndex("TripId");
 
                     b.ToTable("Reservations");
+                });
+
+            modelBuilder.Entity("Data.Models.Entities.Review", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("RevieweeEmail")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ReviewerEmail")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RevieweeEmail");
+
+                    b.HasIndex("ReviewerEmail");
+
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("Data.Models.Entities.Trip", b =>
@@ -145,6 +199,19 @@ namespace Data.Migrations
                         .HasForeignKey("TripId")
                         .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Data.Models.Entities.Review", b =>
+                {
+                    b.HasOne("Data.Models.Entities.Account", null)
+                        .WithMany()
+                        .HasForeignKey("RevieweeEmail")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Data.Models.Entities.Account", null)
+                        .WithMany()
+                        .HasForeignKey("ReviewerEmail")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Data.Models.Entities.Trip", b =>

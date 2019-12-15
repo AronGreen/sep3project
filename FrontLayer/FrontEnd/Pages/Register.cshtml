@@ -3,7 +3,12 @@
 @{
     ViewData["Title"] = "Register";
 }
-<link rel="stylesheet" href="~/css/popup.css" />
+
+
+
+
+
+
 
 <h1>Create account</h1>
 
@@ -16,7 +21,7 @@
             <label>First Name: </label>
             <p>
                 <span class="input">
-                    <input type="text" placeholder="First name" name="firstName">
+                    <input type="text" placeholder="First name" name="firstName" required pattern="[a-zA-Z]+" oninvalid="setCustomValidity('First name must contain letters only')" oninput="setCustomValidity('')">
                     <span></span>
                 </span>
             </p>
@@ -24,7 +29,7 @@
                 <label>Last Name: </label>
                 <p>
                     <span class="input">
-                        <input type="text" placeholder="Last name" name="lastName">
+                        <input type="text" placeholder="Last name" name="lastName" required pattern="[a-zA-Z]+" oninvalid="setCustomValidity('Last name must contain letters only')" oninput="setCustomValidity('')">
                         <span></span>
                     </span>
                 </p>
@@ -38,7 +43,7 @@
             <label>Password</label>
             <p>
                 <span class="input">
-                    <input type="password" placeholder="Password" name="password">
+                    <input type="password" id="password" placeholder="Password" name="password" required pattern="[a-zA-Z0-9]+" oninvalid="setCustomValidity('Password must contain letters and/or numbers only')" oninput="setCustomValidity('')">
                     <span></span>
                 </span>
             </p>
@@ -48,7 +53,7 @@
             <label>Repeat password:</label>
             <p>
                 <span class="input">
-                    <input type="password" placeholder="Repeat password" name="repeatedPassword">
+                    <input type="password" id="repeatPassword" placeholder="Repeat password" name="repeatedPassword" required oninvalid="">
                     <span></span>
                 </span>
             </p>
@@ -58,7 +63,7 @@
             <label>E-mail:</label>
             <p>
                 <span class="input">
-                    <input type="text" placeholder="Your e-mail" name="email">
+                    <input type="email" placeholder="Your e-mail" name="email" required oninvalid="setCustomValidity('Email must contain @@ sign')" oninput="setCustomValidity('')">
                     <span></span>
                 </span>
             </p>
@@ -66,7 +71,7 @@
             <label>Phone Number</label>
             <p>
                 <span class="input">
-                    <input type="number" placeholder="Phone number" name="phoneNumber">
+                    <input type="number" placeholder="Phone number" name="phoneNumber" required oninvalid="setCustomValidity('Type in Your phone number')" oninput="setCustomValidity('')">
                     <span></span>
                 </span>
             </p>
@@ -76,36 +81,40 @@
             <label>Date of Birth:</label>
             <p>
                 <span class="input">
-                    <input type="date" name="dateOfBirth">
+                    <input type="date" name="dateOfBirth" required oninvalid="setCustomValidity('Pick a date')" oninput="setCustomValidity('')">
                     <span></span>
                 </span>
             </p>
 
         </div>
-        
 
 
 
 
-            <button href="#popup" type="submit" class="login-button">Register</button>
+
+        <button href="#popup" type="submit" class="login-button">Register</button>
     </form>
 
-    <div id="popup" class="overlay">
-        <div class="popup">
-            <h2>Register</h2>
-            <a class="close" href="#">&times;</a>
-            <div class="content">
+    <script>
 
-                <div align="center">
-                    <h3>@Model.Message</h3>
+        var password = document.getElementById("password")
+            , repeatPassword = document.getElementById("repeatPassword");
 
-                </div>
-            </div>
+        function validatePassword() {
+            if (password.value != repeatPassword.value) {
+                repeatPassword.setCustomValidity("Passwords don't match");
+            } else {
+                repeatPassword.setCustomValidity('');
+            }
+        }
 
-        </div>
-    </div>
-</div>
+        password.onchange = validatePassword;
+        repeatPassword.onkeyup = validatePassword;
 
+
+    </script>
+
+ 
 
 
 
