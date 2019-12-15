@@ -1,7 +1,5 @@
 package helpers;
 
-import constants.Authentication;
-
 import javax.ws.rs.core.HttpHeaders;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -9,16 +7,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.StringTokenizer;
 
-import static constants.Authentication.*;
+import static constants.Authentication.AUTHENTICATION_SCHEME;
 
 public class StringHelper {
 
     public static boolean isNullOrEmpty(String str){
         return str == null || str.length() == 0;
-    }
-
-    public static boolean equals_ignoreCase(String str1, String str2){
-        return str1.toLowerCase().equals(str2.toLowerCase());
     }
 
     // TODO: Rename this ugly s.o.a.b

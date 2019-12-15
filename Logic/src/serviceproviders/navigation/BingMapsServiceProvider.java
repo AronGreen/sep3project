@@ -30,7 +30,6 @@ public class BingMapsServiceProvider implements INavigationServiceProvider {
     // allow the api to optimize the order of waypoints
     private static final String DEFAULT_PARAMETERS = "&optmz=time" +
             "&ra=excludeItinerary" +
-            "&optWp=true" +
             "&key=" + API_KEY;
 
     @Override
@@ -45,30 +44,29 @@ public class BingMapsServiceProvider implements INavigationServiceProvider {
             // TODO: build waypoints from already accepted reservation addresses
             List<String> addresses = getAddressList(trip, new ArrayList<>());
             String waypoints = buildWaypoints(addresses);
-            BingMapResource currentRoute = doBingMapRouteRequest(waypoints);
+            BingMapResource currentRoute = doBingMapRouteRequest(waypoints, true);
 
-            // We need to add the new address before
+            // We need to add the new address before the final destination
             addresses.add(addresses.size() - 1, reservation.getPickupAddress());
             addresses.add(addresses.size() - 1, reservation.getDropoffAddress());
             waypoints = buildWaypoints(addresses);
-            BingMapResource potentialRoute = doBingMapRouteRequest(waypoints);
 
-            if (potentialRoute == null || currentRoute == null) continue;
+            BingMapResource unoptimizedPotentialRoute = doBingMapRouteRequest(waypoints, false);
+            BingMapResource optimizedPotentialRoute = doBingMapRouteRequest(waypoints, true);
 
-            // TODO: this is not perfect. If the api has to make assumptions about the address
-            //  this function will not work. Find a better way
-            boolean wrongDirection = false;
-            for (BingMapResource.RouteSubLeg subLeg :
-                    potentialRoute.getRouteSubLegs()) {
-                if (containsIgnoreCase(subLeg.getStartWaypoint().getDescription(), reservation.getDropoffAddress()) &&
-                        containsIgnoreCase(subLeg.getEndWaypoint().getDescription(), reservation.getPickupAddress())) {
-                    wrongDirection = true;
-                    break;
-                }
-            }
-            if (wrongDirection) continue;
+            // did any route not exist?
+            if (unoptimizedPotentialRoute == null ||
+                    optimizedPotentialRoute == null ||
+                    currentRoute == null) continue;
+            // are we going in the right direction?
+            if (unoptimizedPotentialRoute
+                    .getTravelDuration() != optimizedPotentialRoute
+                    .getTravelDuration()) continue;
 
-            double potentialDelayRate = ((potentialRoute.getTravelDuration() - currentRoute.getTravelDuration()) / (double) currentRoute.getTravelDuration()) * 100;
+
+            double potentialDelayRate =
+                    getPercentIncrease(currentRoute.getTravelDuration(),
+                            optimizedPotentialRoute.getTravelDuration());
 
             if (potentialDelayRate > delayRate) {
                 results.add(trip);
@@ -88,7 +86,7 @@ public class BingMapsServiceProvider implements INavigationServiceProvider {
         List<String> initialAddressList = getAddressList(trip, reservations);
         String waypoints = buildWaypoints(initialAddressList);
 
-        BingMapResource mapResource = doBingMapRouteRequest(waypoints);
+        BingMapResource mapResource = doBingMapRouteRequest(waypoints, true);
         if (mapResource == null) return null;
 
         return getTripDetails(mapResource, DateTimeHelper.fromString(trip.getArrival()));
@@ -160,11 +158,12 @@ public class BingMapsServiceProvider implements INavigationServiceProvider {
         return result.toString();
     }
 
-    private BingMapResource doBingMapRouteRequest(String waypoints) {
+    private BingMapResource doBingMapRouteRequest(String waypoints, boolean optimizeWaypoints) {
         try {
             String urlString = BASE_URL +
                     waypoints +
-                    DEFAULT_PARAMETERS;
+                    DEFAULT_PARAMETERS +
+                    "&optWp=" + (optimizeWaypoints ? "true" : "false");
 
             URL url = new URL(urlString);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -192,5 +191,9 @@ public class BingMapsServiceProvider implements INavigationServiceProvider {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private double getPercentIncrease(double oldNumber, double newNumber){
+        return  (newNumber - oldNumber) / oldNumber * 100;
     }
 }
