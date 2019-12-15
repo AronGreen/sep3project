@@ -10,6 +10,7 @@ namespace Data.Repositories
         Invoice GetById(int id);
         Invoice[] GetAllByPayerEmail(string payerEmail);
         Invoice[] GetAllUnpaidByPayerEmail(string email);
+        Invoice GetByReservationId(int reservationId);
 
     }
 }

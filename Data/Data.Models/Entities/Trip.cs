@@ -24,12 +24,6 @@ namespace Data.Models.Entities
         public string DriverEmail { get; set; }
 
         /// <summary>
-        /// The user account of the driver that will drive during the trip.
-        /// </summary>
-        [JsonPropertyName("driver")]
-        public Account Driver { get; set; }
-
-        /// <summary>
         /// The date and arrival time for the trip (Pickup times are calculated based on this).
         /// </summary>
         [JsonPropertyName("arrival")]

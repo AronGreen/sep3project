@@ -43,7 +43,7 @@
         <label>First Name: </label>
         <p>
             <span class="input">
-                <input type="text" placeholder="First name" name="firstName" value="@firstName">
+                <input type="text" placeholder="First name" name="firstName" value="@firstName" required pattern="[a-zA-Z]+" oninvalid="setCustomValidity('First name must contain letters only')" oninput="setCustomValidity('')">
 
                 <span></span>
             </span>
@@ -52,7 +52,7 @@
             <label>Last Name: </label>
             <p>
                 <span class="input">
-                    <input type="text" placeholder="Last name" name="lastName" value="@lastName">
+                    <input type="text" placeholder="Last name" name="lastName" value="@lastName" required pattern="[a-zA-Z]+" oninvalid="setCustomValidity('First name must contain letters only')" oninput="setCustomValidity('')">
                     <span></span>
                 </span>
             </p>
@@ -63,10 +63,20 @@
 
 
         <div>
-            <label>Password</label>
+            <label>New Password</label>
             <p>
                 <span class="input">
-                    <input type="password" placeholder="Password" name="password">
+                    <input type="password" id="password" placeholder="Password" name="password" required pattern="[a-zA-Z0-9]+" oninvalid="setCustomValidity('Password must contain letters and/or numbers only')" oninput="setCustomValidity('')">
+                    <span></span>
+                </span>
+            </p>
+
+        </div>
+        <div>
+            <label>Repeat Password:</label>
+            <p>
+                <span class="input">
+                    <input type="password" id="repeatPassword" placeholder="Repeat password" name="repeatedPassword" required>
                     <span></span>
                 </span>
             </p>
@@ -86,7 +96,7 @@
         <label>Phone Number</label>
         <p>
             <span class="input">
-                <input type="number" placeholder="Phone number" name="phoneNumber" value="@phone">
+                <input type="number" placeholder="Phone number" name="phoneNumber" value="@phone" required oninvalid="setCustomValidity('Type in Your phone number')" oninput="setCustomValidity('')">
                 <span></span>
             </span>
         </p>
@@ -112,6 +122,25 @@
 
 
 </div>
+
+<script>
+
+    var password = document.getElementById("password")
+        , repeatPassword = document.getElementById("repeatPassword");
+
+    function validatePassword() {
+        if (password.value != repeatPassword.value) {
+            repeatPassword.setCustomValidity("Passwords don't match");
+        } else {
+            repeatPassword.setCustomValidity('');
+        }
+    }
+
+    password.onchange = validatePassword;
+    repeatPassword.onkeyup = validatePassword;
+
+
+</script>
 
 
 

@@ -5,6 +5,8 @@
 #### Shortcut, becasue Mate needs his OneDrive folder shortcut in the git folder ####
 *.lnk
 
+*.db
+
 ### Deploy folder for MobilePay endpoint
 MobilePay/deploy/
 
