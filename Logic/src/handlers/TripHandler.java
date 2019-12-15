@@ -1,9 +1,13 @@
 package handlers;
 
 import constants.ResponseStatus;
+import dependencycollection.DependencyCollection;
+import helpers.DateTimeHelper;
 import models.*;
+import models.response.InvoiceResponse;
 import models.response.TripListResponse;
 import models.response.TripResponse;
+import serviceproviders.PaymentState;
 import services.*;
 
 import java.util.List;
@@ -14,6 +18,8 @@ public class TripHandler implements ITripHandler {
     private IReservationService reservationService;
     private IAccountService accountService;
     private IInvoiceHandler invoiceHandler = new InvoiceHandler();
+    private INotificationService notificationService = DependencyCollection.getNotificationService();
+    private IInvoiceService invoiceService = DependencyCollection.getInvoiceService();
 
     public TripHandler() {
         tripService = new TripService();
@@ -53,28 +59,48 @@ public class TripHandler implements ITripHandler {
 
         Trip trip = res.getBody();
 
-        // Pay out cancellation fee
+        // Pay out cancellation fee + paid reservations, and revoke unpaid reservations
         reservations.forEach(r -> {
             if (r.getState().equals(ReservationState.APPROVED)) {
+                double amount = trip.getCancellationFee();
+                InvoiceResponse invoiceRes = invoiceService.getByReservationId(r.getId());
+                if (invoiceRes.getStatus().equals(ResponseStatus.SOCKET_SUCCESS)) {
+                    Invoice invoice = invoiceRes.getBody();
+                    if (invoice.getState().equals(PaymentState.PAID.toString()))
+                        amount += invoice.getAmount();
+                    if (invoice.getState().equals(PaymentState.PENDING.toString())){
+                        invoiceHandler.revoke(invoice.getId());
+                    }
+                }
+
                 invoiceHandler.create(new Invoice(
+                        trip.getId(),
+                        r.getId(),
                         trip.getDriverEmail(),
                         r.getPassengerEmail(),
                         "Trip cancellation fee",
-                        trip.getCancellationFee()
+                        amount
                 ));
             }
         });
 
-        // Set reservation states to cancelled
+        // Set reservation states to cancelled and send notifications
         reservations.forEach(r -> {
-            // TODO send notifications
             switch (r.getState()) {
                 case ReservationState.PENDING:
                 case ReservationState.APPROVED:
                     r.setState(ReservationState.CANCELLED);
+                    notificationService.create(new Notification(
+                            r.getPassengerEmail(),
+                            NotificationType.TRIP_CANCELLED.getEntityType(),
+                            r.getId(),
+                            NotificationType.TRIP_CANCELLED.getMessage(),
+                            DateTimeHelper.getCurrentTime()
+                    ));
                     break;
             }
-            r = reservationService.update(r).getBody();
+
+            reservationService.update(r);
         });
 
         return tripService.delete(id);

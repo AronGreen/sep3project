@@ -75,7 +75,7 @@ public class TripController {
             @DefaultValue("") @QueryParam("minimumArrivalDate") String minimumArrivalDate,
             @DefaultValue("") @QueryParam("maximumArrivalDate") String maximumArrivalDate)
     {
-        // Send request and receive Response
+        // Send request and receive ResponseS
         TripListResponse res = handler.getFiltered(new TripFilter(driverEmail, passengerEmail, minimumArrivalDate, maximumArrivalDate));
 
         // Extract http response data

@@ -5,18 +5,22 @@ import serviceproviders.PaymentState;
 public class Invoice {
 
     private int id;
+    private int tripId;
+    private int reservationId;
     private String payerEmail;
     private String payeeEmail;
     private String type;
     private double amount;
     private String state;
 
-    public Invoice(String payerEmail, String payeeEmail, String type, double amount) {
+    public Invoice(int tripId, int reservationId, String payerEmail, String payeeEmail, String type, double amount) {
+        this.tripId = tripId;
+        this.reservationId = reservationId;
         this.payerEmail = payerEmail;
         this.payeeEmail = payeeEmail;
         this.type = type;
         this.amount = amount;
-        this.state = PaymentState.PENDING.toString();
+        this.state = "";
     }
 
     public Invoice(int id, String state) {
@@ -26,6 +30,10 @@ public class Invoice {
 
     public int getId() {
         return id;
+    }
+
+    public int getTripId() {
+        return tripId;
     }
 
     public String getPayerEmail() {

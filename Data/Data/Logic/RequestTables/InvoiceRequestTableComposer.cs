@@ -25,6 +25,7 @@ namespace Data.Logic.RequestTables
             map.Add(("invoice", "getById"), GetById());
             map.Add(("invoice", "getAllByPayerEmail"), GetAllByPayerEmail());
             map.Add(("invoice", "getAllUnpaidByPayerEmail"), GetAllUnpaidByPayerEmail());
+            map.Add(("invoice", "getByReservationId"), GetByReservationId());
         }
 
         private Handler CreateInvoice() => body =>
@@ -42,7 +43,7 @@ namespace Data.Logic.RequestTables
         {
             var invoice = JsonSerializer.Deserialize<Invoice>(body);
             var result = _invoiceRepository.UpdateState(invoice.Id, invoice.State);
-            var status = result == null ? "internalError" : "success";
+            var status = result == null ? "badRequest" : "success";
             return new Response
             {
                 Status = status,
@@ -76,6 +77,17 @@ namespace Data.Logic.RequestTables
         {
             var result = _invoiceRepository.GetAllUnpaidByPayerEmail(body);
             var status = result == null ? "internalError" : "success";
+            return new Response()
+            {
+                Status = status,
+                Body = result
+            };
+        };
+
+        private Handler GetByReservationId() => body =>
+        {
+            var result = _invoiceRepository.GetByReservationId(int.Parse(body));
+            var status = result == null ? "notFound" : "success";
             return new Response()
             {
                 Status = status,

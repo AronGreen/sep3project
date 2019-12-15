@@ -11,5 +11,6 @@ public interface IInvoiceService {
     InvoiceResponse getById(int id);
     InvoiceListResponse getAllByPayerEmail(String payerEmail);
     InvoiceListResponse getAllUnpaidByPayerEmail(String payerEmail);
+    InvoiceResponse getByReservationId(int reservationId);
 
 }

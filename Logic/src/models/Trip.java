@@ -7,7 +7,6 @@ public class Trip {
 
     private int id;
     private String driverEmail;
-    private Account driver;
     private String arrival;
     private String startAddress;
     private String destinationAddress;
@@ -32,13 +31,6 @@ public class Trip {
 
     public void setDriverEmail(String driverEmail) {
         this.driverEmail = driverEmail;
-    }
-    public Account getDriver() {
-        return driver;
-    }
-
-    public void setDriver(Account driver) {
-        this.driver = driver;
     }
 
     public String getArrival() {
