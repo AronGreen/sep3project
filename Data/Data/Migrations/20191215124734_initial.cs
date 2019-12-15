@@ -48,6 +48,33 @@ namespace Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Reviews",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    ReviewerEmail = table.Column<string>(nullable: true),
+                    RevieweeEmail = table.Column<string>(nullable: true),
+                    Content = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reviews", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Reviews_Accounts_RevieweeEmail",
+                        column: x => x.RevieweeEmail,
+                        principalTable: "Accounts",
+                        principalColumn: "Email",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Reviews_Accounts_ReviewerEmail",
+                        column: x => x.ReviewerEmail,
+                        principalTable: "Accounts",
+                        principalColumn: "Email",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Trips",
                 columns: table => new
                 {
@@ -163,6 +190,16 @@ namespace Data.Migrations
                 column: "TripId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Reviews_RevieweeEmail",
+                table: "Reviews",
+                column: "RevieweeEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reviews_ReviewerEmail",
+                table: "Reviews",
+                column: "ReviewerEmail");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Trips_DriverEmail",
                 table: "Trips",
                 column: "DriverEmail");
@@ -175,6 +212,9 @@ namespace Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Notifications");
+
+            migrationBuilder.DropTable(
+                name: "Reviews");
 
             migrationBuilder.DropTable(
                 name: "Reservations");
