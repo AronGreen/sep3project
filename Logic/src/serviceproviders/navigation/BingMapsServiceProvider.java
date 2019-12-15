@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 
-import static helpers.StringHelper.containsIgnoreCase;
 import static helpers.StringHelper.urlEncode;
 
 public class BingMapsServiceProvider implements INavigationServiceProvider {
@@ -27,21 +26,15 @@ public class BingMapsServiceProvider implements INavigationServiceProvider {
 
     // optimize for time
     // do not include itinerary in result
-    // allow the api to optimize the order of waypoints
     private static final String DEFAULT_PARAMETERS = "&optmz=time" +
             "&ra=excludeItinerary" +
             "&key=" + API_KEY;
 
     @Override
     public List<Trip> getTripsForReservation(List<Trip> trips, Reservation reservation, double delayRate) {
-        // TODO: change pickup point to a reservation,
-        //  then check if the pickup point is before the dropoff point during the delay calc
-        //  this way we can get a list of trips that won't be delayed more than delayRate
-        //  and that have the passenger go in the right direction.
         List<Trip> results = new ArrayList<>();
 
         for (Trip trip : trips) {
-            // TODO: build waypoints from already accepted reservation addresses
             List<String> addresses = getAddressList(trip, new ArrayList<>());
             String waypoints = buildWaypoints(addresses);
             BingMapResource currentRoute = doBingMapRouteRequest(waypoints, true);
@@ -118,7 +111,7 @@ public class BingMapsServiceProvider implements INavigationServiceProvider {
 
     private List<String> getAddressList(Trip trip, List<Reservation> reservations) {
         // NOTE: It is important that the trip start and end address are first and last respectively.
-        //       For all the elements in between, the order is irellevant, as the map api wil optimize
+        //       For all the elements in between, the order is irrelevant, as the map api wil optimize
 
         // LinkedHashSet retains the order of the contents and allows only unique values
         LinkedHashSet<String> adressSet = new LinkedHashSet<>();
