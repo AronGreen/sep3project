@@ -16,8 +16,7 @@ public class TripHandler implements ITripHandler {
 
     private ITripService tripService;
     private IReservationService reservationService;
-    private IAccountService accountService;
-    private IInvoiceHandler invoiceHandler = new InvoiceHandler();
+    private IInvoiceHandler invoiceHandler = DependencyCollection.getInvoiceHandler();
     private INotificationService notificationService = DependencyCollection.getNotificationService();
     private IInvoiceService invoiceService = DependencyCollection.getInvoiceService();
 
@@ -66,8 +65,10 @@ public class TripHandler implements ITripHandler {
                 InvoiceResponse invoiceRes = invoiceService.getByReservationId(r.getId());
                 if (invoiceRes.getStatus().equals(ResponseStatus.SOCKET_SUCCESS)) {
                     Invoice invoice = invoiceRes.getBody();
-                    if (invoice.getState().equals(PaymentState.PAID.toString()))
+                    if (invoice.getState().equals(PaymentState.PAID.toString())) {
                         amount += invoice.getAmount();
+                        invoiceHandler.revoke(invoice.getId());
+                    }
                     if (invoice.getState().equals(PaymentState.PENDING.toString())){
                         invoiceHandler.revoke(invoice.getId());
                     }

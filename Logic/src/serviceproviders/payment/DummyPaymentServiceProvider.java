@@ -9,13 +9,16 @@ public class DummyPaymentServiceProvider implements IPaymentServiceProvider {
 
     private List<Payment> payments;
 
-    public DummyPaymentServiceProvider(IPaymentUpdateCallback cb) {
+    public DummyPaymentServiceProvider() {
+        payments = new ArrayList<>();
+    }
+
+    public void setCallback(IPaymentUpdateCallback cb) {
         if (cb == null) {
             throw new NullPointerException("Callback cannot be null");
         }
         callback = cb;
 
-        payments = new ArrayList<>();
     }
 
     @Override

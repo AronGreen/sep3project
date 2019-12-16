@@ -12,8 +12,18 @@ import services.NotificationService;
 
 public class DependencyCollection {
 
-    public static IPaymentServiceProvider getPaymentServiceProvider(IPaymentUpdateCallback callback) {
-        return new DummyPaymentServiceProvider(callback);
+    private static IInvoiceHandler invoiceHandler;
+    private static IPaymentServiceProvider paymentServiceProvider;
+
+    static {
+        paymentServiceProvider = new DummyPaymentServiceProvider();
+        invoiceHandler = new InvoiceHandler();
+        ((DummyPaymentServiceProvider)paymentServiceProvider).setCallback(
+                ((InvoiceHandler) invoiceHandler).callback());
+    }
+
+    public static IPaymentServiceProvider getPaymentServiceProvider() {
+        return paymentServiceProvider;
     }
 
     public static INotificationService getNotificationService() {
@@ -25,6 +35,6 @@ public class DependencyCollection {
     }
 
     public static IInvoiceHandler getInvoiceHandler() {
-        return new InvoiceHandler();
+        return invoiceHandler;
     }
 }
