@@ -7,6 +7,12 @@
         public static class Accounts
         {
             public const string Create = BaseUrl + "accounts/create";
+            public const string Get = BaseUrl + "accounts/get";
+        }
+
+        public static class Authentication
+        {
+            public const string Authenticate = BaseUrl + "authentication";
         }
 
         public static class Trips

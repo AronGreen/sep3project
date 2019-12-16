@@ -25,12 +25,10 @@ namespace FrontEnd.Pages
 
         [BindProperty]
         public Reservation Reservation { get; set; }
-
         
         public string Message { get; set; } = "Initial message";
         public Trip CreateTripModel = new Trip();
         public List<Trip> Trips = new List<Trip>();
-
 
         public void OnGet()
         {

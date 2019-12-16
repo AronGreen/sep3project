@@ -7,8 +7,21 @@
 @* TODO: this should be done in a partial *@
 @section header{}
 
-<partial name="Shared/_AnimatedLogotype"/>
+<partial name="Shared/_AnimatedLogotype" />
 
+@if (Request.Query["loginFail"].Count > 0)
+{
+    <div class="alert alert-danger" role="alert">
+        Login failed, try again
+    </div>
+}
+
+@if (Request.Query["accountCreated"].Count > 0)
+{
+    <div class="alert alert-success" role="alert">
+        Account created, ready to log in
+    </div>
+}
 <div align="center" class="login-container">
 
     <form method="post" asp-page-handler="Login">
@@ -40,5 +53,5 @@
     </form>
 
     <label>Don't have an account?</label>
-        <a asp-page="./Register" >Register</a>
+    <a asp-page="./Register">Register</a>
 </div>
