@@ -16,6 +16,7 @@ public class RestApplication extends Application {
         h.add(ReservationController.class);
         h.add(InvoiceController.class);
         h.add(NotificationController.class);
+        h.add(ReviewController.class);
         return h;
     }
 }
