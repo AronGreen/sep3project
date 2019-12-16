@@ -9,9 +9,15 @@ namespace FrontEnd.Pages
     {
         private readonly IAccountServiceProvider _accountServiceProvider = new AccountServiceProvider();
 
+        [BindProperty]
+        public string ErrorMessage { get; set; } = "";
+
         public IActionResult OnPostRegister([FromForm] Account account)
         {
-            return RedirectToPage(_accountServiceProvider.Register(account) ? "Index" : "Register");
+            var success = _accountServiceProvider.Register(account);
+            if (success)
+                return RedirectToPage("Index");
+            return RedirectToPage("Register");
         }
     }
 }
