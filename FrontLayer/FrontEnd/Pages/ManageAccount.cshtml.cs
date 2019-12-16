@@ -16,8 +16,6 @@ namespace FrontEnd.Pages
 {
     public class ManageAccountModel : PageModel
     {
-        
-                                                 
         public async Task<IActionResult> OnPostUpdateAsync()
         {
 
@@ -29,7 +27,6 @@ namespace FrontEnd.Pages
             var phoneNumber = Request.Form["phoneNumber"];
 
             Account account = new Account()
-
             {
                 Email = email,
                 FirstName = firstName,
@@ -37,9 +34,6 @@ namespace FrontEnd.Pages
                 Password = password,
                 DateOfBirth = dateOfBirth,
                 Phone = phoneNumber,
-
-
-
             };
 
             HttpClient client = new HttpClient();
@@ -59,36 +53,21 @@ namespace FrontEnd.Pages
                     Expires = DateTime.Now.AddMonths(12),
                     Secure = true
 
-
                 };
 
                 Response.Cookies.Append("FirstNameCookie", $"{account.FirstName}", cookieOptions);
                 Response.Cookies.Append("LastNameCookie", $"{account.LastName}", cookieOptions);
                 Response.Cookies.Append("PhoneCookie", $"{account.Phone}", cookieOptions);
 
-
-
-
                 return RedirectToPage("ManageAccount");
             }
             else {
                 return RedirectToPage("ManageAccount");
             }
-
-
-
-
-
-
-
-
-
         }
+
         public async Task<IActionResult> OnPostDeleteAsync()
         {
-
-
-
             HttpClient client = new HttpClient();
             var email = Request.Cookies["EmailCookie"];
             var token = Request.Cookies["TokenCookie"];
@@ -104,13 +83,7 @@ namespace FrontEnd.Pages
             Response.Cookies.Delete("PhoneCookie");
             Response.Cookies.Delete("TokenCookie");
 
-
             return RedirectToPage("Index");
         }
-
-
-
-
-
     }
 }
