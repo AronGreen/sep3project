@@ -3,10 +3,12 @@ package handlers;
 import constants.ResponseStatus;
 import dependencycollection.DependencyCollection;
 import helpers.DateTimeHelper;
+import helpers.StringHelper;
 import models.*;
 import models.response.InvoiceResponse;
 import models.response.TripListResponse;
 import models.response.TripResponse;
+import serviceproviders.navigation.INavigationServiceProvider;
 import serviceproviders.payment.PaymentState;
 import services.*;
 
@@ -19,6 +21,7 @@ public class TripHandler implements ITripHandler {
     private IInvoiceHandler invoiceHandler = DependencyCollection.getInvoiceHandler();
     private INotificationService notificationService = DependencyCollection.getNotificationService();
     private IInvoiceService invoiceService = DependencyCollection.getInvoiceService();
+    private INavigationServiceProvider navigationServiceProvider = DependencyCollection.getNavigationServiceProvider();
 
     public TripHandler() {
         tripService = new TripService();
@@ -109,9 +112,22 @@ public class TripHandler implements ITripHandler {
 
     @Override
     public TripListResponse getFiltered(TripFilter filter) {
-        // No business logic needed for now
+        TripListResponse response = tripService.getFiltered(filter);
 
-        return tripService.getFiltered(filter);
+        // Handle server error
+        if (!response.getStatus().equals(ResponseStatus.SOCKET_SUCCESS)) {
+            return response;
+        }
+        List<Trip> trips = response.getBody();
+
+        // Apply navigation filter
+        if (!StringHelper.isNullOrEmpty(filter.getPickupAddress()) &&
+                !StringHelper.isNullOrEmpty(filter.getDropoffAddress()))
+        {
+            trips = navigationServiceProvider.getTripsForReservation(trips, filter.getPickupAddress(), filter.getDropoffAddress());
+        }
+
+        return new TripListResponse(response.getStatus(), trips);
     }
 
     @Override

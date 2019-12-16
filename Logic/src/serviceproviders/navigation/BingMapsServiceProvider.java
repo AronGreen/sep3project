@@ -31,7 +31,7 @@ public class BingMapsServiceProvider implements INavigationServiceProvider {
             "&key=" + API_KEY;
 
     @Override
-    public List<Trip> getTripsForReservation(List<Trip> trips, Reservation reservation, double delayRate) {
+    public List<Trip> getTripsForReservation(List<Trip> trips, String pickupAddress, String dropoffAddress, double delayRate) {
         List<Trip> results = new ArrayList<>();
 
         for (Trip trip : trips) {
@@ -40,8 +40,8 @@ public class BingMapsServiceProvider implements INavigationServiceProvider {
             BingMapResource currentRoute = doBingMapRouteRequest(waypoints, true);
 
             // We need to add the new address before the final destination
-            addresses.add(addresses.size() - 1, reservation.getPickupAddress());
-            addresses.add(addresses.size() - 1, reservation.getDropoffAddress());
+            addresses.add(addresses.size() - 1, pickupAddress);
+            addresses.add(addresses.size() - 1, dropoffAddress);
             waypoints = buildWaypoints(addresses);
 
             BingMapResource unoptimizedPotentialRoute = doBingMapRouteRequest(waypoints, false);
@@ -61,7 +61,7 @@ public class BingMapsServiceProvider implements INavigationServiceProvider {
                     getPercentIncrease(currentRoute.getTravelDuration(),
                             optimizedPotentialRoute.getTravelDuration());
 
-            if (potentialDelayRate > delayRate) {
+            if (potentialDelayRate <= delayRate) {
                 results.add(trip);
             }
         }
@@ -70,8 +70,18 @@ public class BingMapsServiceProvider implements INavigationServiceProvider {
     }
 
     @Override
+    public List<Trip> getTripsForReservation(List<Trip> trips, String pickupAddress, String dropoffAddress) {
+        return getTripsForReservation(trips, pickupAddress, dropoffAddress, 20);
+    }
+
+    @Override
+    public List<Trip> getTripsForReservation(List<Trip> trips, Reservation reservation, double delayRate) {
+        return getTripsForReservation(trips, reservation.getPickupAddress(), reservation.getDropoffAddress(), delayRate);
+    }
+
+    @Override
     public List<Trip> getTripsForReservation(List<Trip> trips, Reservation reservation) {
-        return getTripsForReservation(trips, reservation, 10);
+        return getTripsForReservation(trips, reservation.getPickupAddress(), reservation.getDropoffAddress());
     }
 
     @Override

@@ -7,6 +7,20 @@ import models.TripDetails;
 import java.util.List;
 
 public interface INavigationServiceProvider {
+
+
+    List<Trip> getTripsForReservation(List<Trip> trips, String pickupAddress, String dropoffAddress, double delayRate);
+
+    /**
+     * Returns the subset of the given list of trips that will not be delayed more than
+     * 20% by the given reservation
+     * @param trips the list of trips to filter
+     * @param pickupAddress the pickup point of the reservation
+     * @param dropoffAddress the dropoff point of the reservation
+     * @return the subset of the given list of trips that will not be delayed more than delayRate % by the given reservation
+     */
+    List<Trip> getTripsForReservation(List<Trip> trips, String pickupAddress, String dropoffAddress);
+
     /**
      * Returns the subset of the given list of trips that will not be delayed more than
      * delayRate% by the given reservation
@@ -19,7 +33,7 @@ public interface INavigationServiceProvider {
 
     /**
      * Returns the subset of the given list of trips that will not be delayed more than
-     * 10% by the given reservation
+     * 20% by the given reservation
      * @param trips the list of trips to filter
      * @param reservation the reservation to check against
      * @return the subset of the given list of trips that will not be delayed more than delayRate % by the given reservation
