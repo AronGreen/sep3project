@@ -1,7 +1,11 @@
 package controllers;
 
+import constants.ResponseStatus;
+import dependencycollection.DependencyCollection;
+import handlers.IAuthenticationHandler;
 import handlers.IReviewHandler;
 import handlers.ReviewHandler;
+import helpers.HttpResponseHelper;
 import helpers.JsonConverter;
 import models.Review;
 import models.response.ReviewListResponse;
@@ -15,7 +19,10 @@ import javax.ws.rs.core.*;
 public class ReviewController {
 
     private IReviewHandler handler = new ReviewHandler();
+    private IAuthenticationHandler authenticationHandler = DependencyCollection.getAuthenticationHandler();
 
+    @Context
+    private HttpHeaders headers;
 
     @POST
     @Path("create")
@@ -23,6 +30,10 @@ public class ReviewController {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response create(String json) {
         Review review = JsonConverter.fromJson(json, Review.class);
+
+        if (!authenticationHandler.getEmail(headers).equals(review.getReviewerEmail())) {
+            return HttpResponseHelper.getUnathourizedResponse();
+        }
 
         ReviewResponse response = handler.create(review);
 
@@ -38,6 +49,14 @@ public class ReviewController {
     @Path("delete/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response delete(@PathParam("id") int id) {
+        ReviewResponse res = handler.getById(id);
+        if (!res.getStatus().equals(ResponseStatus.SOCKET_SUCCESS)) {
+            return Response.status(ResponseStatus.HTTP_BAD_REQUEST).build();
+        }
+
+        if (!authenticationHandler.getEmail(headers).equals(res.getBody().getReviewerEmail()))
+            return HttpResponseHelper.getUnathourizedResponse();
+
         ReviewResponse response = handler.delete(id);
 
         int status = StatusMapper.map(response.getStatus());

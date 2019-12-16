@@ -24,8 +24,8 @@ class Connection {
     }
 
     byte[] receive() throws IOException {
-        byte[] buffer = new byte[4096];
-        inputStream.read(buffer, 0, 4096);
+        byte[] buffer = new byte[8192];
+        inputStream.read(buffer, 0, buffer.length);
         return buffer;
     }
 
