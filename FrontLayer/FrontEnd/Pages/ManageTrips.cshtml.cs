@@ -72,7 +72,6 @@ namespace FrontEnd.Pages
             var pickUpTime = Request.Form["PickUpTime"];
             var dropOffPoint = Request.Form["DropOffPoint"];
 
-
             Reservation sendReservation = new Reservation()
             {
                 TripId = tripId,

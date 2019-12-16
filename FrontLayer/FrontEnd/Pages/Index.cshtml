@@ -1,94 +1,44 @@
 ﻿@page
 @model IndexModel
-@using Entities
-@using System.Net.Http
-@using Newtonsoft.Json
-
-
-
-
 @{
     ViewData["Title"] = "MainPage";
-   
-
 }
 
-@section header{ 
+@* TODO: this should be done in a partial *@
+@section header{}
 
-    
-}
+<partial name="Shared/_AnimatedLogotype"/>
 
-<link rel="stylesheet" href="~/css/title.css" />
+<div align="center" class="login-container">
 
-<script>
-    let spans = document.querySelectorAll('.word span');
-spans.forEach((span, idx) => {
-	span.addEventListener('click', (e) => {
-		e.target.classList.add('active');
-	});
-	span.addEventListener('animationend', (e) => {
-		e.target.classList.remove('active');
-	});
-	
-	// Initial animation
-	setTimeout(() => {
-		span.classList.add('active');
-	}, 750 * (idx+1))
-});
-
-
-
-</script>
-
-    <svg viewBox="0 1060 300">
-        <symbol id="s-text">
-            <text text-anchor="middle" x="50%" y="80%">ShareRide</text>
-        </symbol>
-
-        <g class="g-ants">
-            <use xlink:href="#s-text" class="text-copy"></use>
-            <use xlink:href="#s-text" class="text-copy"></use>
-            <use xlink:href="#s-text" class="text-copy"></use>
-            <use xlink:href="#s-text" class="text-copy"></use>
-            <use xlink:href="#s-text" class="text-copy"></use>
-        </g>
-    </svg>
-
-
-
-    <div align="center" class="login-container">
-
-
-        <form method="post" asp-page-handler="Login">
-            <p>
-                <span class="input">
-                    <input type="text" placeholder="Email"  class="form-control" name="email" required oninvalid="setCustomValidity('Email field is empty')" oninput="setCustomValidity('')">
-                    <span></span>
-                </span>
-            </p>
-            <br />
-            <p>
+    <form method="post" asp-page-handler="Login">
+        <p>
             <span class="input">
-                <input type="password" placeholder="Password"  class="form-control" name="password" required oninvalid="setCustomValidity('Password field is empty')" oninput="setCustomValidity('')">
+                <input type="text" placeholder="Email" class="form-control" name="email" required oninvalid="setCustomValidity('Email field is empty')" oninput="setCustomValidity('')">
                 <span></span>
             </span>
-            </p>
-            <div class="form-group">
-                    <div class="checkbox">
-                        <label asp-for="RememberMe">
-                            <input asp-for="RememberMe" />
-                            Remember me
-                        </label>
-                    </div>
+        </p>
+        <br />
+        <p>
+            <span class="input">
+                <input type="password" placeholder="Password" class="form-control" name="password" required oninvalid="setCustomValidity('Password field is empty')" oninput="setCustomValidity('')">
+                <span></span>
+            </span>
+        </p>
+        <div class="form-group">
+            <div class="checkbox">
+                <label asp-for="RememberMe">
+                    <input asp-for="RememberMe" />
+                    Remember me
+                </label>
             </div>
-            <br />
+        </div>
+        <br />
 
 
-            <button type="submit"  class="login-button">Log in</button>
-        </form>
+        <button type="submit" class="btn btn-info">Log in</button>
+    </form>
 
-        <label>Don't have an account?</label>
-        <form>
-            <button type="submit" asp-page="./Register" class="login-button">Register</button>
-        </form>
-    </div>
+    <label>Don't have an account?</label>
+        <a asp-page="./Register" >Register</a>
+</div>
