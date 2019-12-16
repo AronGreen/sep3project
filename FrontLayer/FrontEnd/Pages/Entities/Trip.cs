@@ -1,45 +1,101 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace FrontEnd.Pages.Entities
 {
     public class Trip
     {
-        
 
+        /// <summary>
+        /// The primary key value for the trip
+        /// </summary>
+        
+        [JsonPropertyName("id")]
         public int Id { get; set; }
-        public string Title { get; set; }
-        public string Date { get; set; }
-        public string StartingPoint { get; set; }
-        public string EndingPoint { get; set; }
-        public int AvailableSeats { get; set; }
+
+        /// <summary>
+        /// The id of the driver user
+        /// </summary>
+        [JsonPropertyName("driverEmail")]
+        [Required]
+        public string DriverEmail { get; set; }
+
+        /// <summary>
+        /// The user account of the driver that will drive during the trip.
+        /// </summary>
+        [JsonPropertyName("driver")]
+        public Data.Models.Entities.Account Driver { get; set; }
+
+        /// <summary>
+        /// The date and arrival time for the trip (Pickup times are calculated based on this).
+        /// </summary>
+        [JsonPropertyName("arrival")]
+        [Required]
+        public string Arrival { get; set; }
+
+        /// <summary>
+        /// The starting address of the Trip
+        /// </summary>
+        [JsonPropertyName("startAddress")]
+        [Required]
+        public string StartAddress { get; set; }
+
+        /// <summary>
+        /// The destination address of the Trip
+        /// </summary>
+        [JsonPropertyName("destinationAddress")]
+        [Required]
+        public string DestinationAddress { get; set; }
+
+        /// <summary>
+        /// The price that every passenger has to pay regardless of how long they are travelling.
+        /// </summary>
+        [JsonPropertyName("basePrice")]
+        [Required]
+        public double BasePrice { get; set; }
+
+        /// <summary>
+        /// The price passengers pay for every kilometer they travel with the driver.
+        /// </summary>
+        [JsonPropertyName("perKmPrice")]
+        [Required]
+        public double PerKmPrice { get; set; }
+
+        /// <summary>
+        /// The fee a passenger has to pay if they cancel the trip less than 24 hours before the ride.
+        /// </summary>
+        [JsonPropertyName("cancellationFee")]
+        [Required]
         public double CancellationFee { get; set; }
 
-        public Trip(int id, string title, string date)
-        {
-            this.Id = id;
-            this.Title = title;
-            this.Date = date;
+        /// <summary>
+        /// The set of rules the driver expects the passengers to adhere to while they are travelling together.
+        /// </summary>
+        [JsonPropertyName("rules")]
+        [Required]
+        public string Rules { get; set; }
 
-        }
+        /// <summary>
+        /// The total amount of seats for rent.
+        /// </summary>
+        [JsonPropertyName("totalSeats")]
+        [Required]
+        public int TotalSeats { get; set; }
 
-        public Trip()
-        {
+        /// <summary>
+        /// An optional description of the trip. Can contain useful information.
+        /// </summary>
+        [JsonPropertyName("description")]
+        public string Description { get; set; }
 
-        }
-
-        public Trip(string title, string date, string startingPoint, string endingPoint, int availableSeats)
-        {
-            this.Title = title;
-            this.Date = date;
-            this.StartingPoint = startingPoint;
-            this.EndingPoint = endingPoint;
-            this.AvailableSeats = availableSeats;
-
-        }
-
+        //        /// <summary>
+        //        /// The list of passengers for the trip
+        //        /// </summary>
+        //        public ICollection<Account> Passengers { get; set; }
 
     }
 }

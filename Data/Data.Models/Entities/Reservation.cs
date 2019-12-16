@@ -56,7 +56,7 @@ namespace Data.Models.Entities
 
 
         /// <summary>
-        /// The time the driver specifies to meet and pick up the passenger(s)
+        /// Passenger specifies how many seats he wants to book
         /// </summary>
         [JsonPropertyName("bookedSeats")]
         public int BookedSeats { get; set; }

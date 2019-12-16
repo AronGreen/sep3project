@@ -26,8 +26,7 @@ namespace FrontEnd.Pages
         
         public string Message { get; set; } = "Initial message";
         public Trip trip = new Trip();
-        public List<Trip> trips = new List<Trip>() {new Trip("TriperoPrimero","yesterday", "somewhere", "you are not going anywhere", 0), 
-                                                    new Trip("LauTransport", "tomorrow", "Uni", "Home", 3) };
+        public List<Trip> trips = new List<Trip>();
 
 
         public void OnGet()
@@ -54,27 +53,32 @@ namespace FrontEnd.Pages
         public async Task OnPostSendAsync()
         {
             HttpClient client = new HttpClient();
-
             
-
-
-            
-            var title = Request.Form["Title"];
+            var description = Request.Form["Description"];
             var date = Request.Form["Date"];
             var spoint = Request.Form["StartingPoint"];
             var epoint = Request.Form["EndingPoint"];
-            
-            
-            Trip sendTrip = new Trip(title, date, spoint, epoint, AvailableSeats);
 
-            Debug.WriteLine("" + AvailableSeats);
+            Trip sendTrip = new Trip()
+            {
+                DriverEmail = Request.Cookies["EmailCookie"],
+                Driver = null,
+                Arrival = date,
+                StartAddress = spoint,
+                DestinationAddress = epoint,
+                TotalSeats = AvailableSeats,
+                Description= description,
+                BasePrice = 0,
+                PerKmPrice = 0,
+                CancellationFee = 0,
+                Rules = "",
+            };
 
-            /*var json = JsonConvert.SerializeObject(sendTrip);
+            var json = JsonSerializer.Serialize(sendTrip);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            HttpResponseMessage response = await client.PostAsync("http://localhost:8080/api/trips/post", content);
-*/
-            trips.Add(sendTrip);
+            HttpResponseMessage response = await client.PostAsync("http://localhost:8080/Logic_war_exploded/trips/create", content);
+       
 
         }
 
@@ -91,7 +95,9 @@ namespace FrontEnd.Pages
                 TripId = tripId,
                 PickupAddress = pickUpPoint,
                 PickupTime = pickUpTime,
-                DropoffAddress = dropOffPoint
+                DropoffAddress = dropOffPoint,
+                PassengerEmail = Request.Cookies["EmailCookie"],
+
 
             };
 
@@ -102,21 +108,18 @@ namespace FrontEnd.Pages
             string authenticationToken = Convert.ToBase64String(UTF8Encoding.UTF8.GetBytes($"{token}" + ":"));
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authenticationToken);
 
-            HttpResponseMessage response = await client.PostAsync("http://localhost:8080/api/reservations/post", content);
+            HttpResponseMessage response = await client.PostAsync("http://localhost:8080/Logic_war_exploded/reservations/create", content);
 
         }
 
 
-
-
-
-        //static async Task<string> GetTripAsync(string address)
-        //{
-        //    HttpClient client = new HttpClient();
-        //    Console.WriteLine("Fetching data...");
-        //    string s = await client.GetStringAsync(address);
-        //    return s;
-        //}
+        static async Task<string> GetTripAsync(string address)
+        {
+           HttpClient client = new HttpClient();
+            Console.WriteLine("Fetching data...");
+           string s = await client.GetStringAsync(address);
+            return s;
+        }
 
     }
 }
