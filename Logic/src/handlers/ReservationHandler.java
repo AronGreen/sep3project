@@ -9,6 +9,7 @@ import models.response.NotificationListResponse;
 import models.response.ReservationListResponse;
 import models.response.ReservationResponse;
 import models.response.TripResponse;
+import serviceproviders.navigation.INavigationServiceProvider;
 import services.*;
 
 import java.time.LocalDateTime;
@@ -20,6 +21,7 @@ public class ReservationHandler implements IReservationHandler {
     private IInvoiceHandler invoiceHandler = DependencyCollection.getInvoiceHandler();
     private ITripService tripService = new TripService();
     private INotificationService notificationService = DependencyCollection.getNotificationService();
+    private INavigationServiceProvider navigationServiceProvider = DependencyCollection.getNavigationServiceProvider();
 
     public ReservationHandler() {
         reservationService = new ReservationService();
@@ -27,26 +29,30 @@ public class ReservationHandler implements IReservationHandler {
 
     @Override
     public ReservationResponse create(Reservation reservation) {
+        if (reservation == null || isInvalid(reservation))
+            return new ReservationResponse(ResponseStatus.SOCKET_BAD_REQUEST, null);
+
         TripResponse tripRes = tripService.getById(reservation.getTripId());
         if (!tripRes.getStatus().equals(ResponseStatus.SOCKET_SUCCESS)) {
-            return new ReservationResponse(ResponseStatus.SOCKET_BAD_REQUEST, null);
+            // Handle if trip doesn't exist
+            return new ReservationResponse(ResponseStatus.SOCKET_NOT_FOUND, null);
         }
         Trip refTrip = tripRes.getBody();
+
         ReservationListResponse reservationListRes = reservationService.getByTripId(refTrip.getId());
         if (!reservationListRes.getStatus().equals(ResponseStatus.SOCKET_SUCCESS)) {
+            // Handle server error
             return new ReservationResponse(reservationListRes.getStatus(), null);
         }
         List<Reservation> reservationList = reservationListRes.getBody();
-        // For now reservation allows to book only one seat.
-        // This implementation should be modified when the "bookedSeats" is added to Reservation object!
 
         int availableSeats = refTrip.getTotalSeats();
         for (Reservation res: reservationList) {
             if (!res.getState().equals(ReservationState.REJECTED) && !res.getState().equals(ReservationState.CANCELLED))
-            availableSeats--;
+            availableSeats -= res.getBookedSeats();
         }
 
-        if(availableSeats > 0 &&
+        if(availableSeats >= reservation.getBookedSeats() &&
                 !StringHelper.isNullOrEmpty(reservation.getDropoffAddress()) &&
                 !StringHelper.isNullOrEmpty(reservation.getPickupAddress()) &&
                 !StringHelper.isNullOrEmpty(reservation.getPassengerEmail()))
@@ -54,10 +60,10 @@ public class ReservationHandler implements IReservationHandler {
             reservation.setState(ReservationState.PENDING);
 
             ReservationResponse res =  reservationService.create(reservation);
-            reservation = res.getBody();
 
             // Notify driver that a reservation has been created for his trip
             if (res.getStatus().equals(ResponseStatus.SOCKET_SUCCESS)) {
+                reservation = res.getBody();
                 notificationService.create(new Notification(
                         refTrip.getDriverEmail(),
                         NotificationType.RESERVATION_PLACED.getEntityType(),
@@ -75,6 +81,10 @@ public class ReservationHandler implements IReservationHandler {
 
     @Override
     public ReservationResponse update(Reservation reservation) {
+        if (reservation == null || isInvalid(reservation)) {
+            return new ReservationResponse(ResponseStatus.SOCKET_BAD_REQUEST, null);
+        }
+
         // Handle if the reservation does not exist
         ReservationResponse res = reservationService.getById(reservation.getId());
         if (!res.getStatus().equals(ResponseStatus.SOCKET_SUCCESS))
@@ -106,8 +116,7 @@ public class ReservationHandler implements IReservationHandler {
                     reservation.getPassengerEmail(),
                     trip.getDriverEmail(),
                     "Reservation fee",
-                    trip.getBasePrice()
-                    // TODO EXTEND THIS lol
+                    trip.getBasePrice() + trip.getPerKmPrice() * navigationServiceProvider.getDistance(reservation.getPickupAddress(), reservation.getDropoffAddress())
             ));
 
             notificationService.create(new Notification(
@@ -191,14 +200,19 @@ public class ReservationHandler implements IReservationHandler {
 
     @Override
     public ReservationListResponse getByTripId(int tripId) {
-        // No logic is implemented for now
-
         return reservationService.getByTripId(tripId);
     }
 
     @Override
     public ReservationListResponse getByEmail(String email) {
         return reservationService.getByEmail(email);
+    }
+
+    private boolean isInvalid(Reservation reservation) {
+        return StringHelper.isNullOrEmpty(reservation.getPassengerEmail()) ||
+                StringHelper.isNullOrEmpty(reservation.getPickupAddress()) ||
+                StringHelper.isNullOrEmpty(reservation.getDropoffAddress()) ||
+                reservation.getBookedSeats() <= 0;
     }
 
 }

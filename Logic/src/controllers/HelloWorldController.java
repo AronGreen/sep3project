@@ -92,7 +92,7 @@ public class HelloWorldController {
         res1.setPickupAddress("Egebjergvej 21, 8751 Gedved");
         res1.setDropoffAddress("Skovlundgårdsvej 51, 8260 Viby J");
 
-        List<Trip> filteredTrips = bingMapsServiceProvider.getTripsForReservation(trips, res1);
+        List<Trip> filteredTrips = bingMapsServiceProvider.getTripsForReservation(trips, res1.getPickupAddress(), res1.getDropoffAddress());
 
         Gson gson = new GsonBuilder().create();
         return gson.toJson(filteredTrips);
@@ -123,7 +123,7 @@ public class HelloWorldController {
         res1.setPickupAddress("Skovlundgårdsvej 51, 8260 Viby J");
         res1.setDropoffAddress("Egebjergvej 21, 8751 Gedved");
 
-        List<Trip> filteredTrips = bingMapsServiceProvider.getTripsForReservation(trips, res1);
+        List<Trip> filteredTrips = bingMapsServiceProvider.getTripsForReservation(trips, res1.getPickupAddress(), res1.getDropoffAddress());
 
         Gson gson = new GsonBuilder().create();
         return gson.toJson(filteredTrips);

@@ -14,6 +14,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 
@@ -34,35 +35,50 @@ public class BingMapsServiceProvider implements INavigationServiceProvider {
     public List<Trip> getTripsForReservation(List<Trip> trips, String pickupAddress, String dropoffAddress, double delayRate) {
         List<Trip> results = new ArrayList<>();
 
+        List<Thread> threadPool = new ArrayList<>();
         for (Trip trip : trips) {
-            List<String> addresses = getAddressList(trip, new ArrayList<>());
-            String waypoints = buildWaypoints(addresses);
-            BingMapResource currentRoute = doBingMapRouteRequest(waypoints, true);
+            threadPool.add(new Thread(() -> {
+                List<String> addresses = getAddressList(trip, new ArrayList<>());
+                String waypoints = buildWaypoints(addresses);
+                BingMapResource currentRoute = doBingMapRouteRequest(waypoints, true);
 
-            // We need to add the new address before the final destination
-            addresses.add(addresses.size() - 1, pickupAddress);
-            addresses.add(addresses.size() - 1, dropoffAddress);
-            waypoints = buildWaypoints(addresses);
+                // We need to add the new address before the final destination
+                addresses.add(addresses.size() - 1, pickupAddress);
+                addresses.add(addresses.size() - 1, dropoffAddress);
+                waypoints = buildWaypoints(addresses);
 
-            BingMapResource unoptimizedPotentialRoute = doBingMapRouteRequest(waypoints, false);
-            BingMapResource optimizedPotentialRoute = doBingMapRouteRequest(waypoints, true);
+                BingMapResource unoptimizedPotentialRoute = doBingMapRouteRequest(waypoints, false);
+                BingMapResource optimizedPotentialRoute = doBingMapRouteRequest(waypoints, true);
 
-            // did any route not exist?
-            if (unoptimizedPotentialRoute == null ||
-                    optimizedPotentialRoute == null ||
-                    currentRoute == null) continue;
-            // are we going in the right direction?
-            if (unoptimizedPotentialRoute
-                    .getTravelDuration() != optimizedPotentialRoute
-                    .getTravelDuration()) continue;
+                // did any route not exist?
+                if (unoptimizedPotentialRoute == null ||
+                        optimizedPotentialRoute == null ||
+                        currentRoute == null) return;
+                // are we going in the right direction?
+                if (unoptimizedPotentialRoute
+                        .getTravelDuration() != optimizedPotentialRoute
+                        .getTravelDuration()) return;
 
 
-            double potentialDelayRate =
-                    getPercentIncrease(currentRoute.getTravelDuration(),
-                            optimizedPotentialRoute.getTravelDuration());
+                double potentialDelayRate =
+                        getPercentIncrease(currentRoute.getTravelDuration(),
+                                optimizedPotentialRoute.getTravelDuration());
 
-            if (potentialDelayRate <= delayRate) {
-                results.add(trip);
+                if (potentialDelayRate <= delayRate) {
+                    results.add(trip);
+                }
+            }));
+        }
+
+        for (Thread thread : threadPool) {
+            thread.start();
+        }
+
+        for (Thread thread : threadPool) {
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
 
@@ -72,16 +88,6 @@ public class BingMapsServiceProvider implements INavigationServiceProvider {
     @Override
     public List<Trip> getTripsForReservation(List<Trip> trips, String pickupAddress, String dropoffAddress) {
         return getTripsForReservation(trips, pickupAddress, dropoffAddress, 20);
-    }
-
-    @Override
-    public List<Trip> getTripsForReservation(List<Trip> trips, Reservation reservation, double delayRate) {
-        return getTripsForReservation(trips, reservation.getPickupAddress(), reservation.getDropoffAddress(), delayRate);
-    }
-
-    @Override
-    public List<Trip> getTripsForReservation(List<Trip> trips, Reservation reservation) {
-        return getTripsForReservation(trips, reservation.getPickupAddress(), reservation.getDropoffAddress());
     }
 
     @Override
@@ -95,6 +101,38 @@ public class BingMapsServiceProvider implements INavigationServiceProvider {
         return getTripDetails(mapResource, DateTimeHelper.fromString(trip.getArrival()));
     }
 
+    @Override
+    public List<TripDetails> getAllTripDetails(List<Trip> trips, List<List<Reservation>> reservationsList) {
+        if (trips.size() != reservationsList.size()) {
+            return null;
+        }
+        List<TripDetails> details = new ArrayList<>();
+        List<Thread> threadPool = new ArrayList<>();
+        for (int i = 0; i < trips.size(); i++) {
+            int j = i;
+            threadPool.add(new Thread(() -> {
+                details.add(getTripDetails(trips.get(j), reservationsList.get(j)));
+            }));
+            threadPool.get(i).start();
+        }
+
+        for (Thread thread : threadPool) {
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return details;
+    }
+
+    @Override
+    public int getDistance(String start, String end) {
+        // TODO implement
+        return 10;
+    }
+
     private TripDetails getTripDetails(BingMapResource mapResource, LocalDateTime arrival) {
         LocalDateTime startTime = arrival.minusSeconds(mapResource.getTravelDuration());
         TripDetails tripDetails = new TripDetails();
@@ -102,8 +140,8 @@ public class BingMapsServiceProvider implements INavigationServiceProvider {
         tripDetails.setStartTime(startTime);
         tripDetails.setDuration(mapResource.getTravelDuration());
 
-        LinkedHashSet<String> stopAddressesSet = new LinkedHashSet<>();
-        ArrayList<LocalDateTime> stopTimes = new ArrayList<>();
+        HashSet<String> stopAddressesSet = new LinkedHashSet<>();
+        List<LocalDateTime> stopTimes = new ArrayList<>();
         stopTimes.add(startTime); // don't worry, LocalDateTime is immutable, so no need to clone :)
         int durationAccumulated = 0;
         for (RouteSubLeg subLeg : mapResource.getRouteLeg().getRouteSubLegs()) {
@@ -121,10 +159,10 @@ public class BingMapsServiceProvider implements INavigationServiceProvider {
 
     private List<String> getAddressList(Trip trip, List<Reservation> reservations) {
         // NOTE: It is important that the trip start and end address are first and last respectively.
-        //       For all the elements in between, the order is irrelevant, as the map api wil optimize
+        //       For all the elements in between, the order is irrelevant, as the map api will optimize
 
         // LinkedHashSet retains the order of the contents and allows only unique values
-        LinkedHashSet<String> adressSet = new LinkedHashSet<>();
+        HashSet<String> adressSet = new LinkedHashSet<>();
         adressSet.add(trip.getStartAddress().trim());
 
         for (Reservation reservation :

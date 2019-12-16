@@ -5,6 +5,7 @@ import dependencycollection.DependencyCollection;
 import models.Invoice;
 import models.Notification;
 import models.NotificationType;
+import models.response.InvoiceListResponse;
 import models.response.InvoiceResponse;
 import serviceproviders.payment.IPaymentServiceProvider;
 import serviceproviders.payment.IPaymentUpdateCallback;
@@ -23,19 +24,30 @@ public class InvoiceHandler implements IInvoiceHandler {
     public Invoice create(Invoice invoice) {
         invoice = invoiceService.create(invoice).getBody();
 
+        if (invoice == null) {
+            return null;
+        }
+
         Payment payment = new Payment(
                 invoice.getId(),
                 accountService.getByEmail(invoice.getPayerEmail()).getBody().getPaymentMethod(),
                 accountService.getByEmail(invoice.getPayeeEmail()).getBody().getPaymentMethod(),
                 invoice.getAmount());
-        paymentServiceProvider.issuePayment(payment);
+        payment = paymentServiceProvider.issuePayment(payment);
+        if (payment == null) {
+            invoiceService.updateState(invoice.getId(), PaymentState.ERROR.toString());
+        }
 
         return invoice;
     }
 
     @Override
     public boolean accountHasUnpaidInvoice(String accountEmail) {
-        return !invoiceService.getAllUnpaidByPayerEmail(accountEmail).getBody().isEmpty();
+        InvoiceListResponse response = invoiceService.getAllUnpaidByPayerEmail(accountEmail);
+        if (!response.getStatus().equals(ResponseStatus.SOCKET_SUCCESS)) {
+            return false;
+        }
+        return !response.getBody().isEmpty();
     }
 
     @Override

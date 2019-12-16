@@ -1,10 +1,16 @@
 package controllers;
 
+import constants.ResponseStatus;
+import dependencycollection.DependencyCollection;
+import handlers.IAuthenticationHandler;
 import handlers.ITripHandler;
 import handlers.TripHandler;
+import helpers.HttpResponseHelper;
 import helpers.JsonConverter;
+import jdk.nashorn.internal.objects.annotations.Getter;
 import models.Trip;
 import models.TripFilter;
+import models.response.TripDetailsResponse;
 import models.response.TripListResponse;
 import models.response.TripResponse;
 
@@ -16,22 +22,11 @@ import javax.ws.rs.core.*;
 public class TripController {
 
     private ITripHandler handler = new TripHandler();
+    private IAuthenticationHandler authenticationHandler = DependencyCollection.getAuthenticationHandler();
 
-    // https://download.oracle.com/otn-pub/jcp/jaxrs-2_0-fr-eval-spec/jsr339-jaxrs-2.0-final-spec.pdf
-//    @Context
-//    private UriInfo info;
-//
-//    @Context
-//    private HttpServletRequest servletRequest;
-//
-//    @Context
-//    private ServletContext servletContext;
-//
-//    @Context
-//    private SecurityContext securityContext;
-//
-//    @Context
-//    private Request request;
+    @Context
+    private HttpHeaders headers;
+
     @POST
     @Path("create")
     @Produces(MediaType.APPLICATION_JSON)
@@ -39,6 +34,10 @@ public class TripController {
     public Response create(String json){
         // Extract Trip from request
         Trip t = Trip.fromJson(json);
+
+        if (!authenticationHandler.getEmail(headers).equals(t.getDriverEmail())) {
+            return HttpResponseHelper.getUnathourizedResponse();
+        }
 
         // Send request and receive Response
         TripResponse res = handler.create(t);
@@ -56,13 +55,22 @@ public class TripController {
     @Path("delete/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response delete(@PathParam("id") int id) {
+        TripResponse res = handler.getById(id);
+        if (!res.getStatus().equals(ResponseStatus.SOCKET_SUCCESS)) {
+            return Response.status(ResponseStatus.HTTP_BAD_REQUEST).build();
+        }
+
+        if (!authenticationHandler.getEmail(headers).equals(res.getBody().getDriverEmail())) {
+            return HttpResponseHelper.getUnathourizedResponse();
+        }
+
         TripResponse response = handler.delete(id);
 
         int status = StatusMapper.map(response.getStatus());
 
         return Response
                 .status(status)
-                .entity(response.getBody())
+                .entity(JsonConverter.toJson(response.getBody()))
                 .build();
     }
 
@@ -102,7 +110,19 @@ public class TripController {
 
         return Response
                 .status(status)
-                .entity(res.getBody())
+                .entity(JsonConverter.toJson(res.getBody()))
+                .build();
+    }
+
+    @GET
+    @Path("getTripDetails/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getTripDetails(@PathParam("id") int id) {
+        TripDetailsResponse res = handler.getTripDetails(id);
+
+        return Response
+                .status(StatusMapper.map(res.getStatus()))
+                .entity(JsonConverter.toJson(res.getBody()))
                 .build();
     }
 
