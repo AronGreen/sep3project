@@ -9,6 +9,9 @@ namespace FrontEnd.Pages
     {
         private readonly IAccountServiceProvider _accountServiceProvider = new AccountServiceProvider();
 
+        [BindProperty]
+        public string ErrorMessage { get; set; } = "";
+
         public IActionResult OnPostRegister([FromForm] Account account)
         {
             return _accountServiceProvider.Register(account) 

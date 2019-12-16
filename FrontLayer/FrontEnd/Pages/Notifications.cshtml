@@ -16,10 +16,10 @@
 
 <ul>
     @if (Model.Notifications.Count > 0)
-        @foreach (Notification n in Model.Notifications)
+        {@foreach (Notification n in Model.Notifications)
         {
             <li>@n.Message</li>
-        }
+        }}
 
 </ul>
 
