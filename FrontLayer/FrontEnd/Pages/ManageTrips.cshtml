@@ -90,6 +90,7 @@
                 <td>Start</td>
                 <td>End</td>
                 <td>Available Seats</td>
+                <td>Driver</td>
                 <td>&nbsp;</td>
             </tr>
 
@@ -103,6 +104,7 @@
                         <td>@t.StartAddress</td>
                         <td>@t.DestinationAddress</td>
                         <td>@t.TotalSeats</td>
+                        <td><a href="">@t.DriverEmail</a></td>
                         <td>
                             @if (t.TotalSeats < 1)
                             {
@@ -177,7 +179,7 @@
             else
             {
                 <tr>
-                    <td rowspan="6">No trips available right now!</td>
+                    <td rowspan="7">No trips available right now!</td>
                 </tr>
             }
 

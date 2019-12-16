@@ -11,6 +11,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
 
+@Path("/reviews")
 public class ReviewController {
 
     private IReviewHandler handler = new ReviewHandler();

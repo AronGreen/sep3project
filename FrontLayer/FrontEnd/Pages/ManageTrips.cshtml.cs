@@ -84,6 +84,7 @@ namespace FrontEnd.Pages
 
         public async Task OnPostReservationAsync()
         {
+            var shit = Request.Form["TripID"];
             var tripId = Int32.Parse(Request.Form["TripID"]);
             var pickUpPoint = Request.Form["PickUpPoint"];
             var pickUpTime = Request.Form["PickUpTime"];
