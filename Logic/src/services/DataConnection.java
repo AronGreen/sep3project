@@ -1,5 +1,7 @@
 package services;
 
+import security.EncryptionHelper;
+
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
@@ -13,7 +15,7 @@ public enum DataConnection {
     public String sendRequest (DataRequest request) {
         try {
             Connection conn = new Connection();
-            conn.send(request.toJson().getBytes());
+            conn.send(EncryptionHelper.encrypt(request.toJson()).getBytes(StandardCharsets.UTF_8));
             // conn.send(json.getBytes());
             byte[] responseBytes = conn.receive();
             conn.close();
@@ -23,7 +25,7 @@ public enum DataConnection {
             }
             byte[] trimmedBytes = trimBytes(responseBytes);
 
-            return new String(trimmedBytes, StandardCharsets.UTF_8);
+            return EncryptionHelper.decrypt(new String(trimmedBytes, StandardCharsets.UTF_8));
         } catch (Exception e) {
             e.printStackTrace();
         }

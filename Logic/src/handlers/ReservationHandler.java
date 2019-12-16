@@ -17,7 +17,7 @@ import java.util.List;
 public class ReservationHandler implements IReservationHandler {
 
     private IReservationService reservationService;
-    private IInvoiceHandler invoiceHandler = new InvoiceHandler();
+    private IInvoiceHandler invoiceHandler = DependencyCollection.getInvoiceHandler();
     private ITripService tripService = new TripService();
     private INotificationService notificationService = DependencyCollection.getNotificationService();
 

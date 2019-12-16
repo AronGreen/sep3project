@@ -15,13 +15,9 @@ import services.*;
 public class InvoiceHandler implements IInvoiceHandler {
 
     private IInvoiceService invoiceService = new InvoiceService();
-    private IPaymentServiceProvider paymentServiceProvider;
+    private IPaymentServiceProvider paymentServiceProvider = DependencyCollection.getPaymentServiceProvider();
     private IAccountService accountService = new AccountService();
     private INotificationService notificationService = DependencyCollection.getNotificationService();
-
-    public InvoiceHandler() {
-        paymentServiceProvider = DependencyCollection.getPaymentServiceProvider(callback());
-    }
 
     @Override
     public Invoice create(Invoice invoice) {
@@ -53,7 +49,7 @@ public class InvoiceHandler implements IInvoiceHandler {
         return paymentServiceProvider.revokePayment(invoiceId) != null;
     }
 
-    private IPaymentUpdateCallback callback() {
+    public IPaymentUpdateCallback callback() {
         return (invoiceId, state) -> {
             // Handle if invoice does not exist
             InvoiceResponse res = invoiceService.getById(invoiceId);

@@ -11,12 +11,6 @@ import services.IAccountService;
 
 public class AccountHandler implements IAccountHandler {
 
-    /*
-     * BIG NOTE!!!
-     * If you encounter a bug where the hashed password is "HashThrewException", then it's because the hash algorithm
-     * in Password throws an exception and returned this value instead.
-     */
-
     private IAccountService accountService;
 
     public AccountHandler() {
@@ -29,6 +23,8 @@ public class AccountHandler implements IAccountHandler {
                 hashPassword(account.getPassword()));
         
         AccountResponse response = accountService.create(account);
+
+
         removePassword(response.getBody());
 
         return response;
