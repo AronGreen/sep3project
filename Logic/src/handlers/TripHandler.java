@@ -3,13 +3,15 @@ package handlers;
 import constants.ResponseStatus;
 import dependencycollection.DependencyCollection;
 import helpers.DateTimeHelper;
+import helpers.StringHelper;
 import models.*;
-import models.response.InvoiceResponse;
-import models.response.TripListResponse;
-import models.response.TripResponse;
+import models.response.*;
+import serviceproviders.navigation.INavigationServiceProvider;
 import serviceproviders.payment.PaymentState;
 import services.*;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TripHandler implements ITripHandler {
@@ -19,6 +21,7 @@ public class TripHandler implements ITripHandler {
     private IInvoiceHandler invoiceHandler = DependencyCollection.getInvoiceHandler();
     private INotificationService notificationService = DependencyCollection.getNotificationService();
     private IInvoiceService invoiceService = DependencyCollection.getInvoiceService();
+    private INavigationServiceProvider navigationServiceProvider = DependencyCollection.getNavigationServiceProvider();
 
     public TripHandler() {
         tripService = new TripService();
@@ -27,23 +30,38 @@ public class TripHandler implements ITripHandler {
 
     @Override
     public TripResponse create(Trip trip) {
-        // Validate number of seats
-        if (trip.getTotalSeats() < 1) {
-            return new TripResponse(ResponseStatus.SOCKET_BAD_REQUEST, null);
-        }
-
-        // Validate fees
-        if (trip.getBasePrice() < 0 || trip.getCancellationFee() < 0 || trip.getPerKmPrice() < 0) {
+        if (trip == null || isInvalid(trip)) {
             return new TripResponse(ResponseStatus.SOCKET_BAD_REQUEST, null);
         }
 
         // Validate time
+        // Get current trips of the driver
+        TripListResponse tripsResponse = tripService.getFiltered(new TripFilter(trip.getDriverEmail(), "", DateTimeHelper.getCurrentTime(), "", "", ""));
+        if (!tripsResponse.getStatus().equals(ResponseStatus.SOCKET_SUCCESS)) {
+            return new TripResponse(ResponseStatus.SOCKET_INTERNAL_ERROR, null);
+        }
+        List<Trip> currentTrips = tripsResponse.getBody();
 
-        // Validate trip interval
-        // Trip[] driverTrips = tripService.getFiltered(
-        //         new TripFilter(trip.getDriverEmail(), "", "", ""))
-        //         .getBody();
-        // cannot be performed now
+        // Get all reservations for all current trips
+        List<List<Reservation>> currentTripsReservations = new ArrayList<>();
+        for (Trip t : currentTrips) {
+            ReservationListResponse reservationResponse = reservationService.getByTripId(t.getId());
+            if (!reservationResponse.getStatus().equals(ResponseStatus.SOCKET_SUCCESS)) {
+                return new TripResponse(ResponseStatus.SOCKET_INTERNAL_ERROR, null);
+            }
+            currentTripsReservations.add(reservationResponse.getBody());
+        }
+
+        // Get the details to know the start and end time
+        TripDetails details = navigationServiceProvider.getTripDetails(trip, new ArrayList<>());
+        List<TripDetails> tripDetailsList = navigationServiceProvider.getAllTripDetails(currentTrips, currentTripsReservations);
+
+        // Check for overlaps
+        for (TripDetails tripDetails : tripDetailsList) {
+            if (DateTimeHelper.overlaps(details.getStartTime(), details.getEndTime(), tripDetails.getStartTime(), tripDetails.getEndTime()))
+                return new TripResponse(ResponseStatus.SOCKET_BAD_REQUEST, null);
+        }
+
 
         return tripService.create(trip);
     }
@@ -109,16 +127,79 @@ public class TripHandler implements ITripHandler {
 
     @Override
     public TripListResponse getFiltered(TripFilter filter) {
-        // No business logic needed for now
+        TripListResponse response = tripService.getFiltered(filter);
 
-        return tripService.getFiltered(filter);
+        // Handle server error
+        if (!response.getStatus().equals(ResponseStatus.SOCKET_SUCCESS)) {
+            return response;
+        }
+        List<Trip> trips = response.getBody();
+
+        // Apply navigation filter
+        if (!StringHelper.isNullOrEmpty(filter.getPickupAddress()) &&
+                !StringHelper.isNullOrEmpty(filter.getDropoffAddress()))
+        {
+            for (int i = 0; i < trips.size(); i++) {
+                if (getAvailabeSeats(trips.get(i)) <= 0)
+                {
+                    trips.remove(i);
+                    i--;
+                }
+            }
+            trips = navigationServiceProvider.getTripsForReservation(trips, filter.getPickupAddress(), filter.getDropoffAddress());
+        }
+
+        return new TripListResponse(response.getStatus(), trips);
     }
 
     @Override
     public TripResponse getById(int id) {
-        // No business logic needed for now
-
         return tripService.getById(id);
+    }
+
+    @Override
+    public TripDetailsResponse getTripDetails(int id) {
+        TripResponse tripResponse = tripService.getById(id);
+        // Handle if trip does not exist
+        if (!tripResponse.getStatus().equals(ResponseStatus.SOCKET_SUCCESS)) {
+            return new TripDetailsResponse(tripResponse.getStatus(), null);
+        }
+        Trip trip = tripResponse.getBody();
+
+        ReservationListResponse reservationResponse = reservationService.getByTripId(id);
+        // Handle server error
+        if (!reservationResponse.getStatus().equals(ResponseStatus.SOCKET_SUCCESS)) {
+            return new TripDetailsResponse(reservationResponse.getStatus(), null);
+        }
+        List<Reservation> reservations = reservationResponse.getBody();
+
+        TripDetails details = navigationServiceProvider.getTripDetails(trip, reservations);
+
+        return new TripDetailsResponse(ResponseStatus.SOCKET_SUCCESS, details);
+    }
+
+    private int getAvailabeSeats(Trip trip) {
+        int seats = trip.getTotalSeats();
+        List<Reservation> reservations = reservationService.getByTripId(trip.getId()).getBody();
+
+        for (Reservation res: reservations) {
+            if (!res.getState().equals(ReservationState.REJECTED) && !res.getState().equals(ReservationState.CANCELLED))
+                seats -= res.getBookedSeats();
+        }
+
+        return seats;
+    }
+
+    private boolean isInvalid(Trip trip) {
+        return StringHelper.isNullOrEmpty(trip.getDriverEmail()) ||
+                StringHelper.isNullOrEmpty(trip.getArrival()) ||
+                StringHelper.isNullOrEmpty(trip.getStartAddress()) ||
+                StringHelper.isNullOrEmpty(trip.getDestinationAddress()) ||
+                trip.getBasePrice() < 0 ||
+                trip.getPerKmPrice() < 0 ||
+                trip.getCancellationFee() < 0 ||
+                trip.getTotalSeats() <= 0 ||
+                DateTimeHelper.fromString(trip.getArrival()).isBefore(LocalDateTime.now());
     }
 
 }

@@ -24,45 +24,46 @@ public class ReviewHandler implements IReviewHandler {
 
     @Override
     public ReviewResponse create(Review review) {
-        if (!StringHelper.isNullOrEmpty(review.getRevieweeEmail()) &&
-                !StringHelper.isNullOrEmpty(review.getReviewerEmail()) &&
-                !StringHelper.isNullOrEmpty(review.getContent())) {
+        if (review == null)
+            return new ReviewResponse(ResponseStatus.SOCKET_BAD_REQUEST, null);
+        if (StringHelper.isNullOrEmpty(review.getRevieweeEmail()) ||
+                StringHelper.isNullOrEmpty(review.getReviewerEmail()) ||
+                StringHelper.isNullOrEmpty(review.getContent())) {
             return new ReviewResponse(ResponseStatus.SOCKET_BAD_REQUEST, null);
         }
-        ReviewResponse res =  reviewService.create(review);
+        ReviewResponse res = reviewService.create(review);
         review = res.getBody();
         // Notify the reviewer and reviewee about the review
-       if (res.getStatus().equals(ResponseStatus.SOCKET_SUCCESS)) {
-            notificationService.create(new Notification(
-                   review.getReviewerEmail(),
-                   NotificationType.REVIEW_CREATED_REVIEWER.getEntityType(),
-                   review.getId(),
-                   NotificationType.REVIEW_CREATED_REVIEWER.getMessage(),
-                   DateTimeHelper.getCurrentTime()));
+        if (res.getStatus().equals(ResponseStatus.SOCKET_SUCCESS)) {
+            // notificationService.create(new Notification(
+            //         review.getReviewerEmail(),
+            //         NotificationType.REVIEW_CREATED_REVIEWER.getEntityType(),
+            //         review.getId(),
+            //         NotificationType.REVIEW_CREATED_REVIEWER.getMessage(),
+            //         DateTimeHelper.getCurrentTime()));
 
-           notificationService.create(new Notification(
-                   review.getRevieweeEmail(),
-                   NotificationType.REVIEW_CREATED_REVIEWEE.getEntityType(),
-                   review.getId(),
-                   NotificationType.REVIEW_CREATED_REVIEWEE.getMessage(),
-                   DateTimeHelper.getCurrentTime()));
+            notificationService.create(new Notification(
+                    review.getRevieweeEmail(),
+                    NotificationType.REVIEW_CREATED_REVIEWEE.getEntityType(),
+                    review.getId(),
+                    NotificationType.REVIEW_CREATED_REVIEWEE.getMessage(),
+                    DateTimeHelper.getCurrentTime()));
         }
         return res;
-
     }
 
     @Override
     public ReviewResponse delete(int id) {
         ReviewResponse response = reviewService.getById(id);
 
-            // Delete and Notify the reviewer and reviewee
+        // Delete and Notify the reviewer and reviewee
         if (response.getStatus().equals(ResponseStatus.SOCKET_SUCCESS)) {
-            notificationService.create(new Notification(
-                    response.getBody().getReviewerEmail(),
-                    NotificationType.REVIEW_DELETED_REVIEWER.getEntityType(),
-                    response.getBody().getId(),
-                    NotificationType.REVIEW_DELETED_REVIEWER.getMessage(),
-                    DateTimeHelper.getCurrentTime()));
+            // notificationService.create(new Notification(
+            //         response.getBody().getReviewerEmail(),
+            //         NotificationType.REVIEW_DELETED_REVIEWER.getEntityType(),
+            //         response.getBody().getId(),
+            //         NotificationType.REVIEW_DELETED_REVIEWER.getMessage(),
+            //         DateTimeHelper.getCurrentTime()));
 
             notificationService.create(new Notification(
                     response.getBody().getRevieweeEmail(),
@@ -72,8 +73,8 @@ public class ReviewHandler implements IReviewHandler {
                     DateTimeHelper.getCurrentTime()));
             return reviewService.delete(id);
         }
-        return new ReviewResponse(ResponseStatus.SOCKET_BAD_REQUEST, null);
 
+        return new ReviewResponse(ResponseStatus.SOCKET_NOT_FOUND, null);
     }
 
     @Override

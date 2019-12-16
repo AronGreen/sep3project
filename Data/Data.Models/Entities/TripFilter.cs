@@ -17,5 +17,11 @@ namespace Data.Data
 
         [JsonPropertyName("maximumArrivalDate")]
         public string MaximumArrivalDate { get; set; }
+
+        [JsonPropertyName("pickupAddress")]
+        public string PickupAddress { get; set; }
+
+        [JsonPropertyName("dropoffAddress")]
+        public string DropoffAddress { get; set; }
     }
 }

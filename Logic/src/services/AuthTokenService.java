@@ -113,6 +113,40 @@ public class AuthTokenService {
         return validate(token, accessLevel);
     }
 
+    public String getEmail(String token) {
+        TokenData tokenData = map.get(token);
+        if (tokenData == null) {
+            return "";
+        }
+        LocalDateTime expired = LocalDateTime.now().minusMinutes(TIMEOUT_MINUTES);
+        if (tokenData.getLastUsed().isBefore(expired)) {
+            revoke(token);
+            return "";
+        }
+        tokenData.updateLastUsed();
+        return tokenData.email;
+    }
+
+    public String getEmail(HttpHeaders headers) {
+        if (headers == null) return "";
+
+        String authorizationHeader = headers.getHeaderString(HttpHeaders.AUTHORIZATION);
+
+        if (StringHelper.isNullOrEmpty(authorizationHeader) ||
+                !StringHelper.startsWith_ignoreCase(Authentication.AUTHENTICATION_SCHEME + " ", authorizationHeader)) {
+            return "";
+        }
+
+        String headerToken = authorizationHeader
+                .substring(Authentication.AUTHENTICATION_SCHEME.length()).trim();
+
+        final String decodedToken = new String(Base64.getDecoder().decode(headerToken.getBytes()));
+        final StringTokenizer tokenizer = new StringTokenizer(decodedToken, ":");
+        final String token = tokenizer.nextToken();
+
+        return getEmail(token);
+    }
+
     private boolean hasAccess(int desiredLevel, int actualLevel) {
         return desiredLevel <= actualLevel;
     }

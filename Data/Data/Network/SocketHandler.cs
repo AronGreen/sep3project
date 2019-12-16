@@ -34,15 +34,15 @@ namespace Data.Network
         private void RequestStart(NetworkStream stream)
         {
             // Declare byte buffer, read input, and convert it to string
-            byte[] bytes = new byte[4096];
+            byte[] bytes = new byte[8192];
             int bytesRead = stream.Read(bytes, 0, bytes.Length);
             string json = EncryptionHelper.DecryptString(Encoding.UTF8.GetString(bytes, 0, bytesRead));
-            Console.WriteLine(Encoding.UTF8.GetString(bytes));
+//            Console.WriteLine(Encoding.UTF8.GetString(bytes));
             var req = JsonSerializer.Deserialize<Request>(json);
 
             // Forward request to the Logic, and retrieve the Response
             var res = _requestHandler.Handle(req);
-            Console.WriteLine(EncryptionHelper.EncryptString(res.ToJson()));
+//            Console.WriteLine(EncryptionHelper.EncryptString(res.ToJson()));
             // Encode Response to a json string and write it to Network Stream
             bytes = Encoding.UTF8.GetBytes(EncryptionHelper.EncryptString(res.ToJson()));
             stream.Write(bytes);

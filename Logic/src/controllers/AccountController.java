@@ -1,14 +1,16 @@
 package controllers;
 
 import constants.Authentication;
+import dependencycollection.DependencyCollection;
 import handlers.AccountHandler;
 import handlers.IAccountHandler;
+import handlers.IAuthenticationHandler;
+import helpers.HttpResponseHelper;
 import services.AuthTokenService;
 import helpers.JsonConverter;
 import models.Account;
 import models.response.AccountListResponse;
 import models.response.AccountResponse;
-import models.response.StringResponse;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -20,10 +22,10 @@ import javax.ws.rs.core.Response;
 public class AccountController {
 
     private IAccountHandler handler = new AccountHandler();
-    private AuthTokenService authToken = AuthTokenService.getInstance();
+    private IAuthenticationHandler authenticationHandler = DependencyCollection.getAuthenticationHandler();
 
     @Context
-    private HttpHeaders httpHeaders;
+    private HttpHeaders headers;
 
     @POST
     @Path("create")
@@ -49,6 +51,10 @@ public class AccountController {
     public Response update(String json) {
         Account account = JsonConverter.fromJson(json, Account.class);
 
+        if (!authenticationHandler.getEmail(headers).equals(account.getEmail()))
+        {
+            return HttpResponseHelper.getUnathourizedResponse();
+        }
         AccountResponse response = handler.update(account);
 
         int status = StatusMapper.map(response.getStatus());
@@ -63,6 +69,9 @@ public class AccountController {
     @Path("delete/{email}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response delete(@PathParam("email") String email) {
+        if (!authenticationHandler.getEmail(headers).equals(email))
+            return HttpResponseHelper.getUnathourizedResponse();
+
         AccountResponse response = handler.delete(email);
 
         int status = StatusMapper.map(response.getStatus());
@@ -77,7 +86,7 @@ public class AccountController {
     @Path("getAll")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAll() {
-        if (!AuthTokenService.getInstance().validate(httpHeaders, Authentication.Role.USER)){
+        if (!AuthTokenService.getInstance().validate(headers, Authentication.Role.USER)){
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
 
@@ -106,18 +115,18 @@ public class AccountController {
                 .build();
     }
 
-    @GET
-    @Path("getPassword/{email}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getPasswordByEmail(@PathParam("email") String email) {
-        StringResponse response = handler.getPasswordByEmail(email);
-
-        int status = StatusMapper.map(response.getStatus());
-
-        return Response
-                .status(status)
-                .entity(response.getBody())
-                .build();
-    }
+    // @GET
+    // @Path("getPassword/{email}")
+    // @Produces(MediaType.APPLICATION_JSON)
+    // public Response getPasswordByEmail(@PathParam("email") String email) {
+    //     StringResponse response = handler.getPasswordByEmail(email);
+    //
+    //     int status = StatusMapper.map(response.getStatus());
+    //
+    //     return Response
+    //             .status(status)
+    //             .entity(response.getBody())
+    //             .build();
+    // }
 
 }
