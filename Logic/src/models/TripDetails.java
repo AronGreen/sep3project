@@ -2,18 +2,19 @@ package models;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 public class TripDetails {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private int duration;
-    private ArrayList<String> stopAdresses;
-    private ArrayList<LocalDateTime> stopTimes;
+    private List<String> stopAdresses;
+    private List<LocalDateTime> stopTimes;
 
     public TripDetails() {
     }
 
-    public TripDetails(LocalDateTime startTime, LocalDateTime endTime, int duration, ArrayList<String> stopAdresses, ArrayList<LocalDateTime> stopTimes) {
+    public TripDetails(LocalDateTime startTime, LocalDateTime endTime, int duration, List<String> stopAdresses, ArrayList<LocalDateTime> stopTimes) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.duration = duration;
@@ -45,19 +46,19 @@ public class TripDetails {
         this.duration = duration;
     }
 
-    public ArrayList<String> getStopAdresses() {
+    public List<String> getStopAdresses() {
         return stopAdresses;
     }
 
-    public void setStopAdresses(ArrayList<String> stopAdresses) {
+    public void setStopAdresses(List<String> stopAdresses) {
         this.stopAdresses = stopAdresses;
     }
 
-    public ArrayList<LocalDateTime> getStopTimes() {
+    public List<LocalDateTime> getStopTimes() {
         return stopTimes;
     }
 
-    public void setStopTimes(ArrayList<LocalDateTime> stopTimes) {
+    public void setStopTimes(List<LocalDateTime> stopTimes) {
         this.stopTimes = stopTimes;
     }
 }

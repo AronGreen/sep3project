@@ -24,24 +24,14 @@ public class ReviewHandler implements IReviewHandler {
 
     @Override
     public ReviewResponse create(Review review) {
-        if (!StringHelper.isNullOrEmpty(review.getRevieweeEmail()) &&
-                !StringHelper.isNullOrEmpty(review.getReviewerEmail()) &&
-                !StringHelper.isNullOrEmpty(review.getContent())) {
+        if (review == null)
+            return new ReviewResponse(ResponseStatus.SOCKET_BAD_REQUEST, null);
+        if (StringHelper.isNullOrEmpty(review.getRevieweeEmail()) ||
+                StringHelper.isNullOrEmpty(review.getReviewerEmail()) ||
+                StringHelper.isNullOrEmpty(review.getContent())) {
             return new ReviewResponse(ResponseStatus.SOCKET_BAD_REQUEST, null);
         }
         return reviewService.create(review);
-        /*review = res.getBody();
-
-       *//* if (res.getStatus().equals(ResponseStatus.SOCKET_SUCCESS)) {
-            notificationService.create(new Notification(
-                    review.getReviewerEmail(),
-                    NotificationType.REVIEW_CREATED.getEntityType(),
-                    review.getId(),
-                    NotificationType.REVIEW_CREATED.getMessage(),
-                    DateTimeHelper.getCurrentTime()));
-        }
-        return res;*/
-
     }
 
     @Override
@@ -49,11 +39,10 @@ public class ReviewHandler implements IReviewHandler {
         ReviewResponse response = reviewService.getById(id);
 
         if (response.getStatus().equals(ResponseStatus.SOCKET_SUCCESS)) {
-
             return reviewService.delete(id);
         }
-        return new ReviewResponse(ResponseStatus.SOCKET_BAD_REQUEST, null);
 
+        return new ReviewResponse(ResponseStatus.SOCKET_NOT_FOUND, null);
     }
 
     @Override

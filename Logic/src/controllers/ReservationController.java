@@ -1,12 +1,16 @@
 package controllers;
 
-import handlers.IReservationHandler;
-import handlers.ReservationHandler;
+import constants.ResponseStatus;
+import dependencycollection.DependencyCollection;
+import handlers.*;
+import helpers.HttpResponseHelper;
 import helpers.JsonConverter;
 import models.Reservation;
+import models.Trip;
 import models.response.ReservationListResponse;
 import models.response.ReservationResponse;
 import models.response.StringResponse;
+import models.response.TripResponse;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -15,40 +19,11 @@ import javax.ws.rs.core.*;
 public class ReservationController {
 
     private IReservationHandler handler = new ReservationHandler();
+    private IAuthenticationHandler authenticationHandler = DependencyCollection.getAuthenticationHandler();
+    private ITripHandler tripHandler = new TripHandler();
 
-    // https://download.oracle.com/otn-pub/jcp/jaxrs-2_0-fr-eval-spec/jsr339-jaxrs-2.0-final-spec.pdf
-//    @Context
-//    private UriInfo info;
-//
-//    @Context
-//    private HttpServletRequest servletRequest;
-//
-//    @Context
-//    private ServletContext servletContext;
-//
-//    @Context
-//    private SecurityContext securityContext;
-//
-//    @Context
-//    private Request request;
-
-//    @GET
-//    @Path("get")
-//    @Produces(MediaType.APPLICATION_JSON )
-//    public Response get(){
-//        // Send request and receive Response
-//        StringResponse<String> res = handler.getFiltered(null);
-//
-//        // Extract http response data
-//        int status = StatusMapper.map(res.getStatus());
-//        // String entity = res.getBody().toJson();
-//        String entity = res.getBody() + "";// + " " + res.getBody().getDestinationAddress();
-//
-//        return Response
-//                .status(status)
-//                .entity(entity)
-//                .build();
-//    }
+    @Context
+    private HttpHeaders headers;
 
     @POST
     @Path("create")
@@ -57,6 +32,9 @@ public class ReservationController {
     public Response create(String json){
         // Extract Trip from request
         Reservation t = Reservation.fromJson(json);
+
+        if (!authenticationHandler.getEmail(headers).equals(t.getPassengerEmail()))
+            return HttpResponseHelper.getUnathourizedResponse();
 
         // Send request and receive Response
         ReservationResponse res = handler.create(t);
@@ -77,6 +55,13 @@ public class ReservationController {
     public Response update(String json) {
         Reservation reservation = JsonConverter.fromJson(json, Reservation.class);
 
+        TripResponse res = tripHandler.getById(reservation.getTripId());
+        if (!res.getStatus().equals(ResponseStatus.SOCKET_SUCCESS))
+            return Response.status(ResponseStatus.HTTP_BAD_REQUEST).build();
+
+        if (!authenticationHandler.getEmail(headers).equals(res.getBody().getDriverEmail()))
+            return HttpResponseHelper.getUnathourizedResponse();
+
         ReservationResponse response = handler.update(reservation);
 
         int status = StatusMapper.map(response.getStatus());
@@ -91,6 +76,13 @@ public class ReservationController {
     @Path("delete/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response delete(@PathParam("id") int id) {
+        ReservationResponse res = handler.getById(id);
+        if (res.getStatus().equals(ResponseStatus.SOCKET_SUCCESS)) {
+            return Response.status(ResponseStatus.HTTP_BAD_REQUEST).build();
+        }
+        if (!authenticationHandler.getEmail(headers).equals(res.getBody().getPassengerEmail()))
+            return HttpResponseHelper.getUnathourizedResponse();
+
         ReservationResponse response = handler.delete(id);
 
         int status = StatusMapper.map(response.getStatus());
