@@ -1,125 +1,106 @@
 ﻿@page
 @model FrontEnd.Pages.RegisterModel
 @{
-    ViewData["Title"] = "Register";
+  ViewData["Title"] = "Register";
 }
 
-@section header{ 
+@section header{
 
 }
 <link rel="stylesheet" href="~/css/popup.css" />
 
-
-
-
-
-
 <h1>Create account</h1>
-
 
 <div align="center">
 
+  <form method="post" class="text-center" asp-page-handler="Register">
+    <div>
+      <label>First Name: </label>
+      <p>
+        <span class="input">
+          <input type="text" placeholder="First name" name="firstName" required pattern="[a-zA-Z]+" oninvalid="setCustomValidity('First name must contain letters only')" oninput="setCustomValidity('')">
+          <span></span>
+        </span>
+      </p>
+      <div>
+        <label>Last Name: </label>
+        <p>
+          <span class="input">
+            <input type="text" placeholder="Last name" name="lastName" required pattern="[a-zA-Z]+" oninvalid="setCustomValidity('Last name must contain letters only')" oninput="setCustomValidity('')">
+            <span></span>
+          </span>
+        </p>
 
-    <form method="post" class="text-center" asp-page-handler="Register">
-        <div>
-            <label>First Name: </label>
-            <p>
-                <span class="input">
-                    <input type="text" placeholder="First name" name="firstName" required pattern="[a-zA-Z]+" oninvalid="setCustomValidity('First name must contain letters only')" oninput="setCustomValidity('')">
-                    <span></span>
-                </span>
-            </p>
-            <div>
-                <label>Last Name: </label>
-                <p>
-                    <span class="input">
-                        <input type="text" placeholder="Last name" name="lastName" required pattern="[a-zA-Z]+" oninvalid="setCustomValidity('Last name must contain letters only')" oninput="setCustomValidity('')">
-                        <span></span>
-                    </span>
-                </p>
+      </div>
 
-            </div>
+    </div>
+    <div>
+      <label>Password</label>
+      <p>
+        <span class="input">
+          <input type="password" id="password" placeholder="Password" name="password" required pattern="[a-zA-Z0-9]+" oninvalid="setCustomValidity('Password must contain letters and/or numbers only')" oninput="setCustomValidity('')">
+          <span></span>
+        </span>
+      </p>
 
+    </div>
+    <div>
+      <label>Repeat password:</label>
+      <p>
+        <span class="input">
+          <input type="password" id="repeatPassword" placeholder="Repeat password" name="repeatedPassword" required oninvalid="">
+          <span></span>
+        </span>
+      </p>
 
+    </div>
+    <div>
+      <label>E-mail:</label>
+      <p>
+        <span class="input">
+          <input type="email" placeholder="Your e-mail" name="email" required oninvalid="setCustomValidity('Email must contain @@ sign')" oninput="setCustomValidity('')">
+          <span></span>
+        </span>
+      </p>
 
-        </div>
-        <div>
-            <label>Password</label>
-            <p>
-                <span class="input">
-                    <input type="password" id="password" placeholder="Password" name="password" required pattern="[a-zA-Z0-9]+" oninvalid="setCustomValidity('Password must contain letters and/or numbers only')" oninput="setCustomValidity('')">
-                    <span></span>
-                </span>
-            </p>
+      <label>Phone Number</label>
+      <p>
+        <span class="input">
+          <input type="number" placeholder="Phone number" name="phoneNumber" required oninvalid="setCustomValidity('Type in Your phone number')" oninput="setCustomValidity('')">
+          <span></span>
+        </span>
+      </p>
 
-        </div>
-        <div>
-            <label>Repeat password:</label>
-            <p>
-                <span class="input">
-                    <input type="password" id="repeatPassword" placeholder="Repeat password" name="repeatedPassword" required oninvalid="">
-                    <span></span>
-                </span>
-            </p>
+    </div>
+    <div>
+      <label>Date of Birth:</label>
+      <p>
+        <span class="input">
+          <input type="date" name="dateOfBirth" required oninvalid="setCustomValidity('Pick a date')" oninput="setCustomValidity('')">
+          <span></span>
+        </span>
+      </p>
 
-        </div>
-        <div>
-            <label>E-mail:</label>
-            <p>
-                <span class="input">
-                    <input type="email" placeholder="Your e-mail" name="email" required oninvalid="setCustomValidity('Email must contain @@ sign')" oninput="setCustomValidity('')">
-                    <span></span>
-                </span>
-            </p>
+    </div>
 
-            <label>Phone Number</label>
-            <p>
-                <span class="input">
-                    <input type="number" placeholder="Phone number" name="phoneNumber" required oninvalid="setCustomValidity('Type in Your phone number')" oninput="setCustomValidity('')">
-                    <span></span>
-                </span>
-            </p>
+    <button href="#popup" type="submit" class="login-button">Register</button>
+  </form>
 
-        </div>
-        <div>
-            <label>Date of Birth:</label>
-            <p>
-                <span class="input">
-                    <input type="date" name="dateOfBirth" required oninvalid="setCustomValidity('Pick a date')" oninput="setCustomValidity('')">
-                    <span></span>
-                </span>
-            </p>
+  <script>
 
-        </div>
+    var password = document.getElementById("password")
+      , repeatPassword = document.getElementById("repeatPassword")
 
+    function validatePassword() {
+      if (password.value != repeatPassword.value) {
+        repeatPassword.setCustomValidity("Passwords don't match")
+      } else {
+        repeatPassword.setCustomValidity('')
+      }
+    }
 
+    password.onchange = validatePassword
+    repeatPassword.onkeyup = validatePassword
 
-
-
-        <button href="#popup" type="submit" class="login-button">Register</button>
-    </form>
-
-    <script>
-
-        var password = document.getElementById("password")
-            , repeatPassword = document.getElementById("repeatPassword");
-
-        function validatePassword() {
-            if (password.value != repeatPassword.value) {
-                repeatPassword.setCustomValidity("Passwords don't match");
-            } else {
-                repeatPassword.setCustomValidity('');
-            }
-        }
-
-        password.onchange = validatePassword;
-        repeatPassword.onkeyup = validatePassword;
-
-
-    </script>
-
- 
-
-
-
-
+  </script>
+</div>

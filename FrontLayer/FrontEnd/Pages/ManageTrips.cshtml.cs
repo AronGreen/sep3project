@@ -4,17 +4,20 @@ using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using FrontEnd.Pages.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Text.Json;
 using System.Net.Http.Headers;
+using Data.Models.Entities;
+using FrontEnd.ServiceProviders;
 
 namespace FrontEnd.Pages
 {
     public class ManageTripsModel : PageModel
     {
+        private readonly ITripServiceProvider _tripServiceProvider = new TripServiceProvider();
+
         [BindProperty]
         public int AvailableSeats { get; set; }
         public int ReservedSeats { get; set; }
@@ -25,8 +28,8 @@ namespace FrontEnd.Pages
 
         
         public string Message { get; set; } = "Initial message";
-        public Trip trip = new Trip();
-        public List<Trip> trips = new List<Trip>();
+        public Trip CreateTripModel = new Trip();
+        public List<Trip> Trips = new List<Trip>();
 
 
         public void OnGet()
@@ -45,44 +48,23 @@ namespace FrontEnd.Pages
             List<Trip> temp = JsonSerializer.Deserialize<List<Trip>>(s);
 
 
-            trips = temp;
+            Trips = temp;
 
      
         }
 
-        public async Task OnPostSendAsync()
+        public ActionResult OnPostCreate([FromForm] Trip trip)
         {
-            HttpClient client = new HttpClient();
-            
-            var description = Request.Form["Description"];
-            var date = Request.Form["Date"];
-            var spoint = Request.Form["StartingPoint"];
-            var epoint = Request.Form["EndingPoint"];
+            trip.DriverEmail = Request.Cookies["EmailCookie"];
+            //trip.TotalSeats = AvailableSeats;
+            CreateTripModel.DriverEmail = Request.Cookies["EmailCookie"];
+            var token = Request.Cookies["TokenCookie"];
+            _tripServiceProvider.Create(trip, token);
 
-            Trip sendTrip = new Trip()
-            {
-                DriverEmail = Request.Cookies["EmailCookie"],
-                Driver = null,
-                Arrival = date,
-                StartAddress = spoint,
-                DestinationAddress = epoint,
-                TotalSeats = AvailableSeats,
-                Description= description,
-                BasePrice = 0,
-                PerKmPrice = 0,
-                CancellationFee = 0,
-                Rules = "",
-            };
-
-            var json = JsonSerializer.Serialize(sendTrip);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            HttpResponseMessage response = await client.PostAsync("http://localhost:8080/Logic_war_exploded/trips/create", content);
-       
-
+            return Page();
         }
 
-        public async Task OnPostReservationAsync()
+        public async Task OnPostReservationAsync([FromForm] Reservation reservation)
         {
             var shit = Request.Form["TripID"];
             var tripId = Int32.Parse(Request.Form["TripID"]);
