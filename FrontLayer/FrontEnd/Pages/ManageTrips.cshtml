@@ -77,7 +77,7 @@
         <button asp-page-handler="trip" class="mb-3">Update available trips</button>
     </form>
 
-    ()
+    
 
 
     <div>
@@ -104,7 +104,7 @@
                         <td>@t.StartAddress</td>
                         <td>@t.DestinationAddress</td>
                         <td>@t.TotalSeats</td>
-                        <td><a href="">@t.DriverEmail</a></td>
+                        <td><a asp-page="./CreateReview">@t.DriverEmail</a></td>
                         <td>
                             @if (t.TotalSeats < 1)
                             {

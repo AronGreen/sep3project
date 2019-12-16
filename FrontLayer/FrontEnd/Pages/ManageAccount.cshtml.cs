@@ -16,8 +16,27 @@ namespace FrontEnd.Pages
 {
     public class ManageAccountModel : PageModel
     {
-        
-                                                 
+
+        public List<Review> ReviewsReceived = new List<Review>();
+        public List<Review> ReviewsGiven = new List<Review>();
+
+        public async Task OnPostReviews() {
+
+            var token = Request.Cookies["TokenCookie"];
+            var email = Request.Cookies["TokenEmail"];
+            HttpClient client = new HttpClient();
+            string authenticationToken = Convert.ToBase64String(UTF8Encoding.UTF8.GetBytes($"{token}" + ":"));
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authenticationToken);
+
+            var s = await client.GetStringAsync("http://localhost:8080/Logic_war_exploded/reviews/getAllByReviewerEmail/" + $"{email}");
+
+            List<Review> reviewsGiven = JsonSerializer.Deserialize<List<Review>>(s);
+            ReviewsGiven = reviewsGiven;
+
+            var z = await client.GetStringAsync("http://localhost:8080/Logic_war_exploded/reviews/getAllByRevieweeEmail/" + $"{email}");
+            List<Review> reviewsReceived = JsonSerializer.Deserialize<List<Review>>(z);
+            ReviewsReceived = reviewsReceived;
+        }    
         public async Task<IActionResult> OnPostUpdateAsync()
         {
 
