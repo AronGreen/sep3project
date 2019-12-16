@@ -29,18 +29,25 @@ public class ReviewHandler implements IReviewHandler {
                 !StringHelper.isNullOrEmpty(review.getContent())) {
             return new ReviewResponse(ResponseStatus.SOCKET_BAD_REQUEST, null);
         }
-        return reviewService.create(review);
-        /*review = res.getBody();
-
-       *//* if (res.getStatus().equals(ResponseStatus.SOCKET_SUCCESS)) {
+        ReviewResponse res =  reviewService.create(review);
+        review = res.getBody();
+        // Notify the reviewer and reviewee about the review
+       if (res.getStatus().equals(ResponseStatus.SOCKET_SUCCESS)) {
             notificationService.create(new Notification(
-                    review.getReviewerEmail(),
-                    NotificationType.REVIEW_CREATED.getEntityType(),
-                    review.getId(),
-                    NotificationType.REVIEW_CREATED.getMessage(),
-                    DateTimeHelper.getCurrentTime()));
+                   review.getReviewerEmail(),
+                   NotificationType.REVIEW_CREATED_REVIEWER.getEntityType(),
+                   review.getId(),
+                   NotificationType.REVIEW_CREATED_REVIEWER.getMessage(),
+                   DateTimeHelper.getCurrentTime()));
+
+           notificationService.create(new Notification(
+                   review.getRevieweeEmail(),
+                   NotificationType.REVIEW_CREATED_REVIEWEE.getEntityType(),
+                   review.getId(),
+                   NotificationType.REVIEW_CREATED_REVIEWEE.getMessage(),
+                   DateTimeHelper.getCurrentTime()));
         }
-        return res;*/
+        return res;
 
     }
 
@@ -48,8 +55,21 @@ public class ReviewHandler implements IReviewHandler {
     public ReviewResponse delete(int id) {
         ReviewResponse response = reviewService.getById(id);
 
+            // Delete and Notify the reviewer and reviewee
         if (response.getStatus().equals(ResponseStatus.SOCKET_SUCCESS)) {
+            notificationService.create(new Notification(
+                    response.getBody().getReviewerEmail(),
+                    NotificationType.REVIEW_DELETED_REVIEWER.getEntityType(),
+                    response.getBody().getId(),
+                    NotificationType.REVIEW_DELETED_REVIEWER.getMessage(),
+                    DateTimeHelper.getCurrentTime()));
 
+            notificationService.create(new Notification(
+                    response.getBody().getRevieweeEmail(),
+                    NotificationType.REVIEW_DELETED_REVIEWEE.getEntityType(),
+                    response.getBody().getId(),
+                    NotificationType.REVIEW_DELETED_REVIEWEE.getMessage(),
+                    DateTimeHelper.getCurrentTime()));
             return reviewService.delete(id);
         }
         return new ReviewResponse(ResponseStatus.SOCKET_BAD_REQUEST, null);
