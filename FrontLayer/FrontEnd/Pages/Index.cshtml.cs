@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Security.Claims;
-using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using Data.Models.Entities;
+using FrontEnd.ServiceProviders;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
@@ -18,32 +13,21 @@ namespace FrontEnd.Pages
 {
     public class IndexModel : PageModel
     {
+        private readonly IAccountServiceProvider _accountServiceProvider = new AccountServiceProvider();
+
         public bool RememberMe { get; set; }
 
         public string Token { get; set; }
 
-        public async Task<IActionResult> OnPostLoginAsync()
+        public async Task<IActionResult> OnPostLoginAsync(
+            [FromForm] string email,
+            [FromForm] string password)
         {
-            var email = Request.Form["email"];
-            var password = Request.Form["password"];
-            var url = new Uri("http://localhost:8080/Logic_war_exploded/");
-            using var client = new HttpClient();
-            client.BaseAddress = url;
-            var credentials = Convert.ToBase64String(UTF8Encoding.UTF8.GetBytes($"{email}:{password}"));
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", credentials);
+            var token = _accountServiceProvider.Login(email, password);
 
-            var response = await client.PostAsync("authentication", new StringContent(""));
-            var message = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            if (string.IsNullOrEmpty(token)) return RedirectToPage("Index", new { loginFail = true });
 
-            var token = JsonSerializer.Deserialize<TokenResponse>(message);
-
-            if (response.StatusCode != System.Net.HttpStatusCode.OK) return RedirectToPage("Index");
-            
-            var authenticationToken = Convert.ToBase64String(UTF8Encoding.UTF8.GetBytes($"{token}" + ":"));
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authenticationToken);
-
-            var s = await client.GetStringAsync("http://localhost:8080/Logic_war_exploded/accounts/get/" + $"{email}");
-            var account = JsonSerializer.Deserialize<Account>(s);
+            var account = _accountServiceProvider.Get(email, token);
 
             // Create the identity from the user info
             var claims = new List<Claim> {
@@ -67,19 +51,9 @@ namespace FrontEnd.Pages
             Response.Cookies.Append("LastNameCookie", $"{account.LastName}", cookieOptions);
             Response.Cookies.Append("DateOfBirthCookie", $"{account.DateOfBirth}", cookieOptions);
             Response.Cookies.Append("PhoneCookie", $"{account.Phone}", cookieOptions);
-            Response.Cookies.Append("TokenCookie", $"{token.Token}", cookieOptions);
+            Response.Cookies.Append("TokenCookie", $"{token}", cookieOptions);
 
             return RedirectToPage("MainLoggedIn");
         }
-
-        private class TokenResponse
-        {
-            [JsonPropertyName("status")]
-            public string Status { get; set; }
-            [JsonPropertyName("token")]
-            public string Token { get; set; }
-        }
     }
-
-   
 }

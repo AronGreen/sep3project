@@ -8,6 +8,11 @@ namespace FrontEnd.ServiceProviders
 {
     public interface IAccountServiceProvider
     {
+        Account Get(string email, string token);
+
         bool Register(Account account);
+
+        string Login(string email, string password);
+
     }
 }

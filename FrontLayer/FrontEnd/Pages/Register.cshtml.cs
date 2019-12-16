@@ -14,10 +14,9 @@ namespace FrontEnd.Pages
 
         public IActionResult OnPostRegister([FromForm] Account account)
         {
-            var success = _accountServiceProvider.Register(account);
-            if (success)
-                return RedirectToPage("Index");
-            return RedirectToPage("Register");
+            return _accountServiceProvider.Register(account) 
+                ? RedirectToPage("Index", new { accountCreated = true }) 
+                : RedirectToPage("Register", new { accountCreated = false });
         }
     }
 }

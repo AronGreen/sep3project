@@ -14,14 +14,15 @@
 
 <div class="container-fluid">
     <div class="row">
-        <partial name="Partials/CreateTrip" />
+        <div class="col">
+            <partial name="Partials/CreateTrip" />
+        </div>
     </div>
     <div class="row">
-        <div class="col">
+        <div class="col container-fluid narrow">
             <h2 align="center">Browse Trips</h2>
             <!-- Button trigger modal -->
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Create Trip</button>
-
 
             <form method="get" asp-page-handler="Trips" class="text-center narrow">
                 <!-- arrival pickup dropoff -->
@@ -29,8 +30,8 @@
                     <input name="arrival" type="datetime-local" placeholder="Time" class="form-control"/>
                 </div>
                 <div class="form-group">
-                    <input active type="radio" name="arrivalType" value="maximum" class="form-inline"/>Arrive before
-                    <input type="radio" name="arrivalType" value="minimum" class="form-inline"/>Arrive after
+                    <label class="form-check-inline"><input type="radio" name="optradio" checked>Arrive before</label>
+                    <label class="form-check-inline"><input type="radio" name="optradio">Arrive after</label>
                 </div>
                 <div class="form-group">
                     <input type="text" name="pickupAddress" placeholder="Pickup address"/>
@@ -40,8 +41,10 @@
                 </div>
                 <button type="submit" class="btn btn-primary">Search trips</button>
             </form>
-
-
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
             <div>
                 <table width="60%" align="center" id="table-trips">
                     <tr>

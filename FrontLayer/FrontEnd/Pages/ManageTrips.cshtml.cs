@@ -26,15 +26,14 @@ namespace FrontEnd.Pages
 
         [BindProperty]
         public Reservation Reservation { get; set; }
-
         
         public string Message { get; set; } = "Initial message";
         public Trip CreateTripModel = new Trip();
         public List<Trip> Trips = new List<Trip>();
 
-
         public void OnGet()
         {
+//            ApiHelpers.DoGet()
             var listOfSeats = new List<int>
             { 1, 2, 3, 4, 5};
 

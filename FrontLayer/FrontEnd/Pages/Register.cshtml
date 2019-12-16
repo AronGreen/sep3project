@@ -7,8 +7,16 @@
 @section header{
 
 }
+
 <!-- <link rel="stylesheet" href="~/css/popup.css" /> -->
 <link rel="stylesheet" href="~/css/general.css"/>
+
+@if (Request.Query["accountCreated"].Count > 0)
+{
+    <div class="alert alert-danger" role="alert">
+        Account creation failed
+    </div>
+}
 
 <div class="container-fluid narrow">
     <div class="row">
