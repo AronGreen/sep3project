@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Text.Json;
 using System.Net.Http.Headers;
 using Data.Models.Entities;
+using FrontEnd.Helpers;
 using FrontEnd.ServiceProviders;
 
 namespace FrontEnd.Pages
@@ -40,17 +41,9 @@ namespace FrontEnd.Pages
             Seats = new SelectList(listOfSeats);
             
         }
-        public async Task OnPostTripAsync()
+        public void OnGetTrips()
         {
-            HttpClient client = new HttpClient();
-            Console.WriteLine("Fetching data...");
-            var s = await client.GetStringAsync("http://localhost:8080/Logic_war_exploded/trips/get");
-            List<Trip> temp = JsonSerializer.Deserialize<List<Trip>>(s);
 
-
-            Trips = temp;
-
-     
         }
 
         public ActionResult OnPostCreate([FromForm] Trip trip)

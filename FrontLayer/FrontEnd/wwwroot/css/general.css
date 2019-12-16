@@ -54,6 +54,9 @@ html, body {
     border-width: 3px;
 }
 
+.narrow {
+    max-width: 500px;
+}
 
 
 

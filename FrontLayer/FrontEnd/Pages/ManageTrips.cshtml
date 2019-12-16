@@ -1,5 +1,4 @@
 ﻿@page
-@using Data.Models.Entities
 @model FrontEnd.Pages.ManageTripsModel
 @{
     ViewData["Title"] = "ManageTrips";
@@ -11,210 +10,144 @@
 
 }
 
-<link rel="stylesheet" href="~/css/popup.css" />
+@* <link rel="stylesheet" href="~/css/popup.css" /> *@
+
+<div class="container-fluid">
+    <div class="row">
+        <partial name="Partials/CreateTrip" />
+    </div>
+    <div class="row">
+        <div class="col">
+            <h2 align="center">Browse Trips</h2>
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Create Trip</button>
 
 
-<form method="get">
-    <button type="submit" asp-page="./MainLoggedIn" class="mb-3">Go to main</button>
-</form>
-
-
-<h1 align="center">ManageTrips</h1>
-
-
-<div>
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-        Create Trip
-    </button>
-
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Create Trip</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+            <form method="get" asp-page-handler="Trips" class="text-center narrow">
+                <!-- arrival pickup dropoff -->
+                <div class="form-group">
+                    <input name="arrival" type="datetime-local" placeholder="Time" class="form-control"/>
                 </div>
-                <div class="modal-body">
-
-                    <form method="post">
-                        <span class="input">
-                            <label for="startAddress">Start address</label>
-                            <br />
-                            <input name="startAddress" id="startAddress" type="text" placeholder="Start address" /><br />
-                        </span>
-
-                        <span class="input">
-                            <label for="destinationAddress">Destination address</label>
-                            <br />
-                            <input name="destinationAddress" id="destinationAddress" type="text" placeholder="Destination address" /><br />
-                        </span>
-
-                        <span class="input">
-                            <label for="arrival">Expected arrival time</label>
-                            <br />
-                            <input name="arrival" id="arrival" type="datetime-local" placeholder="Expected arrival time" /><br />
-                        </span>
-
-                        <span class="input">
-                            <label for="basePrice">Base price</label>
-                            <br />
-                            <input name="basePrice" id="basePrice" type="number" placeholder="Base price" /><br />
-                        </span>
-
-                        <span class="input">
-                            <label for="perKmPrice">Price pr km</label>
-                            <br />
-                            <input name="perKmPrice" id="perKmPrice" type="number" placeholder="Price pr km" /><br />
-                        </span>
-
-                        <span class="input">
-                            <label for="cancellationFee">Cancellation fee</label>
-                            <br />
-                            <input name="cancellationFee" id="cancellationFee" type="number" placeholder="Cancellation fee" /><br />
-                        </span>
-
-                        <span class="input">
-                            <label for="rules">Rules</label>
-                            <br />
-                            <textarea name="rules" id="rules" placeholder="Rules"></textarea>
-                            <br />
-                        </span>
-
-                        <span class="input">
-                            <label for="totalSeats">Available seats</label>
-                            <br />
-                            <input name="totalSeats" id="totalSeats" type="number" placeholder="Available seats" /><br />
-                        </span>
-
-                        <span class="input">
-                            <label for="description">Description</label>
-                            <br />
-                            <textarea name="description" id="description" placeholder="Description"></textarea>
-                            <br />
-                        </span>
-
-                        <button asp-page-handler="Create" class="btn btn-primary">Create Trip</button>
-                    </form>
+                <div class="form-group">
+                    <input active type="radio" name="arrivalType" value="maximum" class="form-inline"/>Arrive before
+                    <input type="radio" name="arrivalType" value="minimum" class="form-inline"/>Arrive after
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <div class="form-group">
+                    <input type="text" name="pickupAddress" placeholder="Pickup address"/>
                 </div>
+                <div class="form-group">
+                    <input type="text" name="dropoffAddress" placeholder="Dropoff address"/>
+                </div>
+                <button type="submit" class="btn btn-primary">Search trips</button>
+            </form>
+
+
+            <div>
+                <table width="60%" align="center" id="table-trips">
+                    <tr>
+                        <td>Title</td>
+                        <td>Date</td>
+                        <td>Start</td>
+                        <td>End</td>
+                        <td>Available Seats</td>
+                        <td>Driver</td>
+                        <td>&nbsp;</td>
+                    </tr>
+
+                    @if (Model.Trips.Count > 0)
+                    {
+                        foreach (var t in Model.Trips)
+                        {
+
+                            <tr>
+                                <td>@t.Description</td>
+                                <td>@t.Arrival</td>
+                                <td>@t.StartAddress</td>
+                                <td>@t.DestinationAddress</td>
+                                <td>@t.TotalSeats</td>
+                                <td><a href="">@t.DriverEmail</a></td>
+                                <td>
+                                    @if (t.TotalSeats < 1)
+                                    {
+                                        <p style="color: darkred; text-decoration: solid;">No available space - sorry!</p>
+                                    }
+                                    else
+                                    {
+                                        <div style="min-height: 45px; margin-top: 5px;">
+                                            <a class="button" href="#@t.Id">Reserve</a>
+                                        </div>
+
+                                    }
+
+
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <div id="@t.Id" class="overlay">
+                                        <div class="popup">
+                                            <h2>Reservation for trip by : @t.DriverEmail</h2>
+                                            <a class="close" href="#">&times;</a>
+                                            <div class="content">
+
+                                                <div align="center">
+
+
+                                                    <form method="post" class="text-center">
+
+                                                        <input class="form-control" name="TripID" value="@t.Id" disabled/>
+
+
+                                                        <input class="form-control" type="text" name="PickUpPoint" placeholder="Where to pick you up?"/>
+
+
+
+                                                        <label>When do you want to be picked up?</label>
+
+                                                        <input class="form-control" type="time" name="PickUpTime" placeholder="When to pick you up?"/>
+
+
+
+                                                        <input class="form-control" type="text" name="DropOffPoint" placeholder="Where to drop you off?"/>
+
+
+
+
+
+
+                                                        <label for="Date">How many seats?</label>
+                                                        <select name="ReservedSeats" asp-for="ReservedSeats">
+                                                            @for (int i = 1; i <= t.TotalSeats; i -= -1)
+                                                            {
+                                                                <option value="@i">@i</option>
+                                                            }
+                                                        </select>
+
+
+
+                                                        <button asp-page-handler="reservation" class="mb-3">Reserve</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+
+                    else
+                    {
+                        <tr>
+                            <td rowspan="7">No trips available right now!</td>
+                        </tr>
+                    }
+
+                </table>
             </div>
         </div>
     </div>
-
-    <form method="post" class="text-center">
-        <button asp-page-handler="trip" class="mb-3">Update available trips</button>
-    </form>
-
-    <div>
-
-
-        <table width="60%" align="center" id="table-trips">
-            <tr>
-                <td>Title</td>
-                <td>Date</td>
-                <td>Start</td>
-                <td>End</td>
-                <td>Available Seats</td>
-                <td>Driver</td>
-                <td>&nbsp;</td>
-            </tr>
-
-            @if (Model.Trips.Count > 0)
-            {
-                foreach (var t in Model.Trips)
-                {
-
-                    <tr>
-                        <td>@t.Description</td>
-                        <td>@t.Arrival</td>
-                        <td>@t.StartAddress</td>
-                        <td>@t.DestinationAddress</td>
-                        <td>@t.TotalSeats</td>
-                        <td><a href="">@t.DriverEmail</a></td>
-                        <td>
-                            @if (t.TotalSeats < 1)
-                            {
-                                <p style="color: darkred; text-decoration:solid;">No available space - sorry!</p>
-                            }
-                            else
-                            {
-                                <div style="min-height:45px; margin-top: 5px;">
-                                    <a class="button" href="#@t.Id">Reserve</a>
-                                </div>
-
-                            }
-
-
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <div id="@t.Id" class="overlay">
-                                <div class="popup">
-                                    <h2>Reservation for trip by : @t.DriverEmail</h2>
-                                    <a class="close" href="#">&times;</a>
-                                    <div class="content">
-
-                                        <div align="center">
-
-
-                                            <form method="post" class="text-center">
-
-                                                <input name="TripID" value="@t.Id" disabled />
-                                                <br />
-                                                <span class="input">
-                                                    <input type="text" name="PickUpPoint" placeholder="Where to pick you up?" /><br />
-                                                </span>
-                                                <br />
-
-                                                <label>When do you want to be picked up?</label>
-                                                <span class="input">
-                                                    <input type="time" name="PickUpTime" placeholder="When to pick you up?" /><br />
-                                                </span>
-                                                <br />
-                                                <span class="input">
-                                                    <input type="text" name="DropOffPoint" placeholder="Where to drop you off?" /><br />
-                                                </span>
-                                                <br />
-
-
-
-
-                                                <label for="Date">How many seats?</label>
-                                                <select name="ReservedSeats" asp-for="ReservedSeats">
-                                                    @for (int i = 1; i <= t.TotalSeats; i -= -1)
-                                                    {
-                                                        <option value="@i">@i</option>
-                                                    }
-                                                </select>
-
-
-
-                                                <button asp-page-handler="reservation" class="mb-3">Reserve</button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                }
-            }
-
-            else
-            {
-                <tr>
-                    <td rowspan="7">No trips available right now!</td>
-                </tr>
-            }
-
-        </table>
-    </div>
 </div>
+
+

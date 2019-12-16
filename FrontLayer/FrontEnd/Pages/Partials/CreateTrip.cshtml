@@ -1,0 +1,67 @@
+﻿@model FrontEnd.Pages.ManageTripsModel
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Create Trip</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post">
+                    <div class="form-group">
+                        <label for="startAddress">Start address</label>
+                        <input class="form-control" name="startAddress" id="startAddress" type="text" placeholder="Start address" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="destinationAddress">Destination address</label>
+                        <input class="form-control" name="destinationAddress" id="destinationAddress" type="text" placeholder="Destination address" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="arrival">Expected arrival time</label>
+                        <input class="form-control" name="arrival" id="arrival" type="datetime-local" placeholder="Expected arrival time" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="basePrice">Base price</label>
+                        <input class="form-control" name="basePrice" id="basePrice" type="number" placeholder="Base price" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="perKmPrice">Price pr km</label>
+                        <input class="form-control" name="perKmPrice" id="perKmPrice" type="number" placeholder="Price pr km" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cancellationFee">Cancellation fee</label>
+                        <input class="form-control" name="cancellationFee" id="cancellationFee" type="number" placeholder="Cancellation fee" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="rules">Rules</label>
+                        <textarea class="form-control" name="rules" id="rules" placeholder="Rules"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="totalSeats">Available seats</label>
+                        <input class="form-control" name="totalSeats" id="totalSeats" type="number" placeholder="Available seats" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea class="form-control" name="description" id="description" placeholder="Description"></textarea>
+                    </div>
+
+                    <button asp-page-handler="Create" class="btn btn-primary">Create Trip</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

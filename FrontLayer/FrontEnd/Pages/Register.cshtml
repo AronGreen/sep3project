@@ -8,11 +8,12 @@
 
 }
 <!-- <link rel="stylesheet" href="~/css/popup.css" /> -->
+<link rel="stylesheet" href="~/css/general.css"/>
 
-<div class="container-fluid" style="max-width: 500px">
+<div class="container-fluid narrow">
     <div class="row">
         <div class="col">
-            <h1>Create account</h1>
+            <h2>Create account</h2>
 
             <form method="post" asp-page-handler="register">
                 <div class="form-group">
@@ -44,7 +45,7 @@
                     <input class="form-control" type="date" name="dateOfBirth" required oninvalid="setCustomValidity('Pick a date')">
                 </div>
 
-                <button href="#popup" type="submit" class="btn btn-primary">Register</button>
+                <button type="submit" class="btn btn-primary">Register</button>
                 <label asp-for="ErrorMessage"> </label>
             </form>
         </div>
