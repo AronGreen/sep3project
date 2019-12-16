@@ -23,7 +23,7 @@ namespace FrontEnd.Pages
         public async Task OnPostReviews() {
 
             var token = Request.Cookies["TokenCookie"];
-            var email = Request.Cookies["TokenEmail"];
+            var email = Request.Cookies["EmailCookie"];
             HttpClient client = new HttpClient();
             string authenticationToken = Convert.ToBase64String(UTF8Encoding.UTF8.GetBytes($"{token}" + ":"));
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authenticationToken);
