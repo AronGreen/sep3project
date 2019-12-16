@@ -6,7 +6,8 @@ public enum PaymentState {
     PAID("Paid"),
     REJECTED("Rejected"),
     CANCELLED("Cancelled"),
-    REFUNDED("Refunded");
+    REFUNDED("Refunded"),
+    ERROR("Error");
 
     private String name;
 

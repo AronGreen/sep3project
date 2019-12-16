@@ -14,8 +14,10 @@ public enum NotificationType {
     INVOICE_REFUNDED("invoice", "Your invoice has been revoked, you will soon get a refund"),
     INVOICE_REJECTED("invoice", "You have rejected to pay an invoice that you needed to pay"),
 
-    REVIEW_CREATED("review", "Review has been created"),
-    REVIEW_DELETED("review", "Review has been deleted")
+    REVIEW_CREATED_REVIEWER("review", "Review has been added"),
+    REVIEW_CREATED_REVIEWEE("review","You've got a new review"),
+    REVIEW_DELETED_REVIEWER("review", "Review has been deleted"),
+    REVIEW_DELETED_REVIEWEE("review", "You've got a review deleted")
     ;
 
     private String entityType;

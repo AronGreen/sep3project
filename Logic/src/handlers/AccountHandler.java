@@ -1,5 +1,6 @@
 package handlers;
 
+import constants.ResponseStatus;
 import helpers.Password;
 import helpers.StringHelper;
 import models.Account;
@@ -19,19 +20,28 @@ public class AccountHandler implements IAccountHandler {
 
     @Override
     public AccountResponse create(Account account) {
+        if (account == null) {
+            return new AccountResponse(ResponseStatus.SOCKET_BAD_REQUEST, null);
+        }
         account.setPassword(
                 hashPassword(account.getPassword()));
-        
+
+        if (isInvalid(account)) {
+            return new AccountResponse(ResponseStatus.SOCKET_BAD_REQUEST, null);
+        }
         AccountResponse response = accountService.create(account);
 
-
-        removePassword(response.getBody());
+        if (response.getBody() != null)
+            removePassword(response.getBody());
 
         return response;
     }
 
     @Override
     public AccountResponse update(Account account) {
+        if (account == null) {
+            return new AccountResponse(ResponseStatus.SOCKET_BAD_REQUEST, null);
+        }
         if (!StringHelper.isNullOrEmpty(account.getPassword())) {
             account.setPassword(
                     hashPassword(account.getPassword()));
@@ -40,8 +50,12 @@ public class AccountHandler implements IAccountHandler {
             account.setPassword(accountService.getPasswordByEmail(account.getEmail()).getBody());
         }
 
+        if (isInvalid(account)) {
+            return new AccountResponse(ResponseStatus.SOCKET_BAD_REQUEST, null);
+        }
         AccountResponse response = accountService.update(account);
-        removePassword(response.getBody());
+        if (response.getBody() != null)
+            removePassword(response.getBody());
 
         return response;
     }
@@ -49,7 +63,8 @@ public class AccountHandler implements IAccountHandler {
     @Override
     public AccountResponse delete(String email) {
         AccountResponse response = accountService.delete(email);
-        removePassword(response.getBody());
+        if (response.getBody() != null)
+            removePassword(response.getBody());
 
         return response;
     }
@@ -57,9 +72,10 @@ public class AccountHandler implements IAccountHandler {
     @Override
     public AccountListResponse getAll() {
         AccountListResponse response = accountService.getAll();
-        for (Account acc : response.getBody()) {
-            removePassword(acc);
-        }
+        if (response.getBody() != null)
+            for (Account acc : response.getBody()) {
+                removePassword(acc);
+            }
 
         return response;
     }
@@ -67,7 +83,8 @@ public class AccountHandler implements IAccountHandler {
     @Override
     public AccountResponse getByEmail(String email) {
         AccountResponse response = accountService.getByEmail(email);
-        removePassword(response.getBody());
+        if (response.getBody() != null)
+            removePassword(response.getBody());
 
         return response;
     }
@@ -83,5 +100,13 @@ public class AccountHandler implements IAccountHandler {
 
     private void removePassword(Account account) {
         account.setPassword("");
+    }
+
+    private boolean isInvalid(Account account) {
+        return StringHelper.isNullOrEmpty(account.getFirstName()) ||
+                StringHelper.isNullOrEmpty(account.getLastName()) ||
+                StringHelper.isNullOrEmpty(account.getDateOfBirth()) ||
+                StringHelper.isNullOrEmpty(account.getPhone()) ||
+                StringHelper.isNullOrEmpty(account.getPassword());
     }
 }
