@@ -23,5 +23,9 @@ namespace Data.Data
 
         [JsonPropertyName("dropoffAddress")]
         public string DropoffAddress { get; set; }
+
+        [JsonPropertyName("arrivalDate")]
+        public string ArrivalDate { get; set; }
+
     }
 }

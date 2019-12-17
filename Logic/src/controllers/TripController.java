@@ -83,10 +83,11 @@ public class TripController {
             @DefaultValue("") @QueryParam("minimumArrivalDate") String minimumArrivalDate,
             @DefaultValue("") @QueryParam("maximumArrivalDate") String maximumArrivalDate,
             @DefaultValue("") @QueryParam("pickupAddress") String pickupAddress,
-            @DefaultValue("") @QueryParam("dropoffAddress") String dropoffAddress)
+            @DefaultValue("") @QueryParam("dropoffAddress") String dropoffAddress,
+            @DefaultValue("") @QueryParam("arrivalDate") String arrivalDate)
     {
         // Send request and receive ResponseS
-        TripListResponse res = handler.getFiltered(new TripFilter(driverEmail, passengerEmail, minimumArrivalDate, maximumArrivalDate, pickupAddress, dropoffAddress));
+        TripListResponse res = handler.getFiltered(new TripFilter(driverEmail, passengerEmail, minimumArrivalDate, maximumArrivalDate, pickupAddress, dropoffAddress, arrivalDate));
 
         // Extract http response data
         int status = StatusMapper.map(res.getStatus());

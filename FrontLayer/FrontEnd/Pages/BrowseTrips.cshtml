@@ -1,0 +1,176 @@
+﻿@page
+@using Data.Models.Entities
+@using Data.Models.Helpers
+@model FrontEnd.Pages.ManageTripsModel
+@{
+    ViewData["Title"] = "ManageTrips";
+}
+
+@section header{
+
+    <partial name="Shared/_HeaderItems" />
+
+}
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col container-fluid narrow">
+            <h2 align="center">Browse Trips</h2>
+
+            <form method="post" asp-page-handler="trips" class="text-center narrow">
+                <!-- arrival pickup dropoff -->
+                <div class="form-group">
+                    <input name="arrival" type="date" placeholder="Time" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <input type="text" name="pickupAddress" placeholder="Pickup address" />
+                </div>
+                <div class="form-group">
+                    <input type="text" name="dropoffAddress" placeholder="Dropoff address" />
+                </div>
+                <button type="submit" class="btn btn-primary">Search trips</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="container-fluid narrow">
+        @if (Model.Trips.Any())
+        {
+            foreach (var t in Model.Trips)
+            {
+                @HtmlHelperPartialExtensions.Partial(Html, "Partials/ViewTripModal", t)
+                <div class="row rounded-sm border bg-success text-white my-1">
+                    <div class="col-md-5">
+                        @t.StartAddress to @t.DestinationAddress
+                    </div>
+                    <div class="col-md-5">
+                        Arrives at ~@DateTimeHelper.ExtractTime(t.Arrival) to @t.DestinationAddress
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="@("#viewTripModal" + t.Id)">View</button>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="row">
+                <div class="col">
+                    No trips found for the given criteria.
+                </div>
+            </div>
+        }
+    </div>
+</div>
+@*     <div class="row"> *@
+@*         <div class="col"> *@
+@*             <div> *@
+@*                 <table width="60%" align="center" id="table-trips"> *@
+@*                     <tr> *@
+@*                         <td>Title</td> *@
+@*                         <td>Date</td> *@
+@*                         <td>Start</td> *@
+@*                         <td>End</td> *@
+@*                         <td>Available Seats</td> *@
+@*                         <td>Driver</td> *@
+@*                         <td>&nbsp;</td> *@
+@*                     </tr> *@
+@* *@
+@*                     @if (Model.Trips.Count > 0) *@
+@*                     { *@
+@*                         foreach (var t in Model.Trips) *@
+@*                         { *@
+@* *@
+@*                             <tr> *@
+@*                                 <td>@t.Description</td> *@
+@*                                 <td>@t.Arrival</td> *@
+@*                                 <td>@t.StartAddress</td> *@
+@*                                 <td>@t.DestinationAddress</td> *@
+@*                                 <td>@t.TotalSeats</td> *@
+@*                                 <td><a href="">@t.DriverEmail</a></td> *@
+@*                                 <td> *@
+@*                                     @if (t.TotalSeats < 1) *@
+@*                                     { *@
+@*                                         <p style="color: darkred; text-decoration: solid;">No available space - sorry!</p> *@
+@*                                     } *@
+@*                                     else *@
+@*                                     { *@
+@*                                         <div style="min-height: 45px; margin-top: 5px;"> *@
+@*                                             <a class="button" href="#@t.Id">Reserve</a> *@
+@*                                         </div> *@
+@* *@
+@*                                     } *@
+@* *@
+@* *@
+@*                                 </td> *@
+@*                             </tr> *@
+@* *@
+@*                             <tr> *@
+@*                                 <td> *@
+@*                                     <div id="@t.Id" class="overlay"> *@
+@*                                         <div class="popup"> *@
+@*                                             <h2>Reservation for trip by : @t.DriverEmail</h2> *@
+@*                                             <a class="close" href="#">&times;</a> *@
+@*                                             <div class="content"> *@
+@* *@
+@*                                                 <div align="center"> *@
+@* *@
+@* *@
+@*                                                     <form method="post" class="text-center"> *@
+@* *@
+@*                                                         <input class="form-control" name="TripID" value="@t.Id" disabled /> *@
+@* *@
+@* *@
+@*                                                         <input class="form-control" type="text" name="PickUpPoint" placeholder="Where to pick you up?" /> *@
+@* *@
+@* *@
+@* *@
+@*                                                         <label>When do you want to be picked up?</label> *@
+@* *@
+@*                                                         <input class="form-control" type="time" name="PickUpTime" placeholder="When to pick you up?" /> *@
+@* *@
+@* *@
+@* *@
+@*                                                         <input class="form-control" type="text" name="DropOffPoint" placeholder="Where to drop you off?" /> *@
+@* *@
+@* *@
+@* *@
+@* *@
+@* *@
+@* *@
+@*                                                         <label for="Date">How many seats?</label> *@
+@*                                                         <select name="ReservedSeats" asp-for="ReservedSeats"> *@
+@*                                                             @for (int i = 1; i <= t.TotalSeats; i -= -1) *@
+@*                                                             { *@
+@*                                                                 <option value="@i">@i</option> *@
+@*                                                             } *@
+@*                                                         </select> *@
+@* *@
+@* *@
+@* *@
+@*                                                         <button asp-page-handler="reservation" class="mb-3">Reserve</button> *@
+@*                                                     </form> *@
+@*                                                 </div> *@
+@*                                             </div> *@
+@*                                         </div> *@
+@*                                     </div> *@
+@*                                 </td> *@
+@*                             </tr> *@
+@*                         } *@
+@*                     } *@
+@* *@
+@*                     else *@
+@*                     { *@
+@*                         <tr> *@
+@*                             <td rowspan="7">No trips available right now!</td> *@
+@*                         </tr> *@
+@*                     } *@
+@* *@
+@*                 </table> *@
+@*             </div> *@
+@*         </div> *@
+@*     </div> *@
+@* </div> *@
+
+

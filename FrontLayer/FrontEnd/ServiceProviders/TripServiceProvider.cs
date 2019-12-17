@@ -6,16 +6,32 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Data.Data;
 using Data.Models.Entities;
+using FrontEnd.Constants;
 using FrontEnd.Helpers;
 
 namespace FrontEnd.ServiceProviders
 {
     public class TripServiceProvider : ITripServiceProvider
     {
-        public List<Trip> GetAll(string token)
+        public List<Trip> GetFiltered(TripFilter filter)
         {
-            throw new NotImplementedException();
+            var response = ApiHelpers.DoGet(Api.Trips.GetFiltered + $"" +
+                             $"?driverEmail={filter.DriverEmail}" +
+                             $"&passengerEmail={filter.PassengerEmail}" +
+                             $"&minimumArrivalTime={filter.MinimumArrivalDate}" +
+                             $"&maximumArrivalTime={filter.MaximumArrivalDate}" +
+                             $"&pickupAddress={filter.PickupAddress}" +
+                             $"&dropoffAddress={filter.DropoffAddress}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+
+            return JsonSerializer.Deserialize<List<Trip>>(
+                response.Content.ReadAsStringAsync().GetAwaiter().GetResult());
         }
 
         public bool Create(Trip model, string token)

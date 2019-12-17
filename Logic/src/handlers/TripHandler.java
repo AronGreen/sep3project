@@ -36,7 +36,7 @@ public class TripHandler implements ITripHandler {
 
         // Validate time
         // Get current trips of the driver
-        TripListResponse tripsResponse = tripService.getFiltered(new TripFilter(trip.getDriverEmail(), "", DateTimeHelper.getCurrentTime(), "", "", ""));
+        TripListResponse tripsResponse = tripService.getFiltered(new TripFilter(trip.getDriverEmail(), "", DateTimeHelper.getCurrentTime(), "", "", "", ""));
         if (!tripsResponse.getStatus().equals(ResponseStatus.SOCKET_SUCCESS)) {
             return new TripResponse(ResponseStatus.SOCKET_INTERNAL_ERROR, null);
         }
@@ -54,6 +54,9 @@ public class TripHandler implements ITripHandler {
 
         // Get the details to know the start and end time
         TripDetails details = navigationServiceProvider.getTripDetails(trip, new ArrayList<>());
+        if (details == null) {
+            return new TripResponse(ResponseStatus.SOCKET_BAD_REQUEST, null);
+        }
         List<TripDetails> tripDetailsList = navigationServiceProvider.getAllTripDetails(currentTrips, currentTripsReservations);
 
         // Check for overlaps

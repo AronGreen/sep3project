@@ -28,5 +28,16 @@ namespace Data.Models.Helpers
                 date.Minute);
         }
 
+        public static string ExtractTime(string s)
+        {
+            var time = FromString(s);
+            return time.Hour + ":" + time.Minute;
+        }
+
+        public static string FromDateTimeString(string dateTime)
+        {
+            return dateTime.Replace(":", "-").Replace("T", "-").Replace("-0", "-");
+        }
+
     }
 }

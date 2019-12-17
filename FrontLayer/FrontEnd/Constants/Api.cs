@@ -1,9 +1,11 @@
-﻿namespace FrontEnd.Constants
+﻿using Microsoft.Extensions.FileSystemGlobbing.Internal;
+
+namespace FrontEnd.Constants
 {
     public static class Api
     {
         private const string BaseUrl = "http://localhost:8080/Logic_war_exploded/";
-
+        
         public static class Accounts
         {
             public const string Create = BaseUrl + "accounts/create";
@@ -17,7 +19,10 @@
 
         public static class Trips
         {
-            public const string Create = BaseUrl + "trips/create";
+            private const string Base = BaseUrl + "trips/";
+
+            public const string Create = Base + "create";
+            public const string GetFiltered = Base + "get";
         }
 
         public static class Reservations

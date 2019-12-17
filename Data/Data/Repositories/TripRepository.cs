@@ -97,7 +97,16 @@ namespace Data.Repositories
                         if (tripDate.CompareTo(filterDate) > 0)
                             return false;
                     }
-                        
+
+                    // Arrival date filter
+                    if (filter.ArrivalDate != "")
+                    {
+                        var filterDate = DateTimeHelper.FromString(filter.ArrivalDate);
+                        var tripDate = DateTimeHelper.FromString(x.Arrival);
+                        if (tripDate.Year != filterDate.Year || tripDate.DayOfYear != filterDate.DayOfYear)
+                            return false;
+                    }
+
                     return true;
                 })
                 .ToArray();

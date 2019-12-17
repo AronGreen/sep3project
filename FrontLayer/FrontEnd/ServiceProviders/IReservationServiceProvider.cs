@@ -8,6 +8,6 @@ namespace FrontEnd.ServiceProviders
 {
     public interface IReservationServiceProvider
     {
-        bool Create(Reservation model);
+        bool Create(Reservation model, string token);
     }
 }

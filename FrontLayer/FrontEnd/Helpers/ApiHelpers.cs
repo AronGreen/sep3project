@@ -38,6 +38,7 @@ namespace FrontEnd.Helpers
 
             var json = JsonSerializer.Serialize(payload);
             var content = new StringContent(json, Encoding.UTF8, MediaTypeNames.Application.Json);
+
             var authenticationToken = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{token}" + ":"));
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authenticationToken);
 
@@ -47,8 +48,10 @@ namespace FrontEnd.Helpers
         public static HttpResponseMessage DoGet(string endpoint, string token)
         {
             using var client = new HttpClient();
+
             var authenticationToken = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{token}" + ":"));
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authenticationToken);
+
             return client.GetAsync(endpoint).GetAwaiter().GetResult();
         }
 
