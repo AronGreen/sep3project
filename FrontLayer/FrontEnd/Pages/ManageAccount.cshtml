@@ -1,6 +1,7 @@
-﻿@page
+﻿@page "{handler?}"
 @model FrontEnd.Pages.ManageAccountModel
 @using Pages.Entities
+@using Data.Models.Entities
 @{
     ViewData["Title"] = "ManageAccount";
 
@@ -9,6 +10,7 @@
     var lastName = Request.Cookies["LastNameCookie"];
     var dateOfBirth = Request.Cookies["DateOfBirthCookie"];
     var phone = Request.Cookies["PhoneCookie"];
+    
 }
 
 @section header{
@@ -26,126 +28,180 @@
 
     <a asp-page-handler="Delete" class="btn btn-danger">Delete account</a>
 
-    <!-- Modal -->
-    <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="updateModalLabel">Update account</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form method="post" asp-page-handler="Update">
-                        <div class="form-group">
-                            <label for="firstName">First Name</label>
-                            <input class="form-control"
-                                   type="text"
-                                   placeholder="First Name"
-                                   name="firstName"
-                                   id="firstName"
-                                   value="@firstName"
-                                   required pattern="^[\w ]{2,}$"
-                                   oninvalid="setCustomValidity('First name may only contain letters')"
-                                   oninput="setCustomValidity('')">
-                        </div>
+   
 
-                        <div class="form-group">
-                            <label for="lastName">Last Name</label>
-                            <input class="form-control"
-                                   type="text"
-                                   placeholder="Last Name"
-                                   name="lastName"
-                                   id="lastName"
-                                   value="@lastName"
-                                   required pattern="^[\w ]{2,}$"
-                                   oninvalid="setCustomValidity('Last name may only contain letters')"
-                                   oninput="setCustomValidity('')">
-                        </div>
+    <div class="col-xs-6" >
+        <h2 class="sub-header">Reviews Received</h2>
+        <div class="table-responsive">
+            <table class="table table-dark">
+                <thead>
+                    <tr>
 
-                        <div class="form-group">
-                            <label for="password">New Password (leave blank to keep current)</label>
-                            <input class="form-control"
-                                   type="text"
-                                   placeholder="New Password"
-                                   name="password"
-                                   id="password">
-                        </div>
+                        <th class="col-xs-3">Reviewer</th>
+                        <th class="col-xs-3">Content</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.ReviewsReceived.Count > 0)
+                        @foreach (Review r in Model.ReviewsReceived)
+                        {
+                            <tr>
+
+                                <td class="col-xs-3">@r.ReviewerEmail</td>
+                                <td class="col-xs-3">@r.Content</td>
+                            </tr>
+                        }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="col-xs-6">
+        <h2 class="sub-header">Reviews Given</h2>
+        <div class="table-responsive">
+            <table class="table table-dark">
+                <thead>
+                    <tr>
+
+                        <th class="col-xs-3">Reviewee</th>
+                        <th class="col-xs-3">Content</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.ReviewsGiven.Count > 0)
+                        @foreach (Review r in Model.ReviewsGiven)
+                        {
+                            <tr>
+
+                                <td class="col-xs-3">@r.RevieweeEmail</td>
+                                <td class="col-xs-3">@r.Content</td>
+                            </tr>
+                        }
+                </tbody>
+            </table>
+        </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="updateModalLabel">Update account</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" asp-page-handler="Update">
+                            <div class="form-group">
+                                <label for="firstName">First Name</label>
+                                <input class="form-control"
+                                       type="text"
+                                       placeholder="First Name"
+                                       name="firstName"
+                                       id="firstName"
+                                       value="@firstName"
+                                       required pattern="^[\w ]{2,}$"
+                                       oninvalid="setCustomValidity('First name may only contain letters')"
+                                       oninput="setCustomValidity('')">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="lastName">Last Name</label>
+                                <input class="form-control"
+                                       type="text"
+                                       placeholder="Last Name"
+                                       name="lastName"
+                                       id="lastName"
+                                       value="@lastName"
+                                       required pattern="^[\w ]{2,}$"
+                                       oninvalid="setCustomValidity('Last name may only contain letters')"
+                                       oninput="setCustomValidity('')">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password">New Password (leave blank to keep current)</label>
+                                <input class="form-control"
+                                       type="text"
+                                       placeholder="New Password"
+                                       name="password"
+                                       id="password">
+                            </div>
 
 
-                        <div class="form-group">
-                            <label for="repeatPassword">Repeat Password</label>
-                            <input class="form-control"
-                                   type="text"
-                                   placeholder="Repeat Password"
-                                   name="repeatPassword"
-                                   id="repeatPassword">
-                        </div>
+                            <div class="form-group">
+                                <label for="repeatPassword">Repeat Password</label>
+                                <input class="form-control"
+                                       type="text"
+                                       placeholder="Repeat Password"
+                                       name="repeatPassword"
+                                       id="repeatPassword">
+                            </div>
 
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input class="form-control"
-                                   type="email"
-                                   placeholder="Last Name"
-                                   name="email"
-                                   id="email"
-                                   value="@email"
-                                   required pattern="^[\w ]{2,}$"
-                                   oninvalid="setCustomValidity('Last name may only contain letters')"
-                                   oninput="setCustomValidity('')">
-                        </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input class="form-control"
+                                       type="email"
+                                       placeholder="Last Name"
+                                       name="email"
+                                       id="email"
+                                       value="@email"
+                                       required pattern="^[\w ]{2,}$"
+                                       oninvalid="setCustomValidity('Last name may only contain letters')"
+                                       oninput="setCustomValidity('')">
+                            </div>
 
-                        <div class="form-group">
-                            <label for="phoneNumber">Phone Number</label>
-                            <input class="form-control"
-                                   type="tel"
-                                   placeholder="Phone Number"
-                                   name="phoneNumber"
-                                   id="phoneNumber"
-                                   value="@phone"
-                                   required pattern="^[\w ]{2,}$"
-                                   oninvalid="setCustomValidity('Type in Your phone number')"
-                                   oninput="setCustomValidity('')">
-                        </div>
+                            <div class="form-group">
+                                <label for="phoneNumber">Phone Number</label>
+                                <input class="form-control"
+                                       type="tel"
+                                       placeholder="Phone Number"
+                                       name="phoneNumber"
+                                       id="phoneNumber"
+                                       value="@phone"
+                                       required pattern="^[\w ]{2,}$"
+                                       oninvalid="setCustomValidity('Type in Your phone number')"
+                                       oninput="setCustomValidity('')">
+                            </div>
 
-                        <div class="form-group">
-                            <label for="dateOfBirth">Date of Birth</label>
-                            <input class="form-control"
-                                   type="datetime-local"
-                                   placeholder="Phone Number"
-                                   name="dateOfBirth"
-                                   id="dateOfBirth"
-                                   value="@dateOfBirth">
-                        </div>
+                            <div class="form-group">
+                                <label for="dateOfBirth">Date of Birth</label>
+                                <input class="form-control"
+                                       type="datetime-local"
+                                       placeholder="Phone Number"
+                                       name="dateOfBirth"
+                                       id="dateOfBirth"
+                                       value="@dateOfBirth">
+                            </div>
 
-                        <button type="submit" class="btn btn-success">Update</button>
-                    </form>
+                            <button type="submit" class="btn btn-success">Update</button>
+                        </form>
 
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
 
 
-<script>
-    var password = document.getElementById("password")
-        , repeatPassword = document.getElementById("repeatPassword")
+    <script>
+        var password = document.getElementById("password")
+            , repeatPassword = document.getElementById("repeatPassword")
 
-    function validatePassword() {
-        if (password.value != repeatPassword.value) {
-            repeatPassword.setCustomValidity("Passwords don't match")
-        } else {
-            repeatPassword.setCustomValidity('')
+        function validatePassword() {
+            if (password.value != repeatPassword.value) {
+                repeatPassword.setCustomValidity("Passwords don't match")
+            } else {
+                repeatPassword.setCustomValidity('')
+            }
         }
-    }
 
-    password.onchange = validatePassword
-    repeatPassword.onkeyup = validatePassword
-</script>
+        password.onchange = validatePassword
+        repeatPassword.onkeyup = validatePassword
+    </script>
