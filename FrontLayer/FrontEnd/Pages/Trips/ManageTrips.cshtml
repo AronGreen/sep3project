@@ -1,0 +1,64 @@
+﻿@page
+@using Data.Models.Helpers
+@using FrontEnd.Pages.Entities
+@model FrontEnd.Pages.Trips.ManageTripsModel
+@{
+    ViewData["Title"] = "Your Trips";
+}
+
+@section header
+{
+    <partial name="Shared/_HeaderItems" />
+}
+
+<div class="container-fluid narrow">
+    <div class="row">
+        <div class="col">
+            <partial name="CreateTripModal" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <h2>Your Trips</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Create Trip</button>
+        </div>
+    </div>
+
+    @if (Model.Trips.Any())
+    {
+        foreach (var t in Model.Trips)
+        {
+            @HtmlHelperPartialExtensions.Partial(Html, "ViewTripModal", new ViewTripModel()
+            {
+                Trip = t,
+                Own = true
+            })
+            <div class="row rounded-sm border bg-success text-white my-1">
+                <div class="col-md-5">
+                    @t.StartAddress to @t.DestinationAddress
+                </div>
+                <div class="col-md-5">
+                    Arrives at ~@DateTimeHelper.ExtractTime(t.Arrival) to @t.DestinationAddress
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="@("#viewTripModal" + t.Id)">View</button>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="row">
+            <div class="col">
+                You have no trips.
+            </div>
+        </div>
+    }
+
+</div>

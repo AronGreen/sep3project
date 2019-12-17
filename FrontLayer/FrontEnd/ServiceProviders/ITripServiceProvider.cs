@@ -10,7 +10,7 @@ namespace FrontEnd.ServiceProviders
     public interface ITripServiceProvider
     {
         List<Trip> GetFiltered(TripFilter filter);
-
         bool Create(Trip model, string token);
+        bool Delete(int id, string token);
     }
 }

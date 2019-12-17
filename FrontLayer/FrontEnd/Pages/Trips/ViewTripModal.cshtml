@@ -1,0 +1,38 @@
+﻿@model FrontEnd.Pages.Entities.ViewTripModel
+<!-- Modal -->
+
+<div class="modal fade" id="@("viewTripModal" + @Model.Trip.Id)" tabindex="-1" role="dialog" aria-labelledby="viewTripModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewTripModalLabel">Trip Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="@(@Model.Own ? "post" : "post")">
+                    <input type="number" name="tripId" value="@Model.Trip.Id" class="invisible" />
+                    <div class="form-group">
+                        <label for="pickupAddressReservation">Pickup Address:</label>
+                        <input type="text" class="form-control" name="pickupAddressReservation" id="pickupAddressReservation" placeholder="Pickup Address" />
+                    </div>
+                    <div class="form-group">
+                        <label for="dropoffAddressReservation">Dropoff Address:</label>
+                        <input type="text" class="form-control" name="dropoffAddressReservation" id="dropoffAddressReservation" placeholder="Dropoff Address" />
+                    </div>
+                    @if (!@Model.Own)
+                    {
+                        <button asp-page-handler="Reserve" class="btn btn-primary">Place Reservation</button>
+                    }
+                    else
+                    {
+                        <button asp-page-handler="Trip" class="btn btn-danger">Delete</button>
+                    }
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

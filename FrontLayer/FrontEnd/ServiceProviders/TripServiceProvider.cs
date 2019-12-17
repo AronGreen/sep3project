@@ -39,5 +39,11 @@ namespace FrontEnd.ServiceProviders
             var response = ApiHelpers.DoPost(Constants.Api.Trips.Create, model, token);
             return response.IsSuccessStatusCode;
         }
+
+        public bool Delete(int id, string token)
+        {
+            var response = ApiHelpers.DoDelete(Api.Trips.Delete + id, token);
+            return response.IsSuccessStatusCode;
+        }
     }
 }

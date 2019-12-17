@@ -53,7 +53,7 @@ namespace FrontEnd.Pages
             Response.Cookies.Append("PhoneCookie", $"{account.Phone}", cookieOptions);
             Response.Cookies.Append("TokenCookie", $"{token}", cookieOptions);
 
-            return RedirectToPage("MainLoggedIn");
+            return RedirectToPage("Miscellaneous/MainLoggedIn");
         }
     }
 }

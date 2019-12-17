@@ -23,6 +23,7 @@ namespace FrontEnd.Constants
 
             public const string Create = Base + "create";
             public const string GetFiltered = Base + "get";
+            public const string Delete = Base + "delete/";
         }
 
         public static class Reservations

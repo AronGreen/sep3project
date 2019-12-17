@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Mime;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -59,6 +60,16 @@ namespace FrontEnd.Helpers
         {
             using var client = new HttpClient();
             return client.GetAsync(endpoint).GetAwaiter().GetResult();
+        }
+
+        public static HttpResponseMessage DoDelete(string endpoint, string token)
+        {
+            using var client = new HttpClient();
+
+            var authenticationToken = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{token}" + ":"));
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authenticationToken);
+
+            return client.DeleteAsync(endpoint).GetAwaiter().GetResult();
         }
     }
 }

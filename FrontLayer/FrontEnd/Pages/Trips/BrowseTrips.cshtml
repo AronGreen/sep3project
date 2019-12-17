@@ -1,0 +1,70 @@
+﻿@page
+@using Data.Models.Entities
+@using Data.Models.Helpers
+@using FrontEnd.Pages.Entities
+@model FrontEnd.Pages.Trips.BrowseTripsModel
+@{
+    ViewData["Title"] = "ManageTrips";
+}
+
+@section header{
+
+    <partial name="Shared/_HeaderItems" />
+
+}
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col container-fluid narrow">
+            <h2 align="center">Browse Trips</h2>
+
+            <form method="post" asp-page-handler="trips" class="text-center narrow">
+                <!-- arrival pickup dropoff -->
+                <div class="form-group">
+                    <input name="arrival" type="date" placeholder="Time" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <input type="text" name="pickupAddress" placeholder="Pickup address" />
+                </div>
+                <div class="form-group">
+                    <input type="text" name="dropoffAddress" placeholder="Dropoff address" />
+                </div>
+                <button type="submit" class="btn btn-primary">Search trips</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="container-fluid narrow">
+        @if (Model.Trips.Any())
+        {
+            foreach (var t in Model.Trips)
+            {
+                @HtmlHelperPartialExtensions.Partial(Html, "ViewTripModal", new ViewTripModel()
+                {
+                    Trip = t,
+                    Own = false
+                })
+                <div class="row rounded-sm border bg-success text-white my-1">
+                    <div class="col-md-5">
+                        @t.StartAddress to @t.DestinationAddress
+                    </div>
+                    <div class="col-md-5">
+                        Arrives at ~@DateTimeHelper.ExtractTime(t.Arrival) to @t.DestinationAddress
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="@("#viewTripModal" + t.Id)">View</button>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="row">
+                <div class="col">
+                    No trips found for the given criteria.
+                </div>
+            </div>
+        }
+    </div>
+</div>
