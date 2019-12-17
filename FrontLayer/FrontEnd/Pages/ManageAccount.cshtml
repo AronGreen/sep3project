@@ -1,7 +1,6 @@
 ﻿@page
 @model FrontEnd.Pages.ManageAccountModel
 @using Pages.Entities
-@using Data.Models.Entities
 @{
     ViewData["Title"] = "ManageAccount";
 
@@ -17,10 +16,12 @@
     <h1 class="display-4">Manage Account</h1>
 </div>
 
-
+<form>
+    <button type="submit" asp-page="./MainLoggedIn">Go Back!</button>
+</form>
 <div>
     <form method="post" asp-page-handler="Delete">
-        <button type="submit" class="login-button">Delete account</button>
+        <button type="submit">Delete account</button>
     </form>
 </div>
 
@@ -31,7 +32,6 @@
     var lastName = Request.Cookies["LastNameCookie"];
     var dateOfBirth = Request.Cookies["DateOfBirthCookie"];
     var phone = Request.Cookies["PhoneCookie"];
-
 
 
 }
@@ -113,7 +113,7 @@
 
         </div>
 
-        <button type="submit" class="login-button">Update account</button>
+        <button type="submit" class="login-button">Update</button>
 
     </form>
 
@@ -122,58 +122,6 @@
 
 
 </div>
-<div >
-    <br />
-    <form method="post" class="text-center">
-        <button  asp-page-handler="Reviews" class="login-button">Get Reviews</button>
-    </form>
-    <div style="float: left;">
-        <label>Reviews Received</label>
-        <table  id="table-trips">
-            <tr>
-                <th>Reviewer</th>
-                <th>Content</th>
-
-            </tr>
-
-            @if (Model.ReviewsReceived.Count > 0)
-
-                @foreach (Review r in Model.ReviewsReceived)
-                {
-                    <tr>
-                        <td>@r.ReviewerEmail</td>
-                        <td>@r.Content</td>
-
-
-                    </tr>
-                }
-        </table>
-    </div>
-    <div style="float: right;">
-        <label>Reviews Given</label>
-        <table   id="table-trips">
-            <tr>
-                <th>Reviewer</th>
-                <th>Content</th>
-
-            </tr>
-
-            @if (Model.ReviewsGiven.Count > 0)
-
-                @foreach (Review r in Model.ReviewsGiven)
-                {
-                    <tr>
-                        <td>@r.RevieweeEmail</td>
-                        <td>@r.Content</td>
-
-
-                    </tr>
-                }
-        </table>
-    </div>
-</div>
-
-
 
 <script>
 
