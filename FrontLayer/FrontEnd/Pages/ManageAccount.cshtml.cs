@@ -16,8 +16,28 @@ namespace FrontEnd.Pages
 {
     public class ManageAccountModel : PageModel
     {
-        
-                                                 
+
+        public List<Review> ReviewsReceived = new List<Review>();
+        public List<Review> ReviewsGiven = new List<Review>();
+        public async Task OnGet()
+        {
+
+            var token = Request.Cookies["TokenCookie"];
+            var email = Request.Cookies["EmailCookie"];
+            HttpClient client = new HttpClient();
+            string authenticationToken = Convert.ToBase64String(UTF8Encoding.UTF8.GetBytes($"{token}" + ":"));
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authenticationToken);
+            
+                var s = await client.GetStringAsync("http://localhost:8080/Logic_war_exploded/reviews/getAllByReviewerEmail/" + $"{email}");
+
+                List<Review> reviewsGiven = JsonSerializer.Deserialize<List<Review>>(s);
+                ReviewsGiven = reviewsGiven;
+
+                var z = await client.GetStringAsync("http://localhost:8080/Logic_war_exploded/reviews/getAllByRevieweeEmail/" + $"{email}");
+                List<Review> reviewsReceived = JsonSerializer.Deserialize<List<Review>>(z);
+                ReviewsReceived = reviewsReceived;
+            
+        }
         public async Task<IActionResult> OnPostUpdateAsync()
         {
 
@@ -29,7 +49,6 @@ namespace FrontEnd.Pages
             var phoneNumber = Request.Form["phoneNumber"];
 
             Account account = new Account()
-
             {
                 Email = email,
                 FirstName = firstName,
@@ -37,9 +56,6 @@ namespace FrontEnd.Pages
                 Password = password,
                 DateOfBirth = dateOfBirth,
                 Phone = phoneNumber,
-
-
-
             };
 
             HttpClient client = new HttpClient();
@@ -59,36 +75,21 @@ namespace FrontEnd.Pages
                     Expires = DateTime.Now.AddMonths(12),
                     Secure = true
 
-
                 };
 
                 Response.Cookies.Append("FirstNameCookie", $"{account.FirstName}", cookieOptions);
                 Response.Cookies.Append("LastNameCookie", $"{account.LastName}", cookieOptions);
                 Response.Cookies.Append("PhoneCookie", $"{account.Phone}", cookieOptions);
 
-
-
-
                 return RedirectToPage("ManageAccount");
             }
             else {
                 return RedirectToPage("ManageAccount");
             }
-
-
-
-
-
-
-
-
-
         }
+
         public async Task<IActionResult> OnPostDeleteAsync()
         {
-
-
-
             HttpClient client = new HttpClient();
             var email = Request.Cookies["EmailCookie"];
             var token = Request.Cookies["TokenCookie"];
@@ -104,13 +105,7 @@ namespace FrontEnd.Pages
             Response.Cookies.Delete("PhoneCookie");
             Response.Cookies.Delete("TokenCookie");
 
-
             return RedirectToPage("Index");
         }
-
-
-
-
-
     }
 }

@@ -8,8 +8,12 @@
     <partial name="_HeaderItems" />
 }
 
+@{ 
+    var firstName = Request.Cookies["FirstNameCookie"];
+}}
+
 <div class="text-center">
-    <h1 class="display-4">Logged in</h1>
+    <h1 class="display-4">Welcome @firstName</h1>
 </div>
 
 
