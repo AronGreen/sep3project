@@ -30,16 +30,14 @@ public class ReservationController {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response create(String json){
-        // Extract Trip from request
-        Reservation t = Reservation.fromJson(json);
+        Reservation reservation = Reservation.fromJson(json);
 
-        if (!authenticationHandler.getEmail(headers).equals(t.getPassengerEmail()))
+        if (!authenticationHandler.getEmail(headers)
+                .equals(reservation.getPassengerEmail()))
             return HttpResponseHelper.getUnathourizedResponse();
 
-        // Send request and receive Response
-        ReservationResponse res = handler.create(t);
+        ReservationResponse res = handler.create(reservation);
 
-        // Extract http response code
         int status = StatusMapper.map(res.getStatus());
 
         return Response

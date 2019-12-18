@@ -28,7 +28,8 @@ namespace Data.Logic.RequestTables
 
         private Handler CreateReservation() => body =>
         {
-            var result = _reservationRepository.Create(JsonSerializer.Deserialize<Reservation>(body));
+            var result = _reservationRepository.Create(
+                JsonSerializer.Deserialize<Reservation>(body));
             var status = result == null ? "badRequest" : "success";
             return new Response()
             {

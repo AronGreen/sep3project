@@ -27,7 +27,7 @@ namespace FrontEnd.Pages
 
             if (string.IsNullOrEmpty(token)) return RedirectToPage("Index", new { loginFail = true });
 
-            var account = _accountServiceProvider.Get(email, token);
+            var account = _accountServiceProvider.Get(email);
 
             // Create the identity from the user info
             var claims = new List<Claim> {

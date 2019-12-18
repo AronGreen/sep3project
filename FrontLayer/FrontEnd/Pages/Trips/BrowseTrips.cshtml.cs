@@ -13,9 +13,21 @@ namespace FrontEnd.Pages.Trips
     {
         private readonly ITripServiceProvider _tripServiceProvider = new TripServiceProvider();
         private readonly IReservationServiceProvider _reservationServiceProvider = new ReservationServiceProvider();
+        private readonly IReviewServiceProvider _reviewServiceProvider = new ReviewServiceProvider();
 
         public string UserEmail { get; set; }
         public List<Trip> Trips { get; set; } = new List<Trip>();
+
+
+        public string ErrorMessage { get; set; }
+        public string SuccessMessage { get; set; }
+
+        public IActionResult OnGet(string errorMessage = "", string successMessage = "")
+        {
+            ErrorMessage = errorMessage;
+            SuccessMessage = successMessage;
+            return Page();
+        }
 
         // TODO this should be a get request - I was young and stupid
         public IActionResult OnPostTrips()
@@ -32,7 +44,7 @@ namespace FrontEnd.Pages.Trips
             };
 
             Trips = _tripServiceProvider.GetFiltered(filter);
-            return Page();
+            return OnGet();
         }
 
         public IActionResult OnPostReserve()
@@ -46,11 +58,27 @@ namespace FrontEnd.Pages.Trips
                 DropoffAddress = Request.Form["dropoffAddressReservation"]
             };
 
-            if (_reservationServiceProvider.Create(reservation, Request.Cookies["TokenCookie"]))
+            return _reservationServiceProvider.Create(reservation, Request.Cookies["TokenCookie"])
+                ? OnGet()
+                : OnGet("Your reservation could not be created");
+        }
+
+        public IActionResult OnPostReview()
+        {
+            var content = Request.Form["content"];
+            var reviewerEmail = Request.Cookies["EmailCookie"];
+            var revieweeEmail = Request.Form["reviewee"];
+
+            var review = new Review()
             {
-                return Page();
-            }
-            return NotFound();
+                Content = content,
+                RevieweeEmail = revieweeEmail,
+                ReviewerEmail = reviewerEmail
+            };
+
+            return _reviewServiceProvider.Create(review, Request.Cookies["TokenCookie"])
+                ? OnGet("", "Your review has been posted")
+                : OnGet("Your review could not be posted");
         }
 
     }

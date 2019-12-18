@@ -1,0 +1,93 @@
+﻿@model Data.Models.Entities.Account
+
+
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateModalLabel">Update account</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" asp-page-handler="Update">
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input class="form-control"
+                               type="text"
+                               placeholder="First Name"
+                               name="firstName"
+                               id="firstName"
+                               value="@Model.FirstName"
+                               required pattern="^[\w ]{2,}$"
+                               oninvalid="setCustomValidity('First name may only contain letters')"
+                               oninput="setCustomValidity('')">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input class="form-control"
+                               type="text"
+                               placeholder="Last Name"
+                               name="lastName"
+                               id="lastName"
+                               value="@Model.LastName"
+                               required pattern="^[\w ]{2,}$"
+                               oninvalid="setCustomValidity('Last name may only contain letters')"
+                               oninput="setCustomValidity('')">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">New Password (leave blank to keep current)</label>
+                        <input class="form-control"
+                               type="text"
+                               placeholder="New Password"
+                               name="password"
+                               id="password">
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="repeatPassword">Repeat Password</label>
+                        <input class="form-control"
+                               type="text"
+                               placeholder="Repeat Password"
+                               name="repeatPassword"
+                               id="repeatPassword">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phoneNumber">Phone Number</label>
+                        <input class="form-control"
+                               type="tel"
+                               placeholder="Phone Number"
+                               name="phoneNumber"
+                               id="phoneNumber"
+                               value="@Model.Phone"
+                               required pattern="^[\w ]{2,}$"
+                               oninvalid="setCustomValidity('Type in Your phone number')"
+                               oninput="setCustomValidity('')">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dateOfBirth">Date of Birth</label>
+                        <input class="form-control"
+                               type="datetime-local"
+                               placeholder="Phone Number"
+                               name="dateOfBirth"
+                               id="dateOfBirth"
+                               value="@Model.DateOfBirth">
+                    </div>
+
+                    <button type="submit" class="btn btn-success">Update</button>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -15,8 +15,14 @@ namespace FrontEnd.Pages.Trips
 
         public List<Trip> Trips { get; set; }
 
-        public IActionResult OnGet()
+        public string ErrorMessage { get; set; }
+        public string SuccessMessage { get; set; }
+
+        public IActionResult OnGet(string errorMessage = "", string successMessage = "")
         {
+
+            ErrorMessage = errorMessage;
+            SuccessMessage = successMessage;
             Trips = _tripServiceProvider.GetFiltered(new TripFilter() {DriverEmail = Request.Cookies["EmailCookie"]});
             return Page();
         }
@@ -40,5 +46,6 @@ namespace FrontEnd.Pages.Trips
 
             return _tripServiceProvider.Delete(tripId, token) ? OnGet() : NotFound();
         }
+
     }
 }

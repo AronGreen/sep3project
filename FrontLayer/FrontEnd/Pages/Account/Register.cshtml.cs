@@ -10,11 +10,11 @@ namespace FrontEnd.Pages
     {
         private readonly IAccountServiceProvider _accountServiceProvider = new AccountServiceProvider();
 
-        public IActionResult OnPostRegister([FromForm] Account account)
+        public IActionResult OnPostRegister([FromForm] Data.Models.Entities.Account account)
         {
             return _accountServiceProvider.Register(account) 
-                ? RedirectToPage("Index", new { accountCreated = true }) 
-                : RedirectToPage("Register", new { accountCreated = false });
+                ? RedirectToPage("/Index", new { accountCreated = true }) 
+                : RedirectToPage("./Register", new { accountCreated = false });
         }
     }
 }

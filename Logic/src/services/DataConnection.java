@@ -15,7 +15,8 @@ public enum DataConnection {
     public String sendRequest (DataRequest request) {
         try {
             Connection conn = new Connection();
-            conn.send(EncryptionHelper.encrypt(request.toJson()).getBytes(StandardCharsets.UTF_8));
+            conn.send(EncryptionHelper.encrypt(
+                    request.toJson()).getBytes(StandardCharsets.UTF_8));
             // conn.send(json.getBytes());
             byte[] responseBytes = conn.receive();
             conn.close();

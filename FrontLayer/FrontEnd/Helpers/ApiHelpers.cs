@@ -33,18 +33,7 @@ namespace FrontEnd.Helpers
             return client.PostAsync(endpoint, content).GetAwaiter().GetResult();
         }
 
-        public static HttpResponseMessage DoPost(string endpoint, object payload, string token)
-        {
-            using var client = new HttpClient();
-
-            var json = JsonSerializer.Serialize(payload);
-            var content = new StringContent(json, Encoding.UTF8, MediaTypeNames.Application.Json);
-
-            var authenticationToken = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{token}" + ":"));
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authenticationToken);
-
-            return client.PostAsync(endpoint, content).GetAwaiter().GetResult();
-        }
+        
 
         public static HttpResponseMessage DoGet(string endpoint, string token)
         {
@@ -70,6 +59,32 @@ namespace FrontEnd.Helpers
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authenticationToken);
 
             return client.DeleteAsync(endpoint).GetAwaiter().GetResult();
+        }
+
+        public static HttpResponseMessage DoPost(string endpoint, object payload, string token)
+        {
+            using var client = new HttpClient();
+
+            var json = JsonSerializer.Serialize(payload);
+            var content = new StringContent(json, Encoding.UTF8, MediaTypeNames.Application.Json);
+
+            var authenticationToken = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{token}" + ":"));
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authenticationToken);
+
+            return client.PostAsync(endpoint, content).GetAwaiter().GetResult();
+        }
+
+        public static HttpResponseMessage DoPut(string endpoint, object payload, string token)
+        {
+            using var client = new HttpClient();
+
+            var json = JsonSerializer.Serialize(payload);
+            var content = new StringContent(json, Encoding.UTF8, MediaTypeNames.Application.Json);
+
+            var authenticationToken = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{token}" + ":"));
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authenticationToken);
+
+            return client.PutAsync(endpoint, content).GetAwaiter().GetResult();
         }
     }
 }

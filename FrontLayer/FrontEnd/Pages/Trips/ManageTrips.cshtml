@@ -12,9 +12,27 @@
 }
 
 <div class="container-fluid narrow">
+    
     <div class="row">
         <div class="col">
-            <partial name="CreateTripModal" />
+            @if (@Model.ErrorMessage != "")
+            {
+                <div class="alert alert-danger" role="alert">
+                    @Model.ErrorMessage
+                </div>
+            }
+            @if (@Model.SuccessMessage != "")
+            {
+                <div class="alert alert-success" role="alert">
+                    @Model.SuccessMessage
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <partial name="CreateTripModal"/>
         </div>
     </div>
 

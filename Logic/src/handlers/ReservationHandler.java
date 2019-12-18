@@ -87,8 +87,7 @@ public class ReservationHandler implements IReservationHandler {
 
         // Handle if the reservation does not exist
         ReservationResponse res = reservationService.getById(reservation.getId());
-        if (!res.getStatus().equals(ResponseStatus.SOCKET_SUCCESS))
-        {
+        if (!res.getStatus().equals(ResponseStatus.SOCKET_SUCCESS)) {
             return reservationService.update(reservation);
         }
         Reservation old = res.getBody();
@@ -126,7 +125,10 @@ public class ReservationHandler implements IReservationHandler {
                     NotificationType.RESERVATION_APPROVED.getMessage(),
                     DateTimeHelper.getCurrentTime()
             ));
+
+
         }
+
 
         // When a pending reservation gets rejected, notify the passenger
         if (old.getState().equals(ReservationState.PENDING) && reservation.getState().equals(ReservationState.REJECTED)) {
@@ -139,7 +141,26 @@ public class ReservationHandler implements IReservationHandler {
             ));
         }
 
-        return reservationService.update(reservation);
+        // This updates the State to approved, but it does not have the pickup time
+        ReservationResponse resRes = reservationService.update(reservation);
+        // This updates the Pickup times
+        setReservationPickupTimes(trip);
+        // Get the reservation with the pickup time
+        return reservationService.getById(reservation.getId());
+    }
+
+    private void setReservationPickupTimes(Trip trip) {
+        TripDetails details = navigationServiceProvider.getTripDetails(trip, reservationService.getByTripId(trip.getId()).getBody());
+        List<Reservation> reservations = reservationService.getByTripId(trip.getId()).getBody();
+        for (int i = 0; i < details.getStopAdresses().size(); i++) {
+            for (Reservation reservation : reservations) {
+                if (details.getStopAdresses().get(i).equals(reservation.getPickupAddress())) {
+                    reservation.setPickupTime(DateTimeHelper.toString(details.getStopTimes().get(i)));
+                    reservationService.update(reservation);
+                    break;
+                }
+            }
+        }
     }
 
     @Override

@@ -8,10 +8,10 @@ namespace FrontEnd.ServiceProviders
 {
     public interface IAccountServiceProvider
     {
-        Account Get(string email, string token);
-
+        Account Get(string email);
+        bool Update(Account account, string token);
+        bool Delete(string email, string token);
         bool Register(Account account);
-
         string Login(string email, string password);
 
     }

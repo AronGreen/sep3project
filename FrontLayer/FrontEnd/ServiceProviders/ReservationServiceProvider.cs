@@ -8,7 +8,8 @@ namespace FrontEnd.ServiceProviders
     {
         public bool Create(Reservation model, string token)
         {
-            var response = ApiHelpers.DoPost(Api.Reservations.Create, model, token);
+            var response = ApiHelpers
+                .DoPost(Api.Reservations.Create, model, token);
             return response.IsSuccessStatusCode;
         }
     }

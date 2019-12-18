@@ -10,6 +10,8 @@ namespace FrontEnd.Constants
         {
             public const string Create = BaseUrl + "accounts/create";
             public const string Get = BaseUrl + "accounts/get";
+            public const string Update = BaseUrl + "accounts/update";
+            public const string Delete = BaseUrl + "accounts/delete";
         }
 
         public static class Authentication
@@ -29,6 +31,12 @@ namespace FrontEnd.Constants
         public static class Reservations
         {
             public const string Create = BaseUrl + "reservations/create";
+        }
+
+        public static class Reviews
+        {
+            public const string GetAllByReviewee = BaseUrl + "reviews/getAllByRevieweeEmail";
+            public const string Create = BaseUrl + "reviews/create";
         }
     }
 }

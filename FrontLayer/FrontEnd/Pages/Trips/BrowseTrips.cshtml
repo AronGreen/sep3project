@@ -19,6 +19,23 @@
         <div class="col container-fluid narrow">
             <h2 align="center">Browse Trips</h2>
 
+            <div class="row">
+                <div class="col">
+                    @if (@Model.ErrorMessage != "")
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            @Model.ErrorMessage
+                        </div>
+                    }
+                    @if (@Model.SuccessMessage != "")
+                    {
+                        <div class="alert alert-success" role="alert">
+                            @Model.SuccessMessage
+                        </div>
+                    }
+                </div>
+            </div>
+
             <form method="post" asp-page-handler="trips" class="text-center narrow">
                 <!-- arrival pickup dropoff -->
                 <div class="form-group">
@@ -45,6 +62,7 @@
                     Trip = t,
                     Own = false
                 })
+
                 <div class="row rounded-sm border bg-success text-white my-1">
                     <div class="col-md-5">
                         @t.StartAddress to @t.DestinationAddress

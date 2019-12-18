@@ -1,46 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Data.Models.Entities;
-using FrontEnd.Pages.Entities;
+using FrontEnd.Constants;
+using FrontEnd.Helpers;
+using FrontEnd.ServiceProviders;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Text.Json;
-using System.Net.Http.Headers;
-using Microsoft.AspNetCore.Http;
 
-namespace FrontEnd.Pages
+namespace FrontEnd.Pages.Account
 {
     public class ManageAccountModel : PageModel
     {
 
-        public List<Review> ReviewsReceived = new List<Review>();
-        public List<Review> ReviewsGiven = new List<Review>();
-        public async Task OnGet()
-        {
+        private readonly IAccountServiceProvider _accountServiceProvider = new AccountServiceProvider();
+        private readonly IReviewServiceProvider _reviewServiceProvider = new ReviewServiceProvider();
 
-            var token = Request.Cookies["TokenCookie"];
+        public IList<Review> ReviewsReceived = new List<Review>();
+        public IList<Review> ReviewsGiven = new List<Review>();
+
+        public string ErrorMessage { get; set; }
+        public string SuccessMessage { get; set; }
+
+        public Data.Models.Entities.Account Account { get; set; }
+
+        public IActionResult OnGet(string errorMessage = "", string successMessage = "")
+        {
+            ErrorMessage = errorMessage;
+            SuccessMessage = successMessage;
+
             var email = Request.Cookies["EmailCookie"];
-            HttpClient client = new HttpClient();
-            string authenticationToken = Convert.ToBase64String(UTF8Encoding.UTF8.GetBytes($"{token}" + ":"));
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authenticationToken);
-            
-                var s = await client.GetStringAsync("http://localhost:8080/Logic_war_exploded/reviews/getAllByReviewerEmail/" + $"{email}");
+            Account = _accountServiceProvider.Get(email);
 
-                List<Review> reviewsGiven = JsonSerializer.Deserialize<List<Review>>(s);
-                ReviewsGiven = reviewsGiven;
+            ReviewsReceived = _reviewServiceProvider.GetAllByReviewee(email);
 
-                var z = await client.GetStringAsync("http://localhost:8080/Logic_war_exploded/reviews/getAllByRevieweeEmail/" + $"{email}");
-                List<Review> reviewsReceived = JsonSerializer.Deserialize<List<Review>>(z);
-                ReviewsReceived = reviewsReceived;
-            
+            return Page();
         }
-        public async Task<IActionResult> OnPostUpdateAsync()
+        public IActionResult OnPostUpdate()
         {
-
+            var token = Request.Cookies["TokenCookie"];
             var email = Request.Cookies["EmailCookie"];
             var password = Request.Form["password"];
             var firstName = Request.Form["firstName"];
@@ -48,7 +51,7 @@ namespace FrontEnd.Pages
             var dateOfBirth = Request.Form["dateOfBirth"];
             var phoneNumber = Request.Form["phoneNumber"];
 
-            Account account = new Account()
+            var account = new Data.Models.Entities.Account()
             {
                 Email = email,
                 FirstName = firstName,
@@ -58,44 +61,21 @@ namespace FrontEnd.Pages
                 Phone = phoneNumber,
             };
 
-            HttpClient client = new HttpClient();
-
-            var token = Request.Cookies["TokenCookie"];
-            string authenticationToken = Convert.ToBase64String(UTF8Encoding.UTF8.GetBytes($"{token}" + ":"));
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authenticationToken);
-
-            var json = JsonSerializer.Serialize(account);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await client.PutAsync("http://localhost:8080/Logic_war_exploded/accounts/update", content);
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
-            {
-                var cookieOptions = new CookieOptions
-                {
-
-                    Expires = DateTime.Now.AddMonths(12),
-                    Secure = true
-
-                };
-
-                Response.Cookies.Append("FirstNameCookie", $"{account.FirstName}", cookieOptions);
-                Response.Cookies.Append("LastNameCookie", $"{account.LastName}", cookieOptions);
-                Response.Cookies.Append("PhoneCookie", $"{account.Phone}", cookieOptions);
-
-                return RedirectToPage("ManageAccount");
-            }
-            else {
-                return RedirectToPage("ManageAccount");
-            }
+            return _accountServiceProvider.Update(account, token)
+                ? OnGet()
+                : OnGet("Your account could not be updated");
         }
 
-        public async Task<IActionResult> OnPostDeleteAsync()
+        public IActionResult OnGetDelete()
         {
-            HttpClient client = new HttpClient();
             var email = Request.Cookies["EmailCookie"];
             var token = Request.Cookies["TokenCookie"];
-            string authenticationToken = Convert.ToBase64String(UTF8Encoding.UTF8.GetBytes($"{token}" + ":"));
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authenticationToken);
-            HttpResponseMessage response = await client.DeleteAsync("http://localhost:8080/Logic_war_exploded/accounts/delete/" + $"{email}");
+            var success = _accountServiceProvider.Delete(email, token);
+
+            if (!success)
+            {
+                return OnGet("Your account could not be deleted");
+            }
 
             Response.Cookies.Delete("EmailCookie");
             Response.Cookies.Delete("FirstNameCookie");
@@ -105,7 +85,7 @@ namespace FrontEnd.Pages
             Response.Cookies.Delete("PhoneCookie");
             Response.Cookies.Delete("TokenCookie");
 
-            return RedirectToPage("Index");
+            return RedirectToPage("/Index");
         }
     }
 }

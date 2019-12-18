@@ -14,7 +14,7 @@ namespace Data.Data
 
         [JsonPropertyName("minimumArrivalDate")]
         public string MinimumArrivalDate { get; set; }
-
+        
         [JsonPropertyName("maximumArrivalDate")]
         public string MaximumArrivalDate { get; set; }
 

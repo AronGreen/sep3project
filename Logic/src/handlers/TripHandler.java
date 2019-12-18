@@ -143,7 +143,8 @@ public class TripHandler implements ITripHandler {
                 !StringHelper.isNullOrEmpty(filter.getDropoffAddress()))
         {
             for (int i = 0; i < trips.size(); i++) {
-                if (getAvailabeSeats(trips.get(i)) <= 0)
+                trips.get(i).setTotalSeats(getAvailabeSeats(trips.get(i)));
+                if (trips.get(i).getTotalSeats() <= 0)
                 {
                     trips.remove(i);
                     i--;
