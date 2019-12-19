@@ -36,6 +36,7 @@ namespace FrontEnd.Constants
         public static class Reviews
         {
             public const string GetAllByReviewee = BaseUrl + "reviews/getAllByRevieweeEmail";
+            public const string GetAllByReviewer = BaseUrl + "reviews/getAllByReviewerEmail";
             public const string Create = BaseUrl + "reviews/create";
         }
     }

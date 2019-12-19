@@ -15,6 +15,12 @@ namespace FrontEnd.ServiceProviders
             var json = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
             return response.IsSuccessStatusCode ? JsonSerializer.Deserialize<List<Review>>(json) : null;
         }
+        public IList<Review> GetAllByReviewer(string email)
+        {
+            var response = ApiHelpers.DoGet(Constants.Api.Reviews.GetAllByReviewer + "/" + email);
+            var json = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            return response.IsSuccessStatusCode ? JsonSerializer.Deserialize<List<Review>>(json) : null;
+        }
 
         public bool Create(Review review, string token)
         {

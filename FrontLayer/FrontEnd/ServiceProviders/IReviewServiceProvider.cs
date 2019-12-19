@@ -8,6 +8,7 @@ namespace FrontEnd.ServiceProviders
     {
 
         IList<Review> GetAllByReviewee(string email);
+        IList<Review> GetAllByReviewer(string email);
         bool Create(Review review, string token);
 
     }

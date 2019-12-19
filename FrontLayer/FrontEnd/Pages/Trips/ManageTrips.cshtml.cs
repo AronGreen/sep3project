@@ -36,7 +36,7 @@ namespace FrontEnd.Pages.Trips
             var arrival = DateTimeHelper.FromDateTimeString(Request.Form["arrival"][0]);
             trip.Arrival = arrival;
 
-            return _tripServiceProvider.Create(trip, token) ? OnGet() : NotFound();
+            return _tripServiceProvider.Create(trip, token) ? OnGet("", "Your trip has been created") : OnGet("Your trip could not be created");
         }
 
         public IActionResult OnPostTrip()
@@ -44,7 +44,7 @@ namespace FrontEnd.Pages.Trips
             var token = Request.Cookies["TokenCookie"];
             var tripId = int.Parse(Request.Form["tripId"]);
 
-            return _tripServiceProvider.Delete(tripId, token) ? OnGet() : NotFound();
+            return _tripServiceProvider.Delete(tripId, token) ? OnGet("", "Your trip has been deleted") : OnGet("Your trip could not be deleted");
         }
 
     }
