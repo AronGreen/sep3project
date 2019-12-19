@@ -38,6 +38,7 @@ namespace FrontEnd.Pages.Account
             Account = _accountServiceProvider.Get(email);
 
             ReviewsReceived = _reviewServiceProvider.GetAllByReviewee(email);
+            ReviewsGiven = _reviewServiceProvider.GetAllByReviewer(email);
 
             return Page();
         }
