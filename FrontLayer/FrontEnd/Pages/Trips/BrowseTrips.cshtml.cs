@@ -59,7 +59,7 @@ namespace FrontEnd.Pages.Trips
             };
 
             return _reservationServiceProvider.Create(reservation, Request.Cookies["TokenCookie"])
-                ? OnGet()
+                ? OnGet("", "Reservation successfully placed")
                 : OnGet("Your reservation could not be created");
         }
 
